@@ -155,11 +155,42 @@ In `index.html`:
 
 ---
 
-## 6. Verification & Test Suite Results
+## 6. Common Factor Deduplication & Architectural Harmonization
+
+### A. Tenant Authorization & Clinic Query Deduplication
+- **Unified Querying via `IClinicRepository`:**
+  Added `GetAllowedClinicIdsForDoctorAsync` and `IsDoctorAuthorizedForClinicAsync` directly to `IClinicRepository` and `ClinicRepository`.
+  Eliminated repeated in-memory clinic iteration and full table scans across:
+  - `AppointmentsController`
+  - `BillingController`
+  - `DentalController`
+  - `PrescriptionsController`
+  - `PatientService`
+- **Result:**
+  Reduced memory footprint during tenant checks by executing SQL subqueries directly on SQL Server instead of pulling all clinics and child relations into web server RAM.
+
+### B. Consolidated Claims Extraction (`ClaimsPrincipalExtensions`)
+- Created `ClaimsPrincipalExtensions` in `Clinic.Application.Common`.
+- Centralized `GetUserId()`, `GetDoctorId()`, `GetClinicId()`, `GetUserRole()`, and `GetEmail()`.
+- Standardized claim lookups with null safety and resolved casing inconsistencies (`doctorId` vs `DoctorId`).
+
+### C. Direct Single-Entity Lookup (`GET /api/patients/{id}`)
+- Added `GET /api/patients/{id}` on `PatientsController` and `IPatientService.GetByIdAsync`.
+- Optimized `PatientService.getById(id)` in Angular from an $O(N)$ full table scan + in-memory find to an $O(1)$ indexed database query.
+
+### D. Frontend Reference Stream Caching & Shared Formatter
+- Added stream caching with mutation invalidation in `PatientService` and `DoctorService` using `shareReplay(1)`.
+- Reused cached streams across `AppointmentService`, `BillingService`, and `PrescriptionService`, eliminating duplicate network calls across route changes.
+- Centralized person name resolution via `formatPersonName` utility.
+- Encapsulated reactive phone validation synchronization inside `PhoneInputFieldComponent.ngOnInit()`.
+
+---
+
+## 7. Verification & Test Suite Results
 
 | Test Suite | Total Tests | Passed | Failed | Skipped | Build Warnings | Execution Time |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Backend Unit Tests (`Clinic.UnitTests`)** | 154 | 154 | 0 | 0 | 0 | 0.66s |
-| **Backend Integration Tests (`Clinic.IntegrationTests`)** | 15 | 15 | 0 | 0 | 0 | 1.53s |
-| **Frontend Headless Specs (`ChromeHeadless`)** | 25 | 25 | 0 | 0 | 0 | 0.15s |
-| **Total Automated Coverage** | **194** | **194** | **0** | **0** | **0** | **< 3s** |
+| **Backend Unit Tests (`Clinic.UnitTests`)** | 156 | 156 | 0 | 0 | 0 | 0.12s |
+| **Backend Integration Tests (`Clinic.IntegrationTests`)** | 15 | 15 | 0 | 0 | 0 | 1.00s |
+| **Frontend Headless Specs (`ChromeHeadless`)** | 25 | 25 | 0 | 0 | 0 | 0.21s |
+| **Total Automated Coverage** | **196** | **196** | **0** | **0** | **0** | **< 2s** |
