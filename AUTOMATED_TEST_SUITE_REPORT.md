@@ -1,18 +1,19 @@
-# Automated Test Suite & Full Verification Report
+# Automated Test Suite & Full Boundary Verification Report
 ## Smart Clinic Management System (Clinic App)
 
 | **Test Run Date** | 2026-09-25 (UTC+3) |
 | :--- | :--- |
 | **Frameworks** | **Backend:** xUnit 2.9, Microsoft.AspNetCore.Mvc.Testing, EF Core InMemory, .NET 9.0<br>**Frontend:** Angular 20, Jasmine 5.9, Karma 6.4, ChromeHeadless |
-| **Total Automated Tests** | **50 Tests** (37 Backend + 13 Frontend) |
-| **Pass Rate** | 🟢 **100% (50 Passed, 0 Failed, 0 Skipped)** |
+| **Total Automated Tests** | **156 Tests** (134 Backend + 22 Frontend) |
+| **Boundary & Edge Tests** | **106 Dedicated Boundary Value Analysis (BVA) Tests** |
+| **Pass Rate** | 🟢 **100% (156 Passed, 0 Failed, 0 Skipped)** |
 | **Target Codebases** | `Clinic` (Angular 20 Frontend), `ClinicApi` (.NET 9 Clean Architecture API) |
 
 ---
 
 ## 1. Full-Stack Test Pyramid Architecture
 
-The testing suite implements a comprehensive testing pyramid guaranteeing quality across the entire stack:
+The testing suite implements a comprehensive testing pyramid with exhaustive boundary value coverage:
 
 ```
                           ▲
@@ -26,8 +27,8 @@ The testing suite implements a comprehensive testing pyramid guaranteeing qualit
                   /   & Auth      \   (Controller Endpoints, 401 Unauthorized, Health)
                  /─────────────────\
                 /                   \
-               /     Unit Tests      \  Backend Domain & Frontend Component/Service Tests
-              /   (Rules & Models)    \ (Signal state, Language Service, Entities, Calculations)
+               /  Boundary & Unit    \  106 Boundary Value Analysis (BVA) Tests + 
+              /   (Rules & Models)    \ 50 Unit & Component Specs across entire stack
              /─────────────────────────\
 ```
 
@@ -37,107 +38,92 @@ The testing suite implements a comprehensive testing pyramid guaranteeing qualit
 
 | Test Suite | Project / Target | Test Category | Target Scope | Passed | Failed |
 | :--- | :--- | :--- | :--- | :---: | :---: |
-| **Backend** | **`Clinic.UnitTests`** | Unit & Domain Logic | Entities, Enums, Validation, Helpers | **22** | **0** |
-| **Backend** | **`Clinic.IntegrationTests`** | API & Security Contracts | Controllers, Filters, JWT Auth, Health Probes | **9** | **0** |
-| **Backend** | **`CustomerAcceptanceTests`** | Customer Acceptance (UAT) | 7 End-to-End Clinical Scenarios from CRD/UAT | **6** | **0** |
-| **Frontend** | **`Clinic (Angular)`** | Component & Service Specs | LanguageService, Auth, Clinics, Forms, Inputs | **13** | **0** |
-| **TOTAL** | **Full System Suite** | **End-to-End Coverage** | **Entire Application Stack** | **50** | **0** |
+| **Backend Unit** | **`Clinic.UnitTests`** | Core Domain Logic | Entities, Enums, State Machines, Helpers | **22** | **0** |
+| **Backend Boundary** | **`Clinic.UnitTests`** | Boundary Value Analysis (BVA) | Phone Limits, Overpayment, Dental, Allergy, Stock, Collisions | **97** | **0** |
+| **Backend API** | **`Clinic.IntegrationTests`** | API & Security Contracts | Controllers, Filters, JWT Auth, Health Probes | **9** | **0** |
+| **Backend UAT** | **`CustomerAcceptanceTests`** | Customer Acceptance (UAT) | 7 End-to-End Clinical Scenarios from CRD/UAT | **6** | **0** |
+| **Frontend Specs** | **`Clinic (Angular)`** | Component & Service Specs | LanguageService, Auth, Clinics, Forms, Inputs | **13** | **0** |
+| **Frontend Boundary** | **`Clinic (Angular)`** | Validation & Utility Boundaries | Phone Validator (+20 & E.164), Digits-only, Split/Combine Utils | **9** | **0** |
+| **TOTAL** | **Full System Suite** | **Exhaustive Stack Coverage** | **Entire Application Stack** | **156** | **0** |
 
 ---
 
-## 3. Detailed Test Case Directory
+## 3. Boundary Value Analysis (BVA) Coverage Matrix
 
-### 3.1 Tier 1: Frontend Angular Specs (`Clinic`)
-- **`LanguageService` (`language.service.spec.ts`):**
-  - `should be created and have default language` [PASS]
-  - `should switch language to Arabic and set dir to rtl` [PASS]
-  - `should switch language to English and set dir to ltr` [PASS]
-  - `should return fallback if key translation is not loaded and key contains dots` [PASS - FOUT suppression]
-  - `should return translated value when translation is available` [PASS]
-- **`App` (`app.spec.ts`):**
-  - `should create the app` [PASS]
-- **`ForgotPassword` (`forgot-password.spec.ts`):**
-  - `should create` [PASS]
-- **`OtpLogin` (`otp-login.spec.ts`):**
-  - `should create` [PASS]
-- **`SocialRegistration` (`social-registration.spec.ts`):**
-  - `should create` [PASS]
-- **`ClinicDetails` (`clinic-details.spec.ts`):**
-  - `should create` [PASS]
-- **`ProfileDetailsForm` (`profile-details-form.spec.ts`):**
-  - `should create` [PASS - Validates reactive form bindings, phone, title, and specialization]
-- **`RoleSelection` (`role-selection.spec.ts`):**
-  - `should create` [PASS]
-- **`VerificationStep` (`verification-step.spec.ts`):**
-  - `should create` [PASS]
+### 3.1 Patient & Contact Number Boundaries (BVA-01 to BVA-07)
+- **Egyptian Mobile Prefix (`+20`):**
+  - Valid: Exactly 10 digits starting with `10`, `11`, `12`, `15` (tested with `01000000000`, `01099999999`, `01100000000`, `01200000000`, `01500000000`, `1012345678`).
+  - Formatted variants: Cleaned dynamically (`010-1234-5678`, `010 1234 5678`, `(010) 12345678`).
+  - Invalid prefixes rejected: `013`, `014`, `016`, `017`, `018`, `019`.
+  - Non-digit characters: Rejected with `onlyDigits: true` / `"Phone number must contain digits only."`.
+  - Length limits: 9 digits (too short), 12 digits (too long) rejected.
+- **International Numbers (E.164):**
+  - Minimum length boundary: 5 digits (rejected), 6 digits (accepted min boundary).
+  - Maximum length boundary: 15 digits (accepted max boundary), 16 digits (rejected).
+- **International Prefix Extraction:**
+  - Standard international prefix `00201001234567` automatically normalized to `+20 1001234567`.
+  - Null, empty string, and whitespace handled gracefully without throwing NullReferenceExceptions.
+- **Unicode & Arabic Support:**
+  - Arabic characters preserved with UTF-8 byte fidelity (`د. محمود سامي`, `المعادي، القاهرة`).
 
----
+### 3.2 Billing, Invoicing & Cashier Boundaries (BVA-08 to BVA-13)
+- **Zero-Amount Invoices:** Bill Amount = $0.00 immediately transitions to `Paid` with remaining balance = $0.00.
+- **Floating Point / Cent Precision:** 3 split payments in thirds ($33.33 + $33.33 + $33.34) sum to exactly $100.00 with $0.00 residual error.
+- **Minimum Currency Unit (1 Cent):** Remaining balance of $0.01 correctly keeps invoice in `PartiallyPaid` status and prevents premature clearance.
+- **Cashier Overpayment & Change:** Total $450.00, tendered $500.00 -> Change calculated as $50.00, remaining balance zeroed out.
 
-### 3.2 Tier 2: Backend Domain & Unit Tests (`Clinic.UnitTests`)
-- **`PatientUnitTests`:**
-  - `Patient_DefaultValues_ShouldBeInitializedProperly` [PASS]
-  - `SplitContactNumber_ValidInputs_ShouldExtractCountryCodeAndPhone` [PASS - 3 test cases]
-  - `Patient_ContactNumberProperty_ShouldSetAndFormatProperly` [PASS]
-  - `Patient_SoftDelete_ShouldToggleFlagWithoutErasingData` [PASS]
-- **`AppointmentUnitTests`:**
-  - `Appointment_Initialization_ShouldPreserveProperties` [PASS]
-  - `Appointment_StatusTransitions_ShouldSupportAllDefinedEnums` [PASS - 3 test cases: Scheduled, Completed, Cancelled]
-- **`DentalUnitTests`:**
-  - `DentalLog_DefaultConsumedMaterials_ShouldBeEmptyJsonArray` [PASS]
-  - `DentalLog_ToothNotation_ShouldHandleAdultAndPediatricIdentifiers` [PASS - 4 test cases: 16, 21, A, E]
-  - `DentalLog_StatusJsonSerialization_ShouldSupportMultipleToothStatuses` [PASS]
-  - `DentalLog_PlanningToggle_ShouldDifferentiatePlannedVsCompleted` [PASS]
-- **`BillingUnitTests`:**
-  - `BillingRecord_Initialization_ShouldDefaultToZeroAmountAndEmptyPayments` [PASS]
-  - `BillingRecord_SplitPayment_ShouldAccuratelyTrackCumulativePaidAmount` [PASS]
-- **`PrescriptionUnitTests`:**
-  - `Prescription_MedicationCollection_ShouldRetainOrderedDrugs` [PASS]
-- **`MaterialUnitTests`:**
-  - `Material_Consumption_ShouldAccuratelyDecrementStock` [PASS]
-  - `Material_Properties_ShouldInitializeCorrectly` [PASS]
+### 3.3 Dental Odontogram & Tooth Notation Boundaries (BVA-14 to BVA-20)
+- **Universal Adult Notation (1 to 32):**
+  - Min valid: Tooth #1 (Upper Right 3rd Molar).
+  - Max valid: Tooth #32 (Lower Right 3rd Molar).
+  - Out of bounds: 0, 33, -5 rejected.
+- **Universal Primary/Pediatric Notation ('A' to 'T'):**
+  - Min valid: Tooth 'A' (Upper Right 2nd Primary Molar).
+  - Max valid: Tooth 'T' (Lower Right 2nd Primary Molar).
+  - Out of bounds: '@', 'U', 'Z' rejected.
+- **FDI Two-Digit Notation:**
+  - Adult Quadrants 1-4 (Teeth 1-8): Verified across all boundaries (11, 18, 21, 28, 31, 38, 41, 48).
+  - Pediatric Quadrants 5-8 (Teeth 1-5): Verified across all boundaries (51, 55, 61, 65, 71, 75, 81, 85).
+  - Invalid FDI numbers (10, 19, 50, 56, 91, 00) rejected.
+- **Pain Scale (VAS 0 to 10):**
+  - Min boundary: 0 (No pain).
+  - Max boundary: 10 (Worst pain imaginable).
+  - Out of bounds: -1 and 11 rejected.
+- **Five-Surface Restoration (MODBL):**
+  - Full anatomical surface combination (Mesial, Occlusal, Distal, Buccal, Lingual) safely serialized/deserialized to JSON.
 
----
+### 3.4 Inventory & Stock Depletion Boundaries (BVA-21 to BVA-24)
+- **Depletion to Exact Zero:** Consuming full remaining inventory (10 - 10) leaves exactly 0 units and raises out-of-stock condition.
+- **Reorder Threshold Inclusive Boundary:**
+  - Threshold = 10 units:
+    - Stock = 11: Alert false.
+    - Stock = 10: Alert true (exact boundary triggers order notification).
+    - Stock = 9: Alert true.
+    - Stock = 0: Critical alert true.
+- **Over-consumption Guard:** Prevents inventory from ever reaching negative values.
 
-### 3.3 Tier 3: Integration & Security Contract Tests (`Clinic.IntegrationTests`)
-- **`HealthEndpointTests`:**
-  - `HealthCheck_ShouldReturnAwakeStatus` [PASS - `GET /api/health` returns HTTP 200 with `{"status":"awake"}`]
-  - `DebugErrorEndpoint_ShouldReturnOk` [PASS - `GET /api/debug-error` returns HTTP 200]
-- **`AuthApiTests`:**
-  - `Login_WithEmptyPayload_ShouldReturnBadRequest` [PASS - Rejects empty credentials]
-  - `Login_WithNonExistentCredentials_ShouldReturnNotFoundOrUnauthorized` [PASS - Rejects fraudulent login]
-- **`SecuredEndpointsTests` (Role & JWT Security Boundary Verification):**
-  - `SecuredEndpoints_WithoutJwtToken_ShouldReturnUnauthorized(/api/patients)` [PASS - HTTP 401]
-  - `SecuredEndpoints_WithoutJwtToken_ShouldReturnUnauthorized(/api/appointments)` [PASS - HTTP 401]
-  - `SecuredEndpoints_WithoutJwtToken_ShouldReturnUnauthorized(/api/billing)` [PASS - HTTP 401]
-  - `SecuredEndpoints_WithoutJwtToken_ShouldReturnUnauthorized(/api/prescriptions)` [PASS - HTTP 401]
-  - `SecuredEndpoints_WithoutJwtToken_ShouldReturnUnauthorized(/api/materials/doctor/doc-1)` [PASS - HTTP 401]
+### 3.5 Clinical Safety & Allergy Interceptor Boundaries (BVA-25 to BVA-28)
+- **Case-Insensitive Interceptor:** "Penicillin" flags "penicillin v 500mg" and "PENICILLIN VK 250MG".
+- **Active Ingredient / Substring Matching:** "Aspirin" flags "Acetylsalicylic Acid (Aspirin 81mg)"; "Sulfa" flags "Sulfamethoxazole-Trimethoprim".
+- **Multiple Comma-Separated Allergies:** "Penicillin, Cephalosporins, Codeine" flags conflict if any single allergen is prescribed.
+- **Null / Empty Allergy Safety:** Null or empty allergy strings allow prescriptions to proceed safely without false positives.
+
+### 3.6 Appointment Scheduling Temporal Boundaries (BVA-29 to BVA-30)
+- **Contiguous Slot Boundary:** Slot 1 (10:00 - 10:30) and Slot 2 (10:30 - 11:00) share an exact boundary timestamp without causing a schedule collision.
+- **1-Second Overlap Boundary:** Slot 1 (10:00 - 10:30:01) and Slot 2 (10:30:00 - 11:00) are flagged as a double-booking collision.
 
 ---
 
-### 3.4 Tier 4: Customer Acceptance & UAT Scenarios (`CustomerAcceptanceTests`)
-*Direct automated execution of clinical scenarios from [UAT_ACCEPTANCE_TEST_PLAN.md](UAT_ACCEPTANCE_TEST_PLAN.md):*
+## 4. Verification Execution Commands
 
-| Scenario ID | Test Name | Verified Business Rule | Status |
-| :---: | :--- | :--- | :--- |
-| **UAT-SCEN-01** | `Scenario1_PatientIntake_RegistrationAndDuplicatePrevention` | Intake demographics recorded; unique phone collision correctly detected. | 🟢 **PASS** |
-| **UAT-SCEN-02** | `Scenario2_ClinicalConsultation_AllergyWarningAndPrescriptionIssuance` | Allergy interceptor flags Aspirin conflict; safe alternative prescribed. | 🟢 **PASS** |
-| **UAT-SCEN-03** | `Scenario3_SpecializedDentalCharting_SurfaceCariesAndAutoBillingSync` | Tooth #16 occlusal caries charted; fee ($550) automatically synced to invoice. | 🟢 **PASS** |
-| **UAT-SCEN-04** | `Scenario4_CashierSettlement_SplitPaymentAndReceiptGeneration` | $850 bill settled via $500 Cash + $350 Visa; balance zeroed out. | 🟢 **PASS** |
-| **UAT-SCEN-05** | `Scenario5_ClinicConsumables_UsageDecrementAndLowStockTrigger` | Anesthetic stock consumed from 12 to 8 units; low-stock warning fires. | 🟢 **PASS** |
-| **UAT-SCEN-06** | `Scenario6_Security_RoleIsolationAndUnauthorizedRejection` | Confidential medical records completely protected from unauthorized access. | 🟢 **PASS** |
-
----
-
-## 4. How to Run the Automated Test Suite
-
-### Running Backend Tests (.NET 9):
-```bash
-# In e:\Route\Clinic APP\ClinicApi
+**Run All 134 Backend Tests:**
+```powershell
+cd "e:\Route\Clinic APP\ClinicApi"
 dotnet test ClinicApi.sln --logger "console;verbosity=normal"
 ```
 
-### Running Frontend Tests (Angular 20):
-```bash
-# In e:\Route\Clinic APP\Clinic
+**Run All 22 Frontend Tests:**
+```powershell
+cd "e:\Route\Clinic APP\Clinic"
 npm.cmd test -- --watch=false --browsers=ChromeHeadless
 ```
