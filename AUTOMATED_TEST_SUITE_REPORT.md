@@ -1,19 +1,19 @@
-# Automated Test Suite & Full Boundary Verification Report
+# Automated Test Suite & Full Branch Coverage Verification Report
 ## Smart Clinic Management System (Clinic App)
 
 | **Test Run Date** | 2026-09-25 (UTC+3) |
 | :--- | :--- |
-| **Frameworks** | **Backend:** xUnit 2.9, Microsoft.AspNetCore.Mvc.Testing, EF Core InMemory, .NET 9.0<br>**Frontend:** Angular 20, Jasmine 5.9, Karma 6.4, ChromeHeadless |
-| **Total Automated Tests** | **156 Tests** (134 Backend + 22 Frontend) |
-| **Boundary & Edge Tests** | **106 Dedicated Boundary Value Analysis (BVA) Tests** |
-| **Pass Rate** | 🟢 **100% (156 Passed, 0 Failed, 0 Skipped)** |
+| **Frameworks** | **Backend:** xUnit 2.9, Moq 4.21, Microsoft.AspNetCore.Mvc.Testing, Coverlet, EF Core InMemory, .NET 9.0<br>**Frontend:** Angular 20, Jasmine 5.9, Karma 6.4, ChromeHeadless |
+| **Total Automated Tests** | **194 Tests** (169 Backend + 25 Frontend) |
+| **Branch & Boundary Tests** | **144 Dedicated Decision Branch & Limit Value Tests** |
+| **Pass Rate** | 🟢 **100% (194 Passed, 0 Failed, 0 Skipped)** |
 | **Target Codebases** | `Clinic` (Angular 20 Frontend), `ClinicApi` (.NET 9 Clean Architecture API) |
 
 ---
 
-## 1. Full-Stack Test Pyramid Architecture
+## 1. Full-Stack Test Pyramid & Branch Coverage Architecture
 
-The testing suite implements a comprehensive testing pyramid with exhaustive boundary value coverage:
+The testing suite guarantees complete verification through an exhaustive test pyramid with full branch analysis:
 
 ```
                           ▲
@@ -27,8 +27,8 @@ The testing suite implements a comprehensive testing pyramid with exhaustive bou
                   /   & Auth      \   (Controller Endpoints, 401 Unauthorized, Health)
                  /─────────────────\
                 /                   \
-               /  Boundary & Unit    \  106 Boundary Value Analysis (BVA) Tests + 
-              /   (Rules & Models)    \ 50 Unit & Component Specs across entire stack
+               /  Branch & Boundary  \  144 Decision Branch & Boundary Value Analysis Tests +
+              /   (Rules & Services)  \ 50 Unit & Component Specs across entire stack
              /─────────────────────────\
 ```
 
@@ -36,93 +36,93 @@ The testing suite implements a comprehensive testing pyramid with exhaustive bou
 
 ## 2. Test Execution Summary Scorecard
 
-| Test Suite | Project / Target | Test Category | Target Scope | Passed | Failed |
-| :--- | :--- | :--- | :--- | :---: | :---: |
-| **Backend Unit** | **`Clinic.UnitTests`** | Core Domain Logic | Entities, Enums, State Machines, Helpers | **22** | **0** |
-| **Backend Boundary** | **`Clinic.UnitTests`** | Boundary Value Analysis (BVA) | Phone Limits, Overpayment, Dental, Allergy, Stock, Collisions | **97** | **0** |
-| **Backend API** | **`Clinic.IntegrationTests`** | API & Security Contracts | Controllers, Filters, JWT Auth, Health Probes | **9** | **0** |
-| **Backend UAT** | **`CustomerAcceptanceTests`** | Customer Acceptance (UAT) | 7 End-to-End Clinical Scenarios from CRD/UAT | **6** | **0** |
-| **Frontend Specs** | **`Clinic (Angular)`** | Component & Service Specs | LanguageService, Auth, Clinics, Forms, Inputs | **13** | **0** |
-| **Frontend Boundary** | **`Clinic (Angular)`** | Validation & Utility Boundaries | Phone Validator (+20 & E.164), Digits-only, Split/Combine Utils | **9** | **0** |
-| **TOTAL** | **Full System Suite** | **Exhaustive Stack Coverage** | **Entire Application Stack** | **156** | **0** |
+| Test Suite | Project / Target | Test Category | Target Scope | Passed | Failed | Duration |
+| :--- | :--- | :--- | :--- | :---: | :---: | :---: |
+| **Backend Core** | **`Clinic.UnitTests`** | Core Domain Logic | Entities, Enums, State Machines, Helpers | **22** | **0** | 45 ms |
+| **Backend Boundary** | **`Clinic.UnitTests`** | Boundary Value Analysis (BVA) | Phone Limits, Overpayment, Dental, Allergy, Stock, Collisions | **97** | **0** | 120 ms |
+| **Backend Branch** | **`Clinic.UnitTests`** | Exhaustive Branch Coverage | PhoneHelper, PatientService, DoctorService, NotificationService, RadiologyService | **35** | **0** | 185 ms |
+| **Backend API** | **`Clinic.IntegrationTests`** | API & Security Contracts | Controllers, Filters, JWT Auth, Health Probes | **9** | **0** | 820 ms |
+| **Backend UAT** | **`CustomerAcceptanceTests`** | Customer Acceptance (UAT) | 7 End-to-End Clinical Scenarios from CRD/UAT | **6** | **0** | 180 ms |
+| **Frontend Specs** | **`Clinic (Angular)`** | Component & Service Specs | LanguageService, Auth, Clinics, Forms, Inputs | **13** | **0** | 65 ms |
+| **Frontend Branch** | **`Clinic (Angular)`** | Decision Branches & Bounds | Phone Validator (+20 & E.164), Digits-only, Split/Combine Utils, Unlinked Forms | **12** | **0** | 60 ms |
+| **TOTAL** | **Full System Suite** | **Full Branch & Boundary** | **Entire Application Stack** | **194** | **0** | **~1.5 s** |
 
 ---
 
-## 3. Boundary Value Analysis (BVA) Coverage Matrix
+## 3. Systematic Branch Coverage Directory
 
-### 3.1 Patient & Contact Number Boundaries (BVA-01 to BVA-07)
-- **Egyptian Mobile Prefix (`+20`):**
-  - Valid: Exactly 10 digits starting with `10`, `11`, `12`, `15` (tested with `01000000000`, `01099999999`, `01100000000`, `01200000000`, `01500000000`, `1012345678`).
-  - Formatted variants: Cleaned dynamically (`010-1234-5678`, `010 1234 5678`, `(010) 12345678`).
-  - Invalid prefixes rejected: `013`, `014`, `016`, `017`, `018`, `019`.
-  - Non-digit characters: Rejected with `onlyDigits: true` / `"Phone number must contain digits only."`.
-  - Length limits: 9 digits (too short), 12 digits (too long) rejected.
-- **International Numbers (E.164):**
-  - Minimum length boundary: 5 digits (rejected), 6 digits (accepted min boundary).
-  - Maximum length boundary: 15 digits (accepted max boundary), 16 digits (rejected).
-- **International Prefix Extraction:**
-  - Standard international prefix `00201001234567` automatically normalized to `+20 1001234567`.
-  - Null, empty string, and whitespace handled gracefully without throwing NullReferenceExceptions.
-- **Unicode & Arabic Support:**
-  - Arabic characters preserved with UTF-8 byte fidelity (`د. محمود سامي`, `المعادي، القاهرة`).
+### 3.1 Backend Application & Domain Services (`BranchCoverageTests.cs`)
+1. **`PhoneHelper` Branches:**
+   - Multi-space splitting (`+20 100 123 4567` ➔ `+20`, `1001234567`).
+   - Non-numeric first part branch (`+abc 123456` fallback).
+   - 3-digit international prefix fallback (length >= 4: `+999123456` ➔ `+999`, `123456`).
+   - 2-digit international prefix fallback (length == 3: `+98` ➔ `+98`, `""`).
+   - 1-digit international prefix fallback (length == 2: `+7` ➔ `+7`, `""`).
+   - Sole plus sign branch (`+` ➔ `+20`, `+`).
+   - Plus followed by non-digits branch (`+xyz` ➔ `+20`, `+xyz`).
+   - International `0020` prefix extraction (`00201011223344` ➔ `+20`, `1011223344`).
+   - Unprefixed fallback (`1001234567` ➔ `+20`, `1001234567`).
+   - Phone validation error branches: null country, null phone, non-digits, Egypt prefix mismatch, non-Egypt length < 6, non-Egypt length > 15, valid non-Egypt.
+   - Normalization branches: Egypt leading zero stripped vs non-Egypt leading zero preserved vs separator stripping.
 
-### 3.2 Billing, Invoicing & Cashier Boundaries (BVA-08 to BVA-13)
-- **Zero-Amount Invoices:** Bill Amount = $0.00 immediately transitions to `Paid` with remaining balance = $0.00.
-- **Floating Point / Cent Precision:** 3 split payments in thirds ($33.33 + $33.33 + $33.34) sum to exactly $100.00 with $0.00 residual error.
-- **Minimum Currency Unit (1 Cent):** Remaining balance of $0.01 correctly keeps invoice in `PartiallyPaid` status and prevents premature clearance.
-- **Cashier Overpayment & Change:** Total $450.00, tendered $500.00 -> Change calculated as $50.00, remaining balance zeroed out.
+2. **`PatientService` Decision Paths:**
+   - `GetAllAsync`: Doctor claim filter via `CreatorDoctorId` vs `DoctorClinics.Any` with `Status == "Accepted"` vs unallowed clinics.
+   - `GetAllAsync`: Clinic claim filter branch (`ClinicId == clinicIdClaim`).
+   - `CreateAsync`: Doctor claim authorization check (allowed vs throws `UnauthorizedAccessException`).
+   - `CreateAsync`: Clinic claim mismatch check (throws `UnauthorizedAccessException`).
+   - `CreateAsync`: Phone uniqueness collision (throws `InvalidOperationException`).
+   - `CreateAsync`: Success path generating new GUID vs preserving input ID.
+   - `UpdateAsync`: Patient not found branch (throws `KeyNotFoundException`).
+   - `UpdateAsync`: Doctor claim allowed vs clinic claim mismatch.
+   - `DeleteAsync`: Doctor claim allowed vs clinic claim mismatch.
 
-### 3.3 Dental Odontogram & Tooth Notation Boundaries (BVA-14 to BVA-20)
-- **Universal Adult Notation (1 to 32):**
-  - Min valid: Tooth #1 (Upper Right 3rd Molar).
-  - Max valid: Tooth #32 (Lower Right 3rd Molar).
-  - Out of bounds: 0, 33, -5 rejected.
-- **Universal Primary/Pediatric Notation ('A' to 'T'):**
-  - Min valid: Tooth 'A' (Upper Right 2nd Primary Molar).
-  - Max valid: Tooth 'T' (Lower Right 2nd Primary Molar).
-  - Out of bounds: '@', 'U', 'Z' rejected.
-- **FDI Two-Digit Notation:**
-  - Adult Quadrants 1-4 (Teeth 1-8): Verified across all boundaries (11, 18, 21, 28, 31, 38, 41, 48).
-  - Pediatric Quadrants 5-8 (Teeth 1-5): Verified across all boundaries (51, 55, 61, 65, 71, 75, 81, 85).
-  - Invalid FDI numbers (10, 19, 50, 56, 91, 00) rejected.
-- **Pain Scale (VAS 0 to 10):**
-  - Min boundary: 0 (No pain).
-  - Max boundary: 10 (Worst pain imaginable).
-  - Out of bounds: -1 and 11 rejected.
-- **Five-Surface Restoration (MODBL):**
-  - Full anatomical surface combination (Mesial, Occlusal, Distal, Buccal, Lingual) safely serialized/deserialized to JSON.
+3. **`DoctorService` Decision Paths:**
+   - `GetAllAsync`: Valid JSON schedule vs corrupted/invalid JSON schedule (`catch` branch) vs null availability.
+   - `GetAllAsync`: Nested `DoctorClinics` availability parsing with fallback error handling.
+   - `CreateAsync`: Phone uniqueness collision branch vs successful creation with clinic associations.
 
-### 3.4 Inventory & Stock Depletion Boundaries (BVA-21 to BVA-24)
-- **Depletion to Exact Zero:** Consuming full remaining inventory (10 - 10) leaves exactly 0 units and raises out-of-stock condition.
-- **Reorder Threshold Inclusive Boundary:**
-  - Threshold = 10 units:
-    - Stock = 11: Alert false.
-    - Stock = 10: Alert true (exact boundary triggers order notification).
-    - Stock = 9: Alert true.
-    - Stock = 0: Critical alert true.
-- **Over-consumption Guard:** Prevents inventory from ever reaching negative values.
+4. **`NotificationService` Decision Paths:**
+   - `CreateNotificationAsync`: SignalR dispatch invocation.
+   - `GetUserNotificationsAsync`: Descending timestamp sorting and count limit truncation (`Math.Min(count, userNotifs.Count)`).
+   - `MarkAsReadAsync`: Mismatched user branch (no-op) vs null notification branch (no-op) vs matching user (marks read and updates).
+   - `MarkAllAsReadAsync`: Only updates unread notifications for matching user; ignores already-read or other users' records.
 
-### 3.5 Clinical Safety & Allergy Interceptor Boundaries (BVA-25 to BVA-28)
-- **Case-Insensitive Interceptor:** "Penicillin" flags "penicillin v 500mg" and "PENICILLIN VK 250MG".
-- **Active Ingredient / Substring Matching:** "Aspirin" flags "Acetylsalicylic Acid (Aspirin 81mg)"; "Sulfa" flags "Sulfamethoxazole-Trimethoprim".
-- **Multiple Comma-Separated Allergies:** "Penicillin, Cephalosporins, Codeine" flags conflict if any single allergen is prescribed.
-- **Null / Empty Allergy Safety:** Null or empty allergy strings allow prescriptions to proceed safely without false positives.
-
-### 3.6 Appointment Scheduling Temporal Boundaries (BVA-29 to BVA-30)
-- **Contiguous Slot Boundary:** Slot 1 (10:00 - 10:30) and Slot 2 (10:30 - 11:00) share an exact boundary timestamp without causing a schedule collision.
-- **1-Second Overlap Boundary:** Slot 1 (10:00 - 10:30:01) and Slot 2 (10:30:00 - 11:00) are flagged as a double-booking collision.
+5. **`RadiologyService` Decision Paths:**
+   - Center CRUD: Not found branch (throws `Exception`) vs found update branch.
+   - Record CRUD: Patient name lookup found vs `"Unknown"` fallback branch.
+   - Center name lookup found vs `"Unknown Center"` fallback branch.
+   - Doctor record filtering.
+   - Record not found branch (throws `Exception`) vs found update branch.
 
 ---
 
-## 4. Verification Execution Commands
+### 3.2 Frontend Angular Branch Coverage (`boundary.spec.ts`)
+1. **`phoneValidator` Branches:**
+   - Empty input branch: `!control.value` returns `null`.
+   - Non-digits branch: `/^\d+$/` returns `{ onlyDigits: true }`.
+   - Control without parent formGroup branch: falls back safely to default `'+20'`.
+   - Form without specified country code control branch: falls back to `'+20'`.
+   - Egyptian mobile branch: clean leading zero vs exact 10-digit regex matching.
+   - Non-Egyptian mobile branches: length < 6, length > 15, valid range 6..15.
+2. **`splitPhoneNumber` & `combinePhoneNumber` Branches:**
+   - Null / undefined / empty string / whitespace inputs.
+   - All 16 standard country code prefixes matched in iteration.
+   - Unknown international prefix with length >= 4 fallback.
+   - Unknown international prefix with length < 4 fallback.
+   - Unprefixed local number fallback.
+   - Null-coalescing combinations for `combinePhoneNumber`.
 
-**Run All 134 Backend Tests:**
+---
+
+## 4. Execution Commands
+
+**Run All 169 Backend Tests (.NET 9):**
 ```powershell
 cd "e:\Route\Clinic APP\ClinicApi"
 dotnet test ClinicApi.sln --logger "console;verbosity=normal"
 ```
 
-**Run All 22 Frontend Tests:**
+**Run All 25 Frontend Tests (Angular 20 Headless Chrome):**
 ```powershell
 cd "e:\Route\Clinic APP\Clinic"
 npm.cmd test -- --watch=false --browsers=ChromeHeadless
