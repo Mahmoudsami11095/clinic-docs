@@ -73,7 +73,7 @@ On API startup, the system automatically checks and applies any pending Entity F
 
 ### 3.3 Third-Party Integrations
 - **Email Dispatching:** EmailJS Integration (`service_p6kpoxc`, `template_oplyfrx`) for appointment confirmations and notifications.
-- **Geocoding & Clinic Location:** Google Maps Platform API key configured for clinic address mapping.
+- **Geocoding & Clinic Location:** Leaflet and OpenStreetMap (OSM Nominatim) configured for responsive clinic and patient address mapping with zero external API key quotas.
 - **Federated Authentication:** Google Sign-In (`accounts.google.com/gsi/client`) and Apple ID (`appleid.auth.js`) enabled on the login screen.
 
 ---
