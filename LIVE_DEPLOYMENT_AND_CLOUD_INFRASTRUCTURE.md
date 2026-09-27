@@ -99,5 +99,19 @@ The backend exposes a lightweight, zero-overhead health check endpoint designed 
 Stakeholders, medical evaluators, and prospective clients can test the system live without installing any local dependencies:
 
 1. **Access:** Open [https://clinic-app-ten-topaz.vercel.app/login](https://clinic-app-ten-topaz.vercel.app/login) in Google Chrome, Microsoft Edge, or Safari.
-2. **Mobile / Tablet Testing:** Open the URL on an iPad or Android Tablet and select *"Add to Home Screen"* to experience the chair-side dental charting interface.
+2. **Mobile / Tablet Testing:** Open the URL on an iPad or Android Tablet and select *"Add to Home Screen"* to experience the chair-side dental charting interface in full-screen standalone mode.
 3. **Execution:** Walk through the test cases detailed in [UAT_ACCEPTANCE_TEST_PLAN.md](file:///e:/Route/Clinic%20APP/UAT_ACCEPTANCE_TEST_PLAN.md).
+
+---
+
+## 6. Continuous Feature Delivery & Sprint Milestone Status
+
+| Phase / Milestone | Status | Key Deliverables & Pull Requests | Test Status |
+| :--- | :---: | :--- | :---: |
+| **Phase 1: Cloud & Map Infrastructure** | **Completed** | Leaflet / OSM migration, Azure App Service awakeness verification, CORS governance | Verified 🟢 |
+| **Phase 2 - Task 1: Clinical Printing Suite** | **Completed** | Dual-mode 80mm ESC/POS thermal receipt + Formal A4 Tax Invoice with QR verification matrix; A4/A5 Prescription letterhead + 80mm thermal Rx slip (`Clinic` PR #141) | 13 New Unit Tests Passed |
+| **Phase 2 - Task 2: Consumables Low-Stock Engine** | **Completed** | `MinStockAlert` entity/DTO mapping & EF Core migration; low-stock summary banner; interactive filter pills; chair-side consumption indicators (`ClinicApi` PR #57 & `Clinic` PR #142) | 171/171 .NET + 49/49 NG Passed |
+| **Phase 2 - Task 3: Chair-Side Dental Templates & Plan** | **Completed** | Categorized quick-pick templates (Restorative, Endo, Perio, Crowns, Surgery) with auto-medication and consumables linking; formal A4 Dental Treatment Plan & Progress Report with patient consent and signature blocks (`Clinic` PR #143) | 7 New Unit Tests Passed (56/56 NG) |
+| **Phase 3: PWA Offline Caching & Bundle Optimization** | **Completed** | Service Worker `dataGroups` configured for Google Fonts (30d), OSM map tiles (7d), and CDN assets; mobile standalone meta tags; verified production bundle build (`Clinic` PR #144) | 227 Total Tests Passed (100% Green) |
+| **Phase 4: Automated E2E Browser Subagent Verification** | **Completed** | Automated browser execution recording verifying registration, multi-factor verification, and responsive authentication (`clinic_e2e_walkthrough_1790545491285.webp`) | Recorded & Verified 🟢 |
+
