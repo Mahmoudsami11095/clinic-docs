@@ -144,9 +144,27 @@ E:\Route\Clinic APP\
   - `Clinic/src/app/features/appointments/components/appointment-list/appointment-list.component.html`
   - `Clinic/src/app/features/appointments/components/appointment-list/appointment-queue.spec.ts` (8 unit tests)
 
+### REQ-RAD-02 / UAT-RAD-02: High-Resolution Scan & Radiograph Viewer
+- **Requirement**: Medical images (JPEG, PNG, WEBP, BMP, PDF reports) can be inspected chair-side with zoom (50% to 400%), 90° rotation, pan/drag, brightness and contrast sliders, negative radiograph color inversion, fullscreen mode, and view reset.
+- **Backend**:
+  - `PatientFilesController.cs`: Added `inline` query parameter and automatic MIME type detection for image and PDF files
+- **Frontend**:
+  - `ScanViewerModalComponent` (`src/app/shared/components/scan-viewer-modal/`):
+    - Hardware-accelerated CSS transforms (`translate`, `scale`, `rotate`, `brightness`, `contrast`, `invert`)
+    - Smooth pan/drag when zoomed
+    - Direct mouse wheel zoom support
+    - Fullscreen mode and view reset controls
+  - `PatientHistoryComponent`: Direct "View Scan" button on patient medical files list
+  - Complete English and Arabic localization
+- **Key files**:
+  - `ClinicApi/src/Clinic.API/Controllers/PatientFilesController.cs`
+  - `Clinic/src/app/shared/components/scan-viewer-modal/scan-viewer-modal.component.ts`
+  - `Clinic/src/app/shared/components/scan-viewer-modal/scan-viewer-modal.spec.ts` (14 unit tests)
+  - `Clinic/src/app/features/patients/components/patient-history/patient-history.component.ts`
+
 ### Test Suite Status (as of last run)
-- **Frontend**: 201 tests passing (up from 193)
-- **Backend**: 232 tests passing (up from 224)
+- **Frontend**: 215 tests passing (up from 201)
+- **Backend**: 232 tests passing (same, all green)
 - Production build: ✅ successful
 
 ---
@@ -154,9 +172,9 @@ E:\Route\Clinic APP\
 ## 3. Next Tasks & Roadmap
 
 Upcoming features and enhancements from `CUSTOMER_REQUIREMENTS_DOCUMENT.md`:
-1. **`REQ-RAD-02: High-Resolution Scan Viewer`** — Interactive radiograph image manipulation (zoom, rotate, brightness/contrast adjustments).
-2. **`REQ-NOTIF-02: Patient Appointment Reminders`** — Multi-channel automated reminders via WhatsApp / SMS for upcoming appointments.
-3. **`REQ-SUB-01: Clinic Subscription Tier Visibility`** — Tier limits enforcement, upgrade modals, and renewal countdowns.
+1. **`REQ-NOTIF-02: Patient Appointment Reminders`** — Multi-channel automated reminders via WhatsApp / SMS for upcoming appointments.
+2. **`REQ-SUB-01: Clinic Subscription Tier Visibility`** — Tier limits enforcement, upgrade modals, and renewal countdowns.
+3. **`REQ-FIN-02: Multi-Method & Split Payments`** — Split payments (e.g., partial cash + partial card) within a single invoice checkout flow.
 
 ### Key Patterns to Follow
 - **Angular Signals** for state management (not RxJS subjects)
