@@ -56,38 +56,46 @@ E:\Route\Clinic APP\
   - `Clinic/src/app/features/patients/components/patient-history/patient-history.component.ts` — Stage badges, progression buttons, cost handling
   - `Clinic/src/app/features/patients/components/patient-history/patient-history-templates.spec.ts` — 5 unit tests for lifecycle
 
+### BR-RX-03 / BR-MED-01: Medical Record Immutability (Amendment Trail)
+- **Requirement**: Clinical encounter notes entered by a doctor cannot be deleted from the database. Modifications are appended as timestamped amendments with the author's identity preserved.
+- **Backend**:
+  - Append-only notes (`ClinicalNote` & `ClinicalNoteAmendment` owned collection)
+  - `PUT /api/clinical-notes/{id}` appends amendments preserving author identity and signature
+  - `DELETE /api/clinical-notes/{id}` blocked with `400 Bad Request` and repository exception
+- **Frontend**:
+  - Interactive clinical encounter notes card replacing legacy stub
+  - Expandable amendment history timeline / accordion
+  - "Amend" button for appending amendments
+  - Strict absence of any delete action
+  - Complete English & Arabic localization
+- **Key files**:
+  - `ClinicApi/src/Clinic.Domain/Entities/ClinicalNote.cs` & `ClinicalNoteAmendment.cs`
+  - `ClinicApi/src/Clinic.API/Controllers/ClinicalNotesController.cs`
+  - `ClinicApi/tests/Clinic.UnitTests/ClinicalNoteUnitTests.cs` (7 tests)
+  - `ClinicApi/tests/Clinic.IntegrationTests/ClinicalNoteIntegrationTests.cs` (3 tests)
+  - `Clinic/src/app/core/services/clinical-notes.service.ts`
+  - `Clinic/src/app/features/patients/components/patient-history/patient-history.component.ts`
+  - `Clinic/src/app/features/patients/components/patient-history/patient-clinical-notes.spec.ts` (11 tests)
+
 ### Test Suite Status (as of last run)
-- **Frontend**: 170 tests passing
-- **Backend**: 207 tests passing
+- **Frontend**: 182 tests passing (up from 170)
+- **Backend**: 214 tests passing (up from 207)
 - Production build: ✅ successful
 
 ---
 
-## 3. Next Task: BR-RX-03 — Medical Record Immutability (Amendment Trail)
+## 3. Next Tasks & Roadmap
 
-### Requirement (from CUSTOMER_REQUIREMENTS_DOCUMENT.md)
-> Clinical encounter notes entered by a doctor cannot be deleted from the database. Modifications must be appended as timestamped amendments with the author's identity preserved.
-
-### Implementation Plan
-1. **Discovery**: Find where clinical notes are stored — likely in `DentalService` or a dedicated notes entity
-2. **Backend**:
-   - Make clinical notes append-only (no DELETE endpoint, no hard updates)
-   - Create an `Amendment` entity: `{ Id, OriginalNoteId, AmendedText, AuthorId, AuthorName, Timestamp }`
-   - PUT on a note should create an Amendment record instead of overwriting
-   - GET should return the original note + full amendment trail
-3. **Frontend**:
-   - Display amendment history on clinical notes (timeline/accordion UI)
-   - Show author identity and timestamp for each amendment
-   - Remove delete button for clinical notes
-   - Add "Amend" button that opens an amendment form
-4. **i18n**: Add English/Arabic keys for amendment-related labels
-5. **Tests**: Unit tests for immutability enforcement and amendment creation
+Next upcoming business rules from `CUSTOMER_REQUIREMENTS_DOCUMENT.md`:
+1. **`BR-RX-02: Prescription Immutability & Audit Lock`** — Finalized prescriptions become read-only; revisions require a superseding prescription or addendum.
+2. **`BR-FIN-01: Discount Authorization Matrix`** — Courtesy discounts capped at predefined threshold; overrides require admin or Doctor PIN.
+3. **`BR-INV-02: Low-Stock Threshold Trigger`** — Automatic alerts when inventory items drop below reorder levels.
 
 ### Key Patterns to Follow
 - **Angular Signals** for state management (not RxJS subjects)
 - **Stage badge pattern** from BR-DEN-02 for visual indicators
 - **Service methods** follow the pattern in `dental.service.ts`
-- **Feature branch workflow**: Create `feature/medical-record-immutability`, implement, PR to master
+- **Feature branch workflow**: Create feature branch, implement, test, PR to master
 
 ---
 
