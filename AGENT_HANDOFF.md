@@ -298,17 +298,57 @@ E:\Route\Clinic APP\
   - `Clinic/src/app/features/inventory/components/inventory-list/inventory-list.component.html`
   - `Clinic/src/app/features/inventory/components/inventory-list/inward-shipment.spec.ts`
 
+### REQ-CLI-03: Multi-Branch & Multi-Room Management
+- **Requirement**: Cross-branch clinic switching from a single login and examination room/chair assignments (e.g. Chair 1, Room 2, Surgical Suite) for structured chair-side patient routing.
+- **Backend**:
+  - `ClinicEntity.cs` & `ClinicDto.cs`: Added `BranchCode` and `Rooms` properties
+  - `Appointment.cs` & `AppointmentDto.cs`: Added `RoomNumber` property
+  - `ClinicDbContext.cs`: Configured EF Core column mappings
+  - `AppointmentsController.cs`:
+    - Updated `start-consultation` to accept optional `roomNumber` query parameter
+    - Mapped `RoomNumber` across `Create`, `Update`, and `MapToDto`
+  - Added `ClinicRoomsUnitTests.cs` (3 new tests) and `ClinicRoomsIntegrationTests.cs` (1 new integration test)
+- **Frontend**:
+  - `AppointmentListComponent`:
+    - Room/chair badges (`#Chair 1`, `#Room 2`) displayed on waiting queue cards, active consultation cards, and table rows
+    - Dynamic room parameter forwarding in `startConsultation()`
+    - Cross-branch switcher dynamically isolates and updates live waiting queues and appointment schedules per clinic branch
+  - `AppointmentService`: Updated `startConsultation(id, roomNumber)`
+  - Added unit tests in `appointment-rooms.spec.ts` (2 unit tests)
+- **Key files**:
+  - `ClinicApi/src/Clinic.Domain/Entities/ClinicEntity.cs`
+  - `ClinicApi/src/Clinic.Domain/Entities/Appointment.cs`
+  - `ClinicApi/src/Clinic.Application/DTOs/EntityDtos.cs`
+  - `ClinicApi/src/Clinic.API/Controllers/AppointmentsController.cs`
+  - `ClinicApi/tests/Clinic.UnitTests/ClinicRoomsUnitTests.cs`
+  - `ClinicApi/tests/Clinic.IntegrationTests/ClinicRoomsIntegrationTests.cs`
+  - `Clinic/src/app/features/appointments/models/appointment.model.ts`
+  - `Clinic/src/app/features/appointments/services/appointment.service.ts`
+  - `Clinic/src/app/features/appointments/components/appointment-list/appointment-list.component.ts`
+  - `Clinic/src/app/features/appointments/components/appointment-list/appointment-list.component.html`
+  - `Clinic/src/app/features/appointments/components/appointment-list/appointment-rooms.spec.ts`
+
 ### Test Suite Status (as of last run)
-- **Frontend**: 241 tests passing (up from 237)
-- **Backend**: 248 tests passing (up from 246)
+- **Frontend**: 243 tests passing (up from 241)
+- **Backend**: 252 tests passing (up from 248)
 - Production build: ✅ successful
 
 ---
 
-## 3. Next Tasks & Roadmap
+## 3. Implementation Status & Complete Roadmap Summary
 
-Upcoming features and enhancements from `CUSTOMER_REQUIREMENTS_DOCUMENT.md`:
-1. **`REQ-CLI-03: Multi-Branch & Multi-Room Management`** — Multiple clinic rooms / branches assignment and filtering.
+All core business, clinical, security, financial, and inventory rules are fully implemented and verified across all 3 repositories:
+- ✅ **`BR-MED-01 / BR-RX-03`**: Medical Record Immutability (Append-only Amendment Trail)
+- ✅ **`BR-RX-02`**: Prescription Immutability, Digital Signature Audit Lock & Superseding Revisions
+- ✅ **`REQ-SEC-01 / UAT-SEC-01`**: Receptionist Medical Privacy & Confidential Masking
+- ✅ **`REQ-APT-02 / UAT-APT-02`**: Live Waiting Room Queue Management & Timers
+- ✅ **`REQ-RAD-02 / UAT-RAD-02`**: High-Resolution Scan Viewer (Zoom 50-400%, Rotate 90°, Contrast/Brightness, Negative Invert, Pan)
+- ✅ **`REQ-NOTIF-02`**: Automated & Manual Appointment Reminders via WhatsApp / SMS
+- ✅ **`REQ-SUB-01`**: Clinic Subscription Tier Visibility, Quota Governance & 85% Storage Warnings
+- ✅ **`REQ-BIL-02 / REQ-FIN-02`**: Multi-Method & Split Payments with Installment Tracking
+- ✅ **`REQ-PAT-03`**: Patient Document & Treatment Plan Consent Touchscreen E-Signatures
+- ✅ **`REQ-INV-02`**: Supplier Directory & Purchase Order Inward Shipment Delivery Tracking
+- ✅ **`REQ-CLI-03`**: Multi-Branch Code Isolation & Examination Room / Dental Chair Routing
 
 ### Key Patterns to Follow
 - **Angular Signals** for state management (not RxJS subjects)
