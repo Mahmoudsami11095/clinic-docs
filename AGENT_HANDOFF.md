@@ -271,9 +271,36 @@ E:\Route\Clinic APP\
   - `Clinic/src/app/shared/components/signature-pad-modal/signature-pad-modal.spec.ts`
   - `Clinic/src/app/features/patients/components/patient-history/patient-history.component.ts`
 
+### REQ-INV-02: Supplier & Purchase Order Workflow
+- **Requirement**: Clinical inventory restock deliveries, supplier tracking, purchase order / invoice reference recording, batch/lot tracking, unit costs, and automated stock level increments.
+- **Backend**:
+  - `Material.cs` & `MaterialDto.cs`: Added `SupplierName`, `UnitCost`, `PurchaseOrderRef`, and `LastRestockedAt`
+  - `ClinicDbContext.cs`: Configured EF Core column mappings
+  - `MaterialsController.cs`: Added `POST /api/materials/{id}/inward-shipment` to record stock deliveries and auto-trigger stock alerts
+  - Added `InwardShipmentUnitTests.cs` (1 new test) and `InwardShipmentIntegrationTests.cs` (1 new integration test)
+- **Frontend**:
+  - `InventoryListComponent`:
+    - Added "Receive Shipment" header action and per-row inward restock button
+    - Added Inward Shipment modal capturing received quantity, supplier name, purchase order ref, batch number, unit cost, and expiration date
+    - Dynamic supplier badge in materials list
+    - Integration with `MaterialsService.receiveShipment`
+  - Added unit tests in `inward-shipment.spec.ts` (4 unit tests)
+  - Complete English and Arabic localization
+- **Key files**:
+  - `ClinicApi/src/Clinic.Domain/Entities/Material.cs`
+  - `ClinicApi/src/Clinic.Application/DTOs/MaterialDto.cs`
+  - `ClinicApi/src/Clinic.API/Controllers/MaterialsController.cs`
+  - `ClinicApi/tests/Clinic.UnitTests/InwardShipmentUnitTests.cs`
+  - `ClinicApi/tests/Clinic.IntegrationTests/InwardShipmentIntegrationTests.cs`
+  - `Clinic/src/app/features/inventory/models/material.model.ts`
+  - `Clinic/src/app/features/inventory/services/materials.service.ts`
+  - `Clinic/src/app/features/inventory/components/inventory-list/inventory-list.component.ts`
+  - `Clinic/src/app/features/inventory/components/inventory-list/inventory-list.component.html`
+  - `Clinic/src/app/features/inventory/components/inventory-list/inward-shipment.spec.ts`
+
 ### Test Suite Status (as of last run)
-- **Frontend**: 237 tests passing (up from 233)
-- **Backend**: 246 tests passing (up from 243)
+- **Frontend**: 241 tests passing (up from 237)
+- **Backend**: 248 tests passing (up from 246)
 - Production build: ✅ successful
 
 ---
@@ -281,8 +308,7 @@ E:\Route\Clinic APP\
 ## 3. Next Tasks & Roadmap
 
 Upcoming features and enhancements from `CUSTOMER_REQUIREMENTS_DOCUMENT.md`:
-1. **`REQ-INV-02: Supplier & Purchase Order Workflow`** — Comprehensive supplier directory and purchase order lifecycle.
-2. **`REQ-CLI-03: Multi-Branch & Multi-Room Management`** — Multiple clinic rooms / branches assignment and filtering.
+1. **`REQ-CLI-03: Multi-Branch & Multi-Room Management`** — Multiple clinic rooms / branches assignment and filtering.
 
 ### Key Patterns to Follow
 - **Angular Signals** for state management (not RxJS subjects)
