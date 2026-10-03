@@ -77,9 +77,35 @@ E:\Route\Clinic APP\
   - `Clinic/src/app/features/patients/components/patient-history/patient-history.component.ts`
   - `Clinic/src/app/features/patients/components/patient-history/patient-clinical-notes.spec.ts` (11 tests)
 
+### BR-RX-02: Prescription Immutability & Audit Lock
+- **Requirement**: Once a doctor finalizes and digitally signs a prescription, it becomes legally locked and read-only. No user can edit or delete a finalized prescription. Modifications require issuing a *Superseding Prescription* with mandatory clinical justification, preserving historical audit links.
+- **Backend**:
+  - `IsFinalized`, `Status` (`draft` | `finalized` | `superseded`), `FinalizedAt`, `DigitalSignature`, `SupersedesPrescriptionId`, `SupersededById`, `SupersedeReason`
+  - `PUT /api/prescriptions/{id}` strictly rejects updates on finalized/superseded prescriptions with `400 Bad Request`
+  - `POST /api/prescriptions/{id}/finalize` endpoint digitally signs and locks prescriptions
+  - `POST /api/prescriptions/{id}/supersede` endpoint archives original as `superseded` with reason and issues new linked revision
+  - `DELETE /api/prescriptions/{id}` blocked on finalized prescriptions
+- **Frontend**:
+  - Legal audit lock banner on finalized prescriptions with digital signature badge
+  - Archived revision notice on superseded prescriptions
+  - Medication inputs locked to read-only when finalized
+  - "Issue Superseding Revision" modal capturing mandatory clinical reason and revised medication list
+  - Full English & Arabic localization
+- **Key files**:
+  - `ClinicApi/src/Clinic.Domain/Entities/Prescription.cs`
+  - `ClinicApi/src/Clinic.Infrastructure/Data/ClinicDbContext.cs`
+  - `ClinicApi/src/Clinic.Application/DTOs/EntityDtos.cs`
+  - `ClinicApi/src/Clinic.API/Controllers/PrescriptionsController.cs`
+  - `ClinicApi/tests/Clinic.UnitTests/PrescriptionUnitTests.cs` (4 unit tests)
+  - `ClinicApi/tests/Clinic.IntegrationTests/PrescriptionImmutabilityIntegrationTests.cs` (4 integration tests)
+  - `Clinic/src/app/features/prescriptions/models/prescription.model.ts`
+  - `Clinic/src/app/features/prescriptions/services/prescription.service.ts`
+  - `Clinic/src/app/features/prescriptions/components/prescription-form/prescription-form.component.ts`
+  - `Clinic/src/app/features/prescriptions/components/prescription-form/prescription-immutability.spec.ts` (9 unit tests)
+
 ### Test Suite Status (as of last run)
-- **Frontend**: 182 tests passing (up from 170)
-- **Backend**: 214 tests passing (up from 207)
+- **Frontend**: 191 tests passing (up from 182)
+- **Backend**: 222 tests passing (up from 214)
 - Production build: ✅ successful
 
 ---
@@ -87,8 +113,8 @@ E:\Route\Clinic APP\
 ## 3. Next Tasks & Roadmap
 
 Next upcoming business rules from `CUSTOMER_REQUIREMENTS_DOCUMENT.md`:
-1. **`BR-RX-02: Prescription Immutability & Audit Lock`** — Finalized prescriptions become read-only; revisions require a superseding prescription or addendum.
-2. **`BR-FIN-01: Discount Authorization Matrix`** — Courtesy discounts capped at predefined threshold; overrides require admin or Doctor PIN.
+1. **`BR-FIN-01: Discount Authorization Matrix`** — Courtesy discounts capped at predefined threshold (e.g. 10%); overrides require admin or Doctor PIN.
+2. **`BR-FIN-02: Outstanding Debt Warning`** — Visual debt alerts and unpaid invoice history when scheduling or checking in patients with unpaid balances.
 3. **`BR-INV-02: Low-Stock Threshold Trigger`** — Automatic alerts when inventory items drop below reorder levels.
 
 ### Key Patterns to Follow
