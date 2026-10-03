@@ -103,19 +103,35 @@ E:\Route\Clinic APP\
   - `Clinic/src/app/features/prescriptions/components/prescription-form/prescription-form.component.ts`
   - `Clinic/src/app/features/prescriptions/components/prescription-form/prescription-immutability.spec.ts` (9 unit tests)
 
+### REQ-SEC-01 / UAT-SEC-01: Receptionist Medical Privacy & Confidential Masking
+- **Requirement**: Front-desk staff (Receptionist / Assistant) are restricted to demographics, appointments, and billing. Clinical diagnostic encounter notes and procedural details must be confidential and masked from front-desk staff. Direct backend queries by non-clinical roles are blocked with `403 Forbidden`.
+- **Backend**:
+  - `ClinicalNotesController.cs` guarded with `[Authorize(Roles = "admin,doctor")]`
+  - Integration tests verifying assistant queries and create attempts return `403 Forbidden`
+- **Frontend**:
+  - `patient-history.component.ts` guards the clinical encounter notes card with `@if (authService.isDoctor() || authService.isAdmin())`
+  - Assistants/Receptionists see a high-visibility confidential medical record masking card with security notice
+  - `loadPatientHistory()` suppresses clinical notes network queries for non-clinical roles
+  - Bilingual translation keys in English and Arabic
+- **Key files**:
+  - `ClinicApi/src/Clinic.API/Controllers/ClinicalNotesController.cs`
+  - `ClinicApi/tests/Clinic.IntegrationTests/ClinicalNoteIntegrationTests.cs` (2 new tests)
+  - `Clinic/src/app/features/patients/components/patient-history/patient-history.component.ts`
+  - `Clinic/src/app/features/patients/components/patient-history/patient-clinical-notes.spec.ts` (2 new tests)
+
 ### Test Suite Status (as of last run)
-- **Frontend**: 191 tests passing (up from 182)
-- **Backend**: 222 tests passing (up from 214)
+- **Frontend**: 193 tests passing (up from 191)
+- **Backend**: 224 tests passing (up from 222)
 - Production build: ✅ successful
 
 ---
 
 ## 3. Next Tasks & Roadmap
 
-Next upcoming business rules from `CUSTOMER_REQUIREMENTS_DOCUMENT.md`:
-1. **`BR-FIN-01: Discount Authorization Matrix`** — Courtesy discounts capped at predefined threshold (e.g. 10%); overrides require admin or Doctor PIN.
-2. **`BR-FIN-02: Outstanding Debt Warning`** — Visual debt alerts and unpaid invoice history when scheduling or checking in patients with unpaid balances.
-3. **`BR-INV-02: Low-Stock Threshold Trigger`** — Automatic alerts when inventory items drop below reorder levels.
+Upcoming features and enhancements from `CUSTOMER_REQUIREMENTS_DOCUMENT.md`:
+1. **`REQ-APT-02: Live Waiting Room Queue Management`** — Real-time queue notification system with status transitions (Arrived -> In Consultation -> Completed).
+2. **`REQ-RAD-02: High-Resolution Scan Viewer`** — Interactive radiograph image manipulation (zoom, rotate, brightness/contrast adjustments).
+3. **`REQ-NOTIF-02: Patient Appointment Reminders`** — Multi-channel automated reminders via WhatsApp / SMS for upcoming appointments.
 
 ### Key Patterns to Follow
 - **Angular Signals** for state management (not RxJS subjects)
