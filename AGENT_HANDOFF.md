@@ -243,9 +243,37 @@ E:\Route\Clinic APP\
   - `Clinic/src/app/features/billing/components/billing-form/billing-form.component.html`
   - `Clinic/src/app/features/billing/components/billing-form/split-payment.spec.ts`
 
+### REQ-PAT-03: Patient Document & Consent E-Signatures
+- **Requirement**: Touchscreen & stylus digital signature capture for patient treatment plan consent, persisting signed data URLs and timestamps with verification badges.
+- **Backend**:
+  - `Patient.cs` & `PatientDto.cs`: Added `ConsentSignature` (base64 image data URL) and `ConsentSignedAt` (ISO timestamp)
+  - `ClinicDbContext.cs`: Configured EF Core column mapping for `ConsentSignedAt`
+  - `PatientsController.cs`: Added `POST /api/patients/{id}/consent-signature` endpoint
+  - Added `PatientConsentSignatureUnitTests.cs` (2 new tests) and `PatientConsentSignatureIntegrationTests.cs` (1 new integration test)
+- **Frontend**:
+  - `SignaturePadModalComponent` (`src/app/shared/components/signature-pad-modal/`): Reusable HTML5 canvas component with mouse, stylus pen, and touch drawing, clear and save actions
+  - `PatientHistoryComponent`:
+    - Treatment Plan & Progress Report displays digital patient consent signature with `Signed on [Date]` and verified badge
+    - Interactive "Capture Signature" and "Re-sign" modals
+    - Integrates with `PatientService.saveConsentSignature`
+  - Added unit tests in `signature-pad-modal.spec.ts` (4 unit tests)
+  - Complete English and Arabic localization
+- **Key files**:
+  - `ClinicApi/src/Clinic.Domain/Entities/Patient.cs`
+  - `ClinicApi/src/Clinic.Application/Interfaces/IPatientService.cs`
+  - `ClinicApi/src/Clinic.Application/Services/PatientService.cs`
+  - `ClinicApi/src/Clinic.API/Controllers/PatientsController.cs`
+  - `ClinicApi/tests/Clinic.UnitTests/PatientConsentSignatureUnitTests.cs`
+  - `ClinicApi/tests/Clinic.IntegrationTests/PatientConsentSignatureIntegrationTests.cs`
+  - `Clinic/src/app/features/patients/models/patient.model.ts`
+  - `Clinic/src/app/features/patients/services/patient.service.ts`
+  - `Clinic/src/app/shared/components/signature-pad-modal/signature-pad-modal.component.ts`
+  - `Clinic/src/app/shared/components/signature-pad-modal/signature-pad-modal.spec.ts`
+  - `Clinic/src/app/features/patients/components/patient-history/patient-history.component.ts`
+
 ### Test Suite Status (as of last run)
-- **Frontend**: 233 tests passing (up from 227)
-- **Backend**: 243 tests passing (up from 240)
+- **Frontend**: 237 tests passing (up from 233)
+- **Backend**: 246 tests passing (up from 243)
 - Production build: ✅ successful
 
 ---
@@ -253,9 +281,8 @@ E:\Route\Clinic APP\
 ## 3. Next Tasks & Roadmap
 
 Upcoming features and enhancements from `CUSTOMER_REQUIREMENTS_DOCUMENT.md`:
-1. **`REQ-PAT-03: Patient Document & Consent E-Signatures`** — Digital consent forms with touchscreen signature capture.
-2. **`REQ-INV-02: Supplier & Purchase Order Workflow`** — Comprehensive supplier directory and purchase order lifecycle.
-3. **`REQ-CLI-03: Multi-Branch & Multi-Room Management`** — Multiple clinic rooms / branches assignment and filtering.
+1. **`REQ-INV-02: Supplier & Purchase Order Workflow`** — Comprehensive supplier directory and purchase order lifecycle.
+2. **`REQ-CLI-03: Multi-Branch & Multi-Room Management`** — Multiple clinic rooms / branches assignment and filtering.
 
 ### Key Patterns to Follow
 - **Angular Signals** for state management (not RxJS subjects)
