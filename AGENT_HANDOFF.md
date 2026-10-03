@@ -119,9 +119,34 @@ E:\Route\Clinic APP\
   - `Clinic/src/app/features/patients/components/patient-history/patient-history.component.ts`
   - `Clinic/src/app/features/patients/components/patient-history/patient-clinical-notes.spec.ts` (2 new tests)
 
+### REQ-APT-02 / UAT-APT-02: Live Waiting Room Queue Management
+- **Requirement**: Receptionist marks patient as "Arrived / Waiting", moving the appointment into the live waiting room queue with a daily queue ticket number and waiting duration timer. The doctor's screen updates in real-time, allowing the physician to transition the patient to "In-Consultation" and "Completed".
+- **Backend**:
+  - `Appointment` entity enhanced with `ArrivedAt`, `ConsultationStartedAt`, `ConsultationEndedAt`, `QueueNumber`
+  - Added endpoints: `POST /api/appointments/{id}/check-in`, `POST /api/appointments/{id}/start-consultation`, `POST /api/appointments/{id}/complete`, `GET /api/appointments/live-queue`
+  - In-app real-time notification dispatched to the attending doctor upon patient check-in
+  - Compound indexes on `(ClinicId, Status)`
+- **Frontend**:
+  - `AppointmentListComponent`:
+    - Live Waiting Room Queue Dashboard widget for clinical & front-desk staff showing active exams and waiting room queue
+    - Daily queue ticket chips (`#1`, `#2`...) with live elapsed waiting duration counter (`15m`, `< 1m`)
+    - One-click workflow action buttons: `Check In` (receptionist), `Start Exam` (doctor), `Complete Visit` (doctor)
+    - Filter tabs updated with `waiting` and `in_consultation` states
+  - Full English and Arabic localization
+- **Key files**:
+  - `ClinicApi/src/Clinic.Domain/Entities/Appointment.cs` & `AppointmentStatus.cs`
+  - `ClinicApi/src/Clinic.API/Controllers/AppointmentsController.cs`
+  - `ClinicApi/tests/Clinic.UnitTests/AppointmentUnitTests.cs` (5 unit tests)
+  - `ClinicApi/tests/Clinic.IntegrationTests/AppointmentQueueIntegrationTests.cs` (3 integration tests)
+  - `Clinic/src/app/features/appointments/models/appointment.model.ts`
+  - `Clinic/src/app/features/appointments/services/appointment.service.ts`
+  - `Clinic/src/app/features/appointments/components/appointment-list/appointment-list.component.ts`
+  - `Clinic/src/app/features/appointments/components/appointment-list/appointment-list.component.html`
+  - `Clinic/src/app/features/appointments/components/appointment-list/appointment-queue.spec.ts` (8 unit tests)
+
 ### Test Suite Status (as of last run)
-- **Frontend**: 193 tests passing (up from 191)
-- **Backend**: 224 tests passing (up from 222)
+- **Frontend**: 201 tests passing (up from 193)
+- **Backend**: 232 tests passing (up from 224)
 - Production build: ✅ successful
 
 ---
@@ -129,9 +154,9 @@ E:\Route\Clinic APP\
 ## 3. Next Tasks & Roadmap
 
 Upcoming features and enhancements from `CUSTOMER_REQUIREMENTS_DOCUMENT.md`:
-1. **`REQ-APT-02: Live Waiting Room Queue Management`** — Real-time queue notification system with status transitions (Arrived -> In Consultation -> Completed).
-2. **`REQ-RAD-02: High-Resolution Scan Viewer`** — Interactive radiograph image manipulation (zoom, rotate, brightness/contrast adjustments).
-3. **`REQ-NOTIF-02: Patient Appointment Reminders`** — Multi-channel automated reminders via WhatsApp / SMS for upcoming appointments.
+1. **`REQ-RAD-02: High-Resolution Scan Viewer`** — Interactive radiograph image manipulation (zoom, rotate, brightness/contrast adjustments).
+2. **`REQ-NOTIF-02: Patient Appointment Reminders`** — Multi-channel automated reminders via WhatsApp / SMS for upcoming appointments.
+3. **`REQ-SUB-01: Clinic Subscription Tier Visibility`** — Tier limits enforcement, upgrade modals, and renewal countdowns.
 
 ### Key Patterns to Follow
 - **Angular Signals** for state management (not RxJS subjects)
