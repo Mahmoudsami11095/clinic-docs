@@ -218,9 +218,34 @@ E:\Route\Clinic APP\
   - `Clinic/src/app/features/subscription/subscription.component.html`
   - `Clinic/src/app/features/subscription/subscription-tier.spec.ts` (8 unit tests)
 
+### REQ-BIL-02 / REQ-FIN-02: Multi-Method & Split Payments
+- **Requirement**: Cashiers and receptionists can record multiple payment methods for a single bill (e.g. $50 Cash + $150 Visa Card / Insurance) within a single checkout flow, auto-calculate remaining balance, and record payment installments with audit trails.
+- **Backend**:
+  - `BillingController.cs`:
+    - `POST /api/billing/{id}/payments`: Adds payment logs to `entity.Payments`, recalculates `PaidAmount`, updates `Status` (`paid` or `partially_paid`), and tracks `PaymentMethod = "Split Payment"`
+    - Enforces BR-FIN-03 immutability: rejects adding payments to voided invoices
+  - Added `SplitPaymentUnitTests.cs` (2 new tests) and `SplitPaymentIntegrationTests.cs` (1 new integration test)
+- **Frontend**:
+  - `BillingFormComponent`:
+    - Added Split Payment (Multi-Method) toggle
+    - Dynamic breakdown lines table allowing multiple payment lines with individual amounts and methods (Cash, Card, Insurance, Bank Transfer)
+    - Auto-calculation of `totalSplitPaid` and `splitRemainingBalance`
+    - Submits itemized `payments` collection and sets status appropriately
+  - `BillingService`: Added `addPayment(id, payment)` method
+  - Added unit tests in `split-payment.spec.ts` (5 tests)
+  - Full English and Arabic localization
+- **Key files**:
+  - `ClinicApi/src/Clinic.API/Controllers/BillingController.cs`
+  - `ClinicApi/tests/Clinic.UnitTests/SplitPaymentUnitTests.cs`
+  - `ClinicApi/tests/Clinic.IntegrationTests/SplitPaymentIntegrationTests.cs`
+  - `Clinic/src/app/features/billing/services/billing.service.ts`
+  - `Clinic/src/app/features/billing/components/billing-form/billing-form.component.ts`
+  - `Clinic/src/app/features/billing/components/billing-form/billing-form.component.html`
+  - `Clinic/src/app/features/billing/components/billing-form/split-payment.spec.ts`
+
 ### Test Suite Status (as of last run)
-- **Frontend**: 227 tests passing (up from 219)
-- **Backend**: 240 tests passing (up from 236)
+- **Frontend**: 233 tests passing (up from 227)
+- **Backend**: 243 tests passing (up from 240)
 - Production build: ✅ successful
 
 ---
@@ -228,9 +253,9 @@ E:\Route\Clinic APP\
 ## 3. Next Tasks & Roadmap
 
 Upcoming features and enhancements from `CUSTOMER_REQUIREMENTS_DOCUMENT.md`:
-1. **`REQ-FIN-02: Multi-Method & Split Payments`** — Split payments (e.g., partial cash + partial card) within a single invoice checkout flow.
-2. **`REQ-PAT-03: Patient Document & Consent E-Signatures`** — Digital consent forms with touchscreen signature capture.
-3. **`REQ-INV-02: Supplier & Purchase Order Workflow`** — Comprehensive supplier directory and purchase order lifecycle.
+1. **`REQ-PAT-03: Patient Document & Consent E-Signatures`** — Digital consent forms with touchscreen signature capture.
+2. **`REQ-INV-02: Supplier & Purchase Order Workflow`** — Comprehensive supplier directory and purchase order lifecycle.
+3. **`REQ-CLI-03: Multi-Branch & Multi-Room Management`** — Multiple clinic rooms / branches assignment and filtering.
 
 ### Key Patterns to Follow
 - **Angular Signals** for state management (not RxJS subjects)
