@@ -162,9 +162,36 @@ E:\Route\Clinic APP\
   - `Clinic/src/app/shared/components/scan-viewer-modal/scan-viewer-modal.spec.ts` (14 unit tests)
   - `Clinic/src/app/features/patients/components/patient-history/patient-history.component.ts`
 
+### REQ-NOTIF-02: Patient Appointment Reminders (WhatsApp & SMS)
+- **Requirement**: Receptionist and staff can trigger automated or manual appointment confirmation and reminder messages to patients 24 hours prior to their visit via WhatsApp/SMS to minimize clinic no-show rates.
+- **Backend**:
+  - `Appointment` entity enhanced with `LastReminderSentAt` and `ReminderCount`
+  - `IWhatsAppNotificationService` & `WhatsAppNotificationService` enhanced with `SendAppointmentReminderAsync`
+  - Added endpoints: `POST /api/appointments/{id}/send-reminder` (individual reminder) and `POST /api/appointments/send-batch-reminders` (automated 24h batch dispatch)
+  - Dispatches in-app confirmation notification to the attending doctor
+- **Frontend**:
+  - `AppointmentListComponent`:
+    - "Send Reminder" button on scheduled upcoming visits
+    - "Send 24h Reminders" batch button in header toolbar
+    - Direct WhatsApp Web deep-link (`wa.me`) with prefilled bilingual reminder template
+    - Reminder delivery tracking badge (`Reminder Sent • 2h ago`)
+  - Full English and Arabic localization
+- **Key files**:
+  - `ClinicApi/src/Clinic.Domain/Entities/Appointment.cs`
+  - `ClinicApi/src/Clinic.Application/Interfaces/IWhatsAppNotificationService.cs`
+  - `ClinicApi/src/Clinic.Infrastructure/Services/WhatsAppNotificationService.cs`
+  - `ClinicApi/src/Clinic.API/Controllers/AppointmentsController.cs`
+  - `ClinicApi/tests/Clinic.UnitTests/AppointmentUnitTests.cs` (2 new tests)
+  - `ClinicApi/tests/Clinic.IntegrationTests/AppointmentReminderIntegrationTests.cs` (2 new tests)
+  - `Clinic/src/app/features/appointments/models/appointment.model.ts`
+  - `Clinic/src/app/features/appointments/services/appointment.service.ts`
+  - `Clinic/src/app/features/appointments/components/appointment-list/appointment-list.component.ts`
+  - `Clinic/src/app/features/appointments/components/appointment-list/appointment-list.component.html`
+  - `Clinic/src/app/features/appointments/components/appointment-list/appointment-reminder.spec.ts` (4 unit tests)
+
 ### Test Suite Status (as of last run)
-- **Frontend**: 215 tests passing (up from 201)
-- **Backend**: 232 tests passing (same, all green)
+- **Frontend**: 219 tests passing (up from 215)
+- **Backend**: 236 tests passing (up from 232)
 - Production build: ✅ successful
 
 ---
@@ -172,9 +199,9 @@ E:\Route\Clinic APP\
 ## 3. Next Tasks & Roadmap
 
 Upcoming features and enhancements from `CUSTOMER_REQUIREMENTS_DOCUMENT.md`:
-1. **`REQ-NOTIF-02: Patient Appointment Reminders`** — Multi-channel automated reminders via WhatsApp / SMS for upcoming appointments.
-2. **`REQ-SUB-01: Clinic Subscription Tier Visibility`** — Tier limits enforcement, upgrade modals, and renewal countdowns.
-3. **`REQ-FIN-02: Multi-Method & Split Payments`** — Split payments (e.g., partial cash + partial card) within a single invoice checkout flow.
+1. **`REQ-SUB-01: Clinic Subscription Tier Visibility`** — Tier limits enforcement, upgrade modals, and renewal countdowns.
+2. **`REQ-FIN-02: Multi-Method & Split Payments`** — Split payments (e.g., partial cash + partial card) within a single invoice checkout flow.
+3. **`REQ-PAT-03: Patient Document & Consent E-Signatures`** — Digital consent forms with touchscreen signature capture.
 
 ### Key Patterns to Follow
 - **Angular Signals** for state management (not RxJS subjects)
