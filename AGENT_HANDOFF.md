@@ -189,9 +189,38 @@ E:\Route\Clinic APP\
   - `Clinic/src/app/features/appointments/components/appointment-list/appointment-list.component.html`
   - `Clinic/src/app/features/appointments/components/appointment-list/appointment-reminder.spec.ts` (4 unit tests)
 
+### REQ-SUB-01: Clinic Subscription Tier Visibility & Limit Enforcements
+- **Requirement**: Clinic owners and physicians have full visibility into their subscription tier (e.g., Starter, Professional, Enterprise), physician seats, storage capacity, reminder credits, expiration countdown, 85% advisory alert, and plan upgrade workflows.
+- **Backend**:
+  - `SubscriptionsController.cs`:
+    - `GET /api/subscriptions/status`: Enriched with `tierQuota` containing tier name, doctor seats limit vs used, storage quota GB vs used, SMS/WhatsApp credits balance, and utilization percentages
+    - `POST /api/subscriptions/upgrade-tier`: Endpoint to submit plan upgrade requests
+  - `SubscriptionTierUnitTests.cs`: Unit tests for tier quota calculations and 85% storage warning trigger
+  - `SubscriptionTierIntegrationTests.cs`: Integration tests for tier status and tier upgrade endpoints
+- **Frontend**:
+  - `SubscriptionComponent`:
+    - Redesigned with dual-mode architecture: Practice Governance & Quota Dashboard for active/trial clinics, and payment/renewal checkout when locked
+    - 4 Quota Governance Metric Cards: Doctor Seats, High-Res File Storage Capacity, Automated SMS/WhatsApp Reminder Credits, and Medical Syndicate / ISO-26262 Compliance
+    - 85% Storage Capacity advisory warning banner
+    - Expiration countdown badge with remaining days
+    - Plan Comparison Matrix (Starter, Professional, Enterprise) and upgrade request modal
+  - `subscription.guard.ts`: Updated to allow active doctors to view `/subscription`
+  - `sidebar.component.ts`: Added `sidebar.subscription_plan` menu entry for doctors
+  - Complete English and Arabic localization
+- **Key files**:
+  - `ClinicApi/src/Clinic.API/Controllers/SubscriptionsController.cs`
+  - `ClinicApi/tests/Clinic.UnitTests/SubscriptionTierUnitTests.cs` (2 new tests)
+  - `ClinicApi/tests/Clinic.IntegrationTests/SubscriptionTierIntegrationTests.cs` (2 new tests)
+  - `Clinic/src/app/core/auth/subscription.guard.ts`
+  - `Clinic/src/app/core/auth/auth.service.ts`
+  - `Clinic/src/app/core/layout/sidebar/sidebar.component.ts`
+  - `Clinic/src/app/features/subscription/subscription.component.ts`
+  - `Clinic/src/app/features/subscription/subscription.component.html`
+  - `Clinic/src/app/features/subscription/subscription-tier.spec.ts` (8 unit tests)
+
 ### Test Suite Status (as of last run)
-- **Frontend**: 219 tests passing (up from 215)
-- **Backend**: 236 tests passing (up from 232)
+- **Frontend**: 227 tests passing (up from 219)
+- **Backend**: 240 tests passing (up from 236)
 - Production build: ✅ successful
 
 ---
@@ -199,9 +228,9 @@ E:\Route\Clinic APP\
 ## 3. Next Tasks & Roadmap
 
 Upcoming features and enhancements from `CUSTOMER_REQUIREMENTS_DOCUMENT.md`:
-1. **`REQ-SUB-01: Clinic Subscription Tier Visibility`** — Tier limits enforcement, upgrade modals, and renewal countdowns.
-2. **`REQ-FIN-02: Multi-Method & Split Payments`** — Split payments (e.g., partial cash + partial card) within a single invoice checkout flow.
-3. **`REQ-PAT-03: Patient Document & Consent E-Signatures`** — Digital consent forms with touchscreen signature capture.
+1. **`REQ-FIN-02: Multi-Method & Split Payments`** — Split payments (e.g., partial cash + partial card) within a single invoice checkout flow.
+2. **`REQ-PAT-03: Patient Document & Consent E-Signatures`** — Digital consent forms with touchscreen signature capture.
+3. **`REQ-INV-02: Supplier & Purchase Order Workflow`** — Comprehensive supplier directory and purchase order lifecycle.
 
 ### Key Patterns to Follow
 - **Angular Signals** for state management (not RxJS subjects)
