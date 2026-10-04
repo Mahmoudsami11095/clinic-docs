@@ -4,9 +4,9 @@
 | **Test Run Date** | 2026-10-04 (UTC+3) |
 | :--- | :--- |
 | **Frameworks** | **Backend:** xUnit 2.9, Moq 4.21, Microsoft.AspNetCore.Mvc.Testing, Coverlet, EF Core InMemory, .NET 9.0<br>**Frontend:** Angular 20, Jasmine 5.9, Karma 6.4, ChromeHeadless |
-| **Total Automated Tests** | **495 Tests** (252 Backend + 243 Frontend) |
+| **Total Automated Tests** | **507 Tests** (252 Backend + 243 Frontend Unit/Specs + 12 Playwright E2E) |
 | **Branch & Boundary Tests** | **198 Dedicated Decision Branch & Limit Value Tests** |
-| **Pass Rate** | 🟢 **100% (495 Passed, 0 Failed, 0 Skipped)** |
+| **Pass Rate** | 🟢 **100% (507 Passed, 0 Failed, 0 Skipped)** |
 | **Target Codebases** | `clinic-app` (Angular 20 Frontend), `ClinicApi` (.NET 9 Clean Architecture API) |
 
 ---
@@ -45,7 +45,8 @@ The testing suite guarantees complete verification through an exhaustive test py
 | **Backend API & Security** | **`Clinic.IntegrationTests`** | API Contracts & Security | Controllers, Filters, JWT Claims, Role Guards, Health Probes | **35** | **0** | 2.8 s |
 | **Frontend Unit & Specs** | **`clinic-app` (Angular)** | Component & Service Specs | LanguageService, Auth, Clinics, Forms, Inputs, Scan Viewer, Signature Pad | **163** | **0** | 1.1 s |
 | **Frontend Rules & Workflows**| **`clinic-app` (Angular)** | Feature Rules & Integrations | Live Queue, Pediatric Dosing, Drug Allergies, Quota Dashboard, Split Payments | **80** | **0** | 0.9 s |
-| **TOTAL** | **Full System Suite** | **Full Branch & Boundary** | **Entire Application Stack** | **495** | **0** | **~5.1 s** |
+| **E2E Browser Automation** | **`clinic-app` (Playwright)** | Live Browser Automation | Desktop Chromium & Tablet iPad Viewport: Shell, i18n RTL, Theme, Validation, Tabs | **12** | **0** | 24.6 s |
+| **TOTAL** | **Full System Suite** | **Full Branch & Boundary** | **Entire Application Stack** | **507** | **0** | **~29.7 s** |
 
 ---
 
