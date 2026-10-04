@@ -4,9 +4,9 @@
 | **Test Run Date** | 2026-10-04 (UTC+3) |
 | :--- | :--- |
 | **Frameworks** | **Backend:** xUnit 2.9, Moq 4.21, Microsoft.AspNetCore.Mvc.Testing, Coverlet, EF Core InMemory, .NET 9.0<br>**Frontend:** Angular 20, Jasmine 5.9, Karma 6.4, ChromeHeadless |
-| **Total Automated Tests** | **547 Tests** (268 Backend + 257 Frontend Unit/Specs + 22 Playwright E2E) |
+| **Total Automated Tests** | **567 Tests** (272 Backend + 265 Frontend Unit/Specs + 30 Playwright E2E) |
 | **Branch & Boundary Tests** | **198 Dedicated Decision Branch & Limit Value Tests** |
-| **Pass Rate** | 🟢 **100% (547 Passed, 0 Failed, 0 Skipped)** |
+| **Pass Rate** | 🟢 **100% (567 Passed, 0 Failed, 0 Skipped)** |
 | **Target Codebases** | `clinic-app` (Angular 20 Frontend), `ClinicApi` (.NET 9 Clean Architecture API) |
 
 ---
@@ -23,12 +23,12 @@ The testing suite guarantees complete verification through an exhaustive test py
                       /  UAT  \       Customer Acceptance Tests (All 21 Scenarios Verified)
                      /─────────\      (Clinical Encounters, Dental, Billing, Allergy, Signatures)
                     /           \
-                   / Integration \    API Contract & Security Tests (39 Tests)
+                   / Integration \    API Contract & Security Tests (43 Tests)
                   /   & Auth      \   (Controllers, Roles, JWT Auth, In-Memory DB, SignalR)
                  /─────────────────\
                 /                   \
                /  Branch & Boundary  \  198 Decision Branch & Boundary Value Analysis Tests +
-              /   (Rules & Services)  \ 310 Unit & Component Specs across entire stack
+              /   (Rules & Services)  \ 326 Unit & Component Specs across entire stack
              /─────────────────────────\
 ```
 
@@ -42,11 +42,11 @@ The testing suite guarantees complete verification through an exhaustive test py
 | **Backend Boundary** | **`Clinic.UnitTests`** | Boundary Value Analysis (BVA) | Phone Limits, Overpayment, Dental, Allergy, Stock, Collisions | **97** | **0** | 120 ms |
 | **Backend Branch** | **`Clinic.UnitTests`** | Exhaustive Branch Coverage | PhoneHelper, PatientService, DoctorService, NotificationService, RadiologyService | **35** | **0** | 185 ms |
 | **Backend Rules & Features** | **`Clinic.UnitTests`** | Clinical & Regulatory Features | Immutability, Reminders, Quotas, Split Payments, Signatures, Shipments, Rooms | **50** | **0** | 110 ms |
-| **Backend API & Security** | **`Clinic.IntegrationTests`** | API Contracts & Security | Auth Controllers, Filters, JWT Claims, Role Guards, Health Probes | **39** | **0** | 3.2 s |
-| **Frontend Unit & Specs** | **`clinic-app` (Angular)** | Component & Service Specs | AuthService, AuthGuards, Clinics, Forms, Inputs, Scan Viewer, Signature Pad | **177** | **0** | 1.2 s |
+| **Backend API & Security** | **`Clinic.IntegrationTests`** | API Contracts & Security | Auth Controllers, Filters, JWT Claims, Role Guards, Health Probes | **43** | **0** | 3.5 s |
+| **Frontend Unit & Specs** | **`clinic-app` (Angular)** | Component & Service Specs | AuthService, RegisterComponent, AuthGuards, Clinics, Forms, Inputs, Scan Viewer | **185** | **0** | 1.3 s |
 | **Frontend Rules & Workflows**| **`clinic-app` (Angular)** | Feature Rules & Integrations | Live Queue, Pediatric Dosing, Drug Allergies, Quota Dashboard, Split Payments | **80** | **0** | 0.9 s |
-| **E2E Browser Automation** | **`clinic-app` (Playwright)** | Live Browser Automation | Desktop Chromium & Tablet iPad: Shell, i18n RTL, Theme, Validation, Tabs, Password Toggle | **22** | **0** | 44.5 s |
-| **TOTAL** | **Full System Suite** | **Full Branch & Boundary** | **Entire Application Stack** | **547** | **0** | **~50.2 s** |
+| **E2E Browser Automation** | **`clinic-app` (Playwright)** | Live Browser Automation | Desktop Chromium & Tablet iPad: Shell, i18n RTL, Theme, Validation, Tabs, Registration Wizard | **30** | **0** | 1.1 m |
+| **TOTAL** | **Full System Suite** | **Full Branch & Boundary** | **Entire Application Stack** | **567** | **0** | **~1.3 m** |
 
 ---
 
