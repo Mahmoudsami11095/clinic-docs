@@ -4,9 +4,9 @@
 | **Test Run Date** | 2026-10-04 (UTC+3) |
 | :--- | :--- |
 | **Frameworks** | **Backend:** xUnit 2.9, Moq 4.21, Microsoft.AspNetCore.Mvc.Testing, Coverlet, EF Core InMemory, .NET 9.0<br>**Frontend:** Angular 20, Jasmine 5.9, Karma 6.4, ChromeHeadless |
-| **Total Automated Tests** | **507 Tests** (252 Backend + 243 Frontend Unit/Specs + 12 Playwright E2E) |
+| **Total Automated Tests** | **547 Tests** (268 Backend + 257 Frontend Unit/Specs + 22 Playwright E2E) |
 | **Branch & Boundary Tests** | **198 Dedicated Decision Branch & Limit Value Tests** |
-| **Pass Rate** | 🟢 **100% (507 Passed, 0 Failed, 0 Skipped)** |
+| **Pass Rate** | 🟢 **100% (547 Passed, 0 Failed, 0 Skipped)** |
 | **Target Codebases** | `clinic-app` (Angular 20 Frontend), `ClinicApi` (.NET 9 Clean Architecture API) |
 
 ---
@@ -23,12 +23,12 @@ The testing suite guarantees complete verification through an exhaustive test py
                       /  UAT  \       Customer Acceptance Tests (All 21 Scenarios Verified)
                      /─────────\      (Clinical Encounters, Dental, Billing, Allergy, Signatures)
                     /           \
-                   / Integration \    API Contract & Security Tests (35 Tests)
+                   / Integration \    API Contract & Security Tests (39 Tests)
                   /   & Auth      \   (Controllers, Roles, JWT Auth, In-Memory DB, SignalR)
                  /─────────────────\
                 /                   \
                /  Branch & Boundary  \  198 Decision Branch & Boundary Value Analysis Tests +
-              /   (Rules & Services)  \ 262 Unit & Component Specs across entire stack
+              /   (Rules & Services)  \ 310 Unit & Component Specs across entire stack
              /─────────────────────────\
 ```
 
@@ -38,15 +38,15 @@ The testing suite guarantees complete verification through an exhaustive test py
 
 | Test Suite | Project / Target | Test Category | Target Scope | Passed | Failed | Duration |
 | :--- | :--- | :--- | :--- | :---: | :---: | :---: |
-| **Backend Core** | **`Clinic.UnitTests`** | Core Domain Logic | Entities, Enums, State Machines, Helpers | **35** | **0** | 60 ms |
+| **Backend Core & Auth** | **`Clinic.UnitTests`** | Core Domain Logic & Security | Entities, Enums, BCrypt Hashing, RBAC Roles, Helpers | **47** | **0** | 90 ms |
 | **Backend Boundary** | **`Clinic.UnitTests`** | Boundary Value Analysis (BVA) | Phone Limits, Overpayment, Dental, Allergy, Stock, Collisions | **97** | **0** | 120 ms |
 | **Backend Branch** | **`Clinic.UnitTests`** | Exhaustive Branch Coverage | PhoneHelper, PatientService, DoctorService, NotificationService, RadiologyService | **35** | **0** | 185 ms |
 | **Backend Rules & Features** | **`Clinic.UnitTests`** | Clinical & Regulatory Features | Immutability, Reminders, Quotas, Split Payments, Signatures, Shipments, Rooms | **50** | **0** | 110 ms |
-| **Backend API & Security** | **`Clinic.IntegrationTests`** | API Contracts & Security | Controllers, Filters, JWT Claims, Role Guards, Health Probes | **35** | **0** | 2.8 s |
-| **Frontend Unit & Specs** | **`clinic-app` (Angular)** | Component & Service Specs | LanguageService, Auth, Clinics, Forms, Inputs, Scan Viewer, Signature Pad | **163** | **0** | 1.1 s |
+| **Backend API & Security** | **`Clinic.IntegrationTests`** | API Contracts & Security | Auth Controllers, Filters, JWT Claims, Role Guards, Health Probes | **39** | **0** | 3.2 s |
+| **Frontend Unit & Specs** | **`clinic-app` (Angular)** | Component & Service Specs | AuthService, AuthGuards, Clinics, Forms, Inputs, Scan Viewer, Signature Pad | **177** | **0** | 1.2 s |
 | **Frontend Rules & Workflows**| **`clinic-app` (Angular)** | Feature Rules & Integrations | Live Queue, Pediatric Dosing, Drug Allergies, Quota Dashboard, Split Payments | **80** | **0** | 0.9 s |
-| **E2E Browser Automation** | **`clinic-app` (Playwright)** | Live Browser Automation | Desktop Chromium & Tablet iPad Viewport: Shell, i18n RTL, Theme, Validation, Tabs | **12** | **0** | 24.6 s |
-| **TOTAL** | **Full System Suite** | **Full Branch & Boundary** | **Entire Application Stack** | **507** | **0** | **~29.7 s** |
+| **E2E Browser Automation** | **`clinic-app` (Playwright)** | Live Browser Automation | Desktop Chromium & Tablet iPad: Shell, i18n RTL, Theme, Validation, Tabs, Password Toggle | **22** | **0** | 44.5 s |
+| **TOTAL** | **Full System Suite** | **Full Branch & Boundary** | **Entire Application Stack** | **547** | **0** | **~50.2 s** |
 
 ---
 
