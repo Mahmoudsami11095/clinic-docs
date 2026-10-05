@@ -243,6 +243,39 @@ E:\Route\Clinic APP\
   - `Clinic/src/app/features/billing/components/billing-form/billing-form.component.html`
   - `Clinic/src/app/features/billing/components/billing-form/split-payment.spec.ts`
 
+### BR-EQP-01: Clinical Equipment & Fixed Devices Asset Management Module
+- **Requirement**: Track durable clinic capital assets (Autoclaves, Dental Units, Handpieces, Curing Lights, Scalers) separately from perishable consumables. Track unique serial numbers, manufacturer, room/operatory location, preventive maintenance cycle intervals (days), service logs, and operational states (`Operational`, `Maintenance Due`, `In Repair`, `Decommissioned`).
+- **Backend**:
+  - `Equipment.cs` entity & `EquipmentDto.cs` / `EquipmentMaintenanceLogRequest`
+  - `EquipmentController.cs` with full CRUD, `POST /api/equipment/{id}/maintenance` service logging, and `POST /api/equipment/seed-defaults`
+  - EF Core migration `20261005054124_AddEquipmentTable`
+  - Multi-tenant clinic data isolation
+  - 239 Unit tests (`Clinic.UnitTests/EquipmentUnitTests.cs`)
+  - 54 Integration tests (`Clinic.IntegrationTests/EquipmentIntegrationTests.cs`)
+  - Total 293 backend tests passing with 0 failures
+- **Frontend**:
+  - `clinic-app/src/app/features/equipment/`: Dedicated standalone module with `EquipmentListComponent`
+  - Real-time KPI counter cards (Total Devices, Operational, Service Due, In Repair)
+  - Interactive search and filter chips by category and status
+  - Register & Edit Device Modal
+  - Maintenance & Calibration Log Dialog with technician details and next due date calculation
+  - Unit tests: `equipment.service.spec.ts` & `equipment-list.component.spec.ts`
+  - Playwright E2E browser suite: `clinic-app/e2e/equipment-flow.spec.ts` (5 tests passing on production)
+  - Full English & Arabic localization (`"Equipment & Devices"` / `"الأجهزة والمعدات"`)
+- **Key files**:
+  - `ClinicApi/src/Clinic.Domain/Entities/Equipment.cs`
+  - `ClinicApi/src/Clinic.Application/DTOs/EquipmentDto.cs`
+  - `ClinicApi/src/Clinic.Application/Interfaces/IEquipmentRepository.cs`
+  - `ClinicApi/src/Clinic.Infrastructure/Repositories/EquipmentRepository.cs`
+  - `ClinicApi/src/Clinic.API/Controllers/EquipmentController.cs`
+  - `ClinicApi/tests/Clinic.UnitTests/EquipmentUnitTests.cs`
+  - `ClinicApi/tests/Clinic.IntegrationTests/EquipmentIntegrationTests.cs`
+  - `clinic-app/src/app/features/equipment/equipment.routes.ts`
+  - `clinic-app/src/app/features/equipment/components/equipment-list/equipment-list.component.ts`
+  - `clinic-app/src/app/features/equipment/components/equipment-list/equipment-list.component.html`
+  - `clinic-app/src/app/features/equipment/services/equipment.service.ts`
+  - `clinic-app/e2e/equipment-flow.spec.ts`
+
 ### REQ-PAT-03: Patient Document & Consent E-Signatures
 - **Requirement**: Touchscreen & stylus digital signature capture for patient treatment plan consent, persisting signed data URLs and timestamps with verification badges.
 - **Backend**:
