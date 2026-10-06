@@ -1,7 +1,7 @@
 # Customer Requirements Document (CRD)
 ## Enterprise Smart Clinic Management System (Clinic App)
 
-| **Document Version** | 3.0.0 (Enterprise Enhancement Edition) |
+| **Document Version** | 3.1.0 (Patient Portal & Verification Edition) |
 | :--- | :--- |
 | **Status** | Approved Baseline for Enterprise Clinical Operations & Customer Sign-Off |
 | **Date** | 2026-10-06 |
@@ -18,6 +18,7 @@
 | **1.0.0** | 2026-09-25 | Healthcare Systems Analyst | Initial functional scope baseline across 12 core modules. |
 | **2.0.0** | 2026-09-25 | Lead Clinical Product Architect | Upgraded with Clinical Safety Business Rules, Output Specifications (Prescription/Receipt/Dental), Hardware/Thermal Printer Specifications, Regulatory Retention Rules, and Formal Scope Boundaries. |
 | **3.0.0** | 2026-10-06 | Principal Healthcare Enterprise Architect | Comprehensive production upgrade incorporating 12 Master Clinical & Operational Enhancements: Automated WhatsApp Hub & Batch Dispatch, Multi-Stage Treatment Planning with Patient Consent, Procedure-Linked Auto-Inventory Deduction Recipes, Live Operatory & Chair Status Board with Turnaround Timers, Global Spotlight Command Palette (`Ctrl+K`), Radiology Digital Caliper (mm) & Split-Screen Comparison Tools, AI Chair-Side Voice Scribe (SOAP Notes), Tiered Doctor Commission & Profit-Sharing Analytics, Offline PWA Resilience & Local Caching, 100% Arabic RTL Visual Parity, Route Lazy Loading & Bundle Budgets (<200 kB), and Angular 19 Signal Primitives Modernization. |
+| **3.1.0** | 2026-10-06 | Lead Healthcare Solutions Architect | Release v3.1.0: Patient Self-Service Portal (`/portal/login`), Passwordless OTP Authentication, Real-Time Waiting Queue Radar Tracker, 1-Click Printable Medical Prescriptions and Tax Invoice Receipts with Tamper-Proof QR Code Verification, and Automated 24/7 Cloud Health Telemetry. |
 
 ---
 

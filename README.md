@@ -5,9 +5,10 @@
 | :--- | :--- |
 | **SRS Specification** | v2.0.0 (IEEE Std 830 / ISO 29148 Standard) |
 | **User Manual & SOP** | v2.0.0 (Enterprise Enhancement Edition) |
-| **Total Automated Tests** | **657 Tests** (340 Backend [.NET 9.0] + 277 Frontend Specs + 40 Playwright E2E) — **100% Pass** |
+| **Total Automated Tests** | **663 Tests** (346 Backend [.NET 9.0: 273 Unit + 73 Integration] + 277 Frontend Specs + 40 Playwright E2E) — **100% Pass** |
 | **Frontend Production URL** | [https://clinic-app-ten-topaz.vercel.app](https://clinic-app-ten-topaz.vercel.app) |
 | **Backend Production API** | [https://clinic-api-123-a0ghf9aeb5ccawha.swedencentral-01.azurewebsites.net/api](https://clinic-api-123-a0ghf9aeb5ccawha.swedencentral-01.azurewebsites.net/api) |
+| **Active Release** | **v3.1.0 Enterprise Edition** (Patient Portal, QR Downloads & Cloud Canary Monitoring) |
 
 ---
 
@@ -16,8 +17,10 @@
 | Layer | Hosting Provider | Target URL / Probe | Status |
 | :--- | :--- | :--- | :---: |
 | **Frontend SPA / PWA** | **Vercel** (Global Edge CDN) | [https://clinic-app-ten-topaz.vercel.app/login](https://clinic-app-ten-topaz.vercel.app/login) | 🟢 **Live & Active** |
+| **Patient Portal PWA** | **Vercel** (Global Edge CDN) | [https://clinic-app-ten-topaz.vercel.app/portal/login](https://clinic-app-ten-topaz.vercel.app/portal/login) | 🟢 **Live & Active** |
 | **Backend REST API** | **Microsoft Azure** (Sweden Central) | [/api Root Endpoint](https://clinic-api-123-a0ghf9aeb5ccawha.swedencentral-01.azurewebsites.net/api) | 🟢 **Live & Active** |
 | **API Health Probe** | Azure App Service | [/api/health Check](https://clinic-api-123-a0ghf9aeb5ccawha.swedencentral-01.azurewebsites.net/api/health) | 🟢 **200 OK** |
+| **Liveness & Readiness** | Azure App Service | [/api/health/liveness](https://clinic-api-123-a0ghf9aeb5ccawha.swedencentral-01.azurewebsites.net/api/health/liveness) • [/api/health/readiness](https://clinic-api-123-a0ghf9aeb5ccawha.swedencentral-01.azurewebsites.net/api/health/readiness) | 🟢 **200 OK** |
 | **Real-Time SignalR** | Azure App Service WebSockets | `/hubs/notifications` | 🟢 **Connected** |
 | **Database Tier** | **Azure SQL Database** | Encrypted TLS 1.3 / Transparent Data Encryption (TDE) | 🟢 **Encrypted** |
 
@@ -44,6 +47,26 @@ The system has completed full implementation, automated test verification, and l
 │     Sharing Analytics & Payouts  │     Bundle Budgets (<200 kB)    │     Signal Primitives Modern│
 └──────────────────────────────────┴─────────────────────────────────┴─────────────────────────────┘
 ```
+
+---
+
+## 🚀 Release v3.1.0: Patient Self-Service Portal & Verification Ecosystem
+
+Building upon Release v3.0.0, Release v3.1.0 delivers patient empowerment, automated cloud observability, and cryptographic document verification:
+
+1. **Patient Self-Service PWA (`/portal/login` & `/portal/dashboard`):**
+   - Passwordless phone OTP authentication with JWT authorization.
+   - Doctor time slot discovery and instant 1-click self-booking.
+   - Live Waiting Queue Radar with real-time patient queue position and estimated wait time countdown.
+2. **1-Click Official Printable Documents with QR Verification:**
+   - **Official Prescription (`℞`):** A4 medical letterhead layout, complete medication schedule, doctor digital signature, and verification QR code linking to `/verify/rx/{id}`.
+   - **Official Payment Receipt:** Electronic tax compliance invoice receipt, itemized breakdown, clinic VAT stamp, and verification QR code linking to `/verify/inv/{id}`.
+   - Browser 1-click instant PDF export (`window.print()`) with print-optimized CSS.
+3. **Automated Cloud Monitoring & Quality CI/CD Gates:**
+   - Live Azure health probes: `/api/health`, `/api/health/readiness`, `/api/health/liveness`.
+   - GitHub Actions automated canary monitor running every 6 hours across production.
+   - Windows scheduled task watchdog monitoring live endpoints every 60 minutes.
+   - Branch-protection CI/CD test gates preventing any regression on PR merge.
 
 ---
 
