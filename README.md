@@ -112,6 +112,12 @@ The documentation suite provides exhaustive, ISO-compliant coverage across all a
 12. **[REPOSITORY_ARCHITECTURE_AND_API_REFERENCE.md](REPOSITORY_ARCHITECTURE_AND_API_REFERENCE.md) (v2.0.0)**
     - Clean Architecture solution structure, dependency injection topology, and REST endpoint catalog.
 
+13. **[AZURE_TELEMETRY_AND_HEALTH_MONITORING.md](AZURE_TELEMETRY_AND_HEALTH_MONITORING.md) (v3.0.0)**
+    - Cloud observability architecture, Application Insights integration, live liveness/readiness probes, KQL analytics, and incident response runbook.
+
+14. **[ENTERPRISE_FEATURE_ROADMAP_v3.1.0_v4.0.0.md](ENTERPRISE_FEATURE_ROADMAP_v3.1.0_v4.0.0.md)**
+    - Strategic engineering blueprint for future releases: Patient Self-Service Portal (v3.1.0), Encrypted Telehealth WebRTC (v3.2.0), AI Radiograph Computer Vision (v4.0.0), and Multi-Branch Enterprise Sync (v4.1.0).
+
 ---
 
 ## 🔬 Multi-Level Automated Test Scorecard
