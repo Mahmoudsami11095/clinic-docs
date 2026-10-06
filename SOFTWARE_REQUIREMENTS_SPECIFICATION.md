@@ -3,35 +3,29 @@
 
 | **Document Standard** | IEEE Std 830-1998 / ISO/IEC/IEEE 29148:2018 |
 | :--- | :--- |
-| **Document Version** | 1.0.0 (Engineering Baseline) |
-| **Status** | Approved Technical Specification |
-| **Date** | 2026-09-25 |
+| **Document Version** | 2.0.0 (Enterprise Enhancement Edition) |
+| **Status** | Approved Technical System Architecture & Engineering Specification |
+| **Date** | 2026-10-06 |
 | **Classification** | Technical System Architecture & Software Requirements Specification (SRS) |
-| **Primary Audience** | Software Developers, QA Engineers, DevOps Engineers, Technical Architects |
-| **Companion Document** | [CUSTOMER_REQUIREMENTS_DOCUMENT.md](CUSTOMER_REQUIREMENTS_DOCUMENT.md) (v2.0.0) |
+| **Primary Audience** | Software Engineers, Solution Architects, QA Automation Engineers, DevOps |
+| **Companion Document** | [CUSTOMER_REQUIREMENTS_DOCUMENT.md](CUSTOMER_REQUIREMENTS_DOCUMENT.md) (v3.0.0) |
 
 ---
 
 ## 1. Introduction
 
 ### 1.1 Purpose
-This Software Requirements Specification (SRS) defines the complete technical, architectural, behavioral, and contractual requirements for the **Smart Clinic Management System**. It translates the high-level business objectives outlined in the [Customer Requirements Document](CUSTOMER_REQUIREMENTS_DOCUMENT.md) into concrete, testable software engineering specifications for both the frontend single-page application (`Clinic`) and the backend RESTful API (`ClinicApi`).
+This Software Requirements Specification (SRS) defines the comprehensive technical architecture, data structures, RESTful contracts, WebSocket event protocols, and engineering standards for the **Enterprise Smart Clinic Management System**. It establishes the formal technical contract between the business requirements defined in the [Customer Requirements Document](CUSTOMER_REQUIREMENTS_DOCUMENT.md) (v3.0.0) and the production implementation across the Angular 19+ Single Page Application (`clinic-app`) and the ASP.NET Core 9.0 Clean Architecture backend (`ClinicApi`).
 
-### 1.2 Document Conventions & Identifier Tagging
-Requirements are tagged with unique alphanumeric identifiers for bi-directional traceability:
-- **`SRS-ARCH-xxx`**: Software Architecture & Component Structure
-- **`SRS-DATA-xxx`**: Data Models, Entity Schemas & Relational Constraints
-- **`SRS-API-xxx`**: REST API Endpoints, Request/Response Payloads & HTTP Statuses
-- **`SRS-SIG-xxx`**: Real-Time SignalR WebSocket Protocols
-- **`SRS-SEC-xxx`**: Security, Authentication, Authorization & Action Filters
-- **`SRS-UI-xxx`**: Frontend Architecture, Interceptors & State Management
-- **`SRS-NFR-xxx`**: Non-Functional Performance & Reliability Standards
-
-### 1.3 Intended Audience
-- **Backend Engineers:** For implementing .NET Clean Architecture handlers, entity mappings, and API endpoints.
-- **Frontend Engineers:** For building Angular reactive components, Signal stores, and form validations.
-- **QA & Automation Engineers:** For writing integration, contract, and end-to-end regression tests.
-- **DevOps Engineers:** For configuring CI/CD pipelines, containerization, and cloud resource quotas.
+### 1.2 Document Conventions & Traceability Taxonomy
+Requirements and architectural units are tagged with standardized alphanumeric codes:
+- **`SRS-ARCH-xxx`**: System Architecture, Layering & Component Decomposition
+- **`SRS-DATA-xxx`**: Entity Schemas, Relational Integrity & JSON Documents
+- **`SRS-API-xxx`**: RESTful API Endpoints, Request/Response Payloads & HTTP Statuses
+- **`SRS-SIG-xxx`**: Real-Time SignalR WebSocket Protocols & Event Contracts
+- **`SRS-SEC-xxx`**: Security, Authentication, Action Filters & RBAC
+- **`SRS-UI-xxx`**: Frontend Reactive Architecture, Signal Primitives & Performance
+- **`SRS-NFR-xxx`**: Non-Functional Performance Budgets, Latency & Reliability Benchmarks
 
 ---
 
@@ -40,50 +34,57 @@ Requirements are tagged with unique alphanumeric identifiers for bi-directional 
 ### 2.1 High-Level Component Decomposition
 
 ```
-┌────────────────────────────────────────────────────────────────────────┐
-│                        FRONTEND PRESENTATION LAYER                     │
-│                        (Angular 18+ SPA / PWA)                         │
-│  ├── Core Services: AuthService, ApiService, NotificationService       │
-│  ├── Feature Modules: Patients, Appointments, DentalChart, Billing     │
-│  └── Interceptors: AuthInterceptor (Bearer), ErrorInterceptor          │
-└───────────────────────────────────┬────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                        FRONTEND PRESENTATION TIER (clinic-app)                         │
+│                    (Angular 19+ SPA / PWA • Zoneless-Ready)                            │
+│                                                                                        │
+│  ├── Architecture: Standalone Components, Signal Primitives (input, output, model)     │
+│  ├── Core Services: AuthService, ApiService, ChairService, VoiceScribeService,         │
+│  │                  CommandPaletteService, WhatsAppService, OfflineService             │
+│  ├── Feature Domains: Patients, Appointments, Chairs, DentalChart, Billing,            │
+│  │                    Equipment, Inventory, Doctors, Radiology                         │
+│  ├── Performance: Route-Level Lazy Loading, @defer Block Chunking, Dynamic Leaflet     │
+│  └── Offline/PWA: Service Worker Cache, IndexedDB Local Outbox, OfflineBanner          │
+└───────────────────────────────────┬────────────────────────────────────────────────────┘
                                     │
-                                    │ HTTPS REST JSON / WSS SignalR
+                                    │ HTTPS REST JSON / WSS SignalR WebSockets
                                     ▼
-┌────────────────────────────────────────────────────────────────────────┐
-│                        BACKEND API & DOMAIN ENGINE                     │
-│                        (ASP.NET Core 8.0 Web API)                      │
-│                                                                        │
-│   [Clinic.API]                                                         │
-│   ├── Controllers: Auth, Patients, Appointments, Dental, Billing       │
-│   ├── Middleware: GlobalExceptionMiddleware, JwtBearerMiddleware       │
-│   ├── Hubs: NotificationHub (/hubs/notifications)                      │
-│   └── Filters: AssistantClinicRequirementFilter, SubscriptionFilter   │
-│                                    │                                   │
-│   [Clinic.Application]             ▼                                   │
-│   ├── Services & Interfaces: IPatientService, IBillingService          │
-│   ├── DTOs & ViewModels: PatientDto, PrescriptionDto, DentalLogDto     │
-│   └── Business Validators: FluentValidation Rules                      │
-│                                    │                                   │
-│   [Clinic.Domain]                  ▼                                   │
-│   ├── Domain Entities: Patient, Doctor, Appointment, DentalLog         │
-│   └── Enums: UserRole, AppointmentStatus, ToothStatus, BillingStatus   │
-│                                    │                                   │
-│   [Clinic.Infrastructure]          ▼                                   │
-│   ├── Persistence: ClinicDbContext (EF Core SQL Server)                │
-│   ├── Seeders: DataSeeder (Migrations & Admin Provisioning)            │
-│   └── Real-time: SignalRNotificationDispatcher                         │
-└───────────────────────────────────┬────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                        BACKEND API & DOMAIN ENGINE (ClinicApi)                         │
+│                     (ASP.NET Core 9.0 Clean Architecture)                              │
+│                                                                                        │
+│   [Clinic.API]                                                                         │
+│   ├── Controllers: Auth, Patients, Appointments, Chairs, Dental, Billing,              │
+│   │                Commission, Search, Materials, Equipment, ClinicalNotes, Subscriptions│
+│   ├── Middleware: GlobalExceptionMiddleware, JwtBearerMiddleware, ProblemDetails      │
+│   ├── Hubs: NotificationHub (/hubs/notifications) with SignalRNotificationDispatcher   │
+│   └── Filters: AssistantClinicRequirementFilter, SubscriptionFilter                   │
+│                                    │                                                   │
+│   [Clinic.Application]             ▼                                                   │
+│   ├── Interfaces: IPatientService, ICommissionService, IDentalLogRepository, etc.     │
+│   ├── DTOs: ChairDto, CommissionDto, SearchResultDto, DentalLogDto, PrescriptionDto   │
+│   └── Business Services: CommissionService, MaterialAlertService, PhoneHelper         │
+│                                    │                                                   │
+│   [Clinic.Domain]                  ▼                                                   │
+│   ├── Domain Entities: Patient, Doctor, Appointment, ClinicChair, DentalLog,          │
+│   │                    DoctorCommissionPlan, CommissionPayout, Material, Equipment    │
+│   └── Enums: UserRole, AppointmentStatus, ToothStatus, BillingStatus, ChairStatus      │
+│                                    │                                                   │
+│   [Clinic.Infrastructure]          ▼                                                   │
+│   ├── Persistence: ClinicDbContext (Entity Framework Core 9.0 for SQL Server)          │
+│   ├── Query Filters: Soft-Delete Global Filter (IsDeleted == false)                    │
+│   └── Real-time: IHubContext<NotificationHub> Direct SignalR Injection                 │
+└───────────────────────────────────┬────────────────────────────────────────────────────┘
                                     │
-                                    │ EF Core TCP/TDS (Encrypted)
+                                    │ EF Core TCP/TDS (Encrypted TLS 1.3)
                                     ▼
-┌────────────────────────────────────────────────────────────────────────┐
-│                        PERSISTENCE & DATA STORAGE                      │
-│                        (Microsoft Azure SQL Database)                  │
-│   ├── Relational Tables (Normalized 3NF, Foreign Keys, Indexes)        │
-│   ├── Global Query Filters: Soft-Delete (IsDeleted == false)           │
-│   └── Blob Storage: Radiology Scans & File Attachments                 │
-└────────────────────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│                        PERSISTENCE & DATA STORAGE TIER                                 │
+│                        (Microsoft Azure SQL Database)                                  │
+│   ├── Normalized Relational Tables (3NF, Foreign Keys, Clustered/Non-Clustered Indexes)│
+│   ├── Document Columns: Serialized Status JSON Arrays, Recipe ConsumedMaterials        │
+│   └── Blob Storage: Encrypted High-Resolution Radiographs & Diagnostic Attachments      │
+└────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -99,10 +100,16 @@ erDiagram
     CLINIC ||--o{ PATIENT : registers
     CLINIC ||--o{ APPOINTMENT : hosts
     CLINIC ||--o{ BILLING_RECORD : issues
+    CLINIC ||--o{ CLINIC_CHAIR : operates
+    CLINIC ||--o{ MATERIAL : stocks
 
     PATIENT ||--o{ APPOINTMENT : books
     DOCTOR ||--o{ APPOINTMENT : attends
+    CLINIC_CHAIR ||--o| PATIENT : seats
+    CLINIC_CHAIR ||--o| DOCTOR : assigned_to
+
     PATIENT ||--o{ DENTAL_LOG : records
+    DOCTOR ||--o{ DENTAL_LOG : performs
     PATIENT ||--o{ PRESCRIPTION : receives
     DOCTOR ||--o{ PRESCRIPTION : writes
     APPOINTMENT ||--o| PRESCRIPTION : generates
@@ -110,9 +117,15 @@ erDiagram
     PATIENT ||--o{ BILLING_RECORD : billed_to
     APPOINTMENT ||--o{ BILLING_RECORD : produces
     BILLING_RECORD ||--o{ PAYMENT_LOG : receives_payments
-    
+
+    DOCTOR ||--o{ DOCTOR_COMMISSION_PLAN : configures
+    DOCTOR ||--o{ COMMISSION_PAYOUT : earns
+    COMMISSION_PAYOUT ||--o{ COMMISSION_PAYOUT_ITEM : details
+
     PRESCRIPTION ||--o{ MEDICATION_ITEM : contains
     PATIENT ||--o{ RADIOLOGY_RECORD : scanned_for
+    PATIENT ||--o{ CLINICAL_NOTE : documents
+    CLINICAL_NOTE ||--o{ CLINICAL_NOTE_AMENDMENT : appends
 ```
 
 ---
@@ -123,306 +136,253 @@ erDiagram
 | Field Name | Data Type | Nullable | Description / Constraints |
 | :--- | :--- | :---: | :--- |
 | `Id` | `VARCHAR(36)` | NO | Primary Key (GUID string). |
-| `FirstName` | `NVARCHAR(100)` | NO | Patient given name. |
-| `LastName` | `NVARCHAR(100)` | NO | Patient surname. |
-| `Gender` | `VARCHAR(20)` | NO | Enum string (`"Male"`, `"Female"`). |
+| `FirstName` | `NVARCHAR(100)` | NO | Given name. |
+| `LastName` | `NVARCHAR(100)` | NO | Surname. |
+| `Gender` | `VARCHAR(20)` | NO | `"Male"`, `"Female"`. |
 | `DateOfBirth` | `VARCHAR(30)` | NO | ISO date string (`"YYYY-MM-DD"`). |
 | `CountryCode` | `VARCHAR(10)` | NO | Default: `"+20"`. |
-| `PhoneNumber` | `VARCHAR(30)` | NO | Indexed; unique collision detection per clinic. |
-| `Email` | `VARCHAR(150)` | YES | Optional contact email. |
-| `BloodGroup` | `VARCHAR(10)` | YES | `"A+"`, `"A-"`, `"B+"`, `"B-"`, `"AB+"`, `"AB-"`, `"O+"`, `"O-"`. |
-| `Allergies` | `NVARCHAR(MAX)`| YES | Comma-separated or text of known drug allergies. |
-| `ChronicDiseases` | `NVARCHAR(MAX)`| YES | Chronic health conditions. |
-| `PastIllnesses` | `NVARCHAR(MAX)`| YES | Significant medical history. |
+| `PhoneNumber` | `VARCHAR(30)` | NO | Indexed; collision detection per clinic branch. |
+| `Email` | `VARCHAR(150)` | YES | Contact email. |
+| `BloodGroup` | `VARCHAR(10)` | YES | ABO blood type. |
+| `Allergies` | `NVARCHAR(MAX)`| YES | Comma-separated or text of known drug allergies. Cross-referenced by `BR-RX-01`. |
+| `ChronicDiseases` | `NVARCHAR(MAX)`| YES | Documented chronic medical conditions. |
+| `ConsentSignature`| `NVARCHAR(MAX)`| YES | Base64 PNG representation of digital consent signature (`REQ-PAT-04`). |
+| `ConsentSignedAt` | `DATETIME2` | YES | Timestamp of digital consent signature capture. |
 | `ClinicId` | `VARCHAR(36)` | YES | Foreign Key $\rightarrow$ `Clinics.Id`. |
-| `RegistrationDate`| `VARCHAR(30)` | NO | Timestamp of intake. |
+| `RegistrationDate`| `VARCHAR(30)` | NO | Intake ISO timestamp. |
 | `IsDeleted` | `BIT` | NO | Default: `0` (False). Global EF Core soft-delete filter applied. |
 
 ---
 
-#### `SRS-DATA-02: DentalLog Entity Schema`
+#### `SRS-DATA-02: ClinicChair Entity Schema (Operatory Board)`
+| Field Name | Data Type | Nullable | Description / Constraints |
+| :--- | :--- | :---: | :--- |
+| `Id` | `VARCHAR(36)` | NO | Primary Key (GUID string). |
+| `ClinicId` | `VARCHAR(36)` | NO | Foreign Key $\rightarrow$ `Clinics.Id`. Scopes chair to clinic branch. |
+| `RoomNumber` | `NVARCHAR(50)` | NO | Room/Suite identifier (e.g., `"101"`, `"Operatory 1"`). |
+| `ChairName` | `NVARCHAR(100)` | NO | Display name (e.g., `"Operatory 1 - Restorative Suite"`). |
+| `Status` | `VARCHAR(30)` | NO | FSM State: `"available"`, `"occupied"`, `"cleaning"`, `"maintenance"`. |
+| `CurrentPatientId`| `VARCHAR(36)` | YES | Foreign Key $\rightarrow$ `Patients.Id` (Populated during occupancy). |
+| `CurrentPatientName`| `NVARCHAR(150)`| YES | Denormalized display snapshot for zero-join board rendering. |
+| `CurrentDoctorId` | `VARCHAR(36)` | YES | Foreign Key $\rightarrow$ `Doctors.Id`. |
+| `CurrentDoctorName`| `NVARCHAR(150)`| YES | Denormalized attending doctor name. |
+| `ProcedureName` | `NVARCHAR(200)`| YES | Clinical procedure currently being performed chair-side. |
+| `OccupancyStartedAt`| `DATETIME2`| YES | UTC timestamp when status switched to `occupied`. Drives elapsed timer. |
+| `CleaningStartedAt`| `DATETIME2` | YES | UTC timestamp when status switched to `cleaning`. Drives sterilization timer. |
+| `Notes` | `NVARCHAR(500)`| YES | Operational notes (e.g., special equipment setup). |
+| `UpdatedAt` | `DATETIME2` | NO | UTC timestamp of last status mutation. |
+
+---
+
+#### `SRS-DATA-03: DoctorCommissionPlan Entity Schema`
+| Field Name | Data Type | Nullable | Description / Constraints |
+| :--- | :--- | :---: | :--- |
+| `Id` | `VARCHAR(36)` | NO | Primary Key (GUID string). |
+| `DoctorId` | `VARCHAR(36)` | NO | Foreign Key $\rightarrow$ `Doctors.Id`. Unique per clinic. |
+| `ClinicId` | `VARCHAR(36)` | YES | Foreign Key $\rightarrow$ `Clinics.Id`. |
+| `DefaultCommissionRate`| `DECIMAL(5,2)`| NO | Base commission percentage (e.g., `30.00` for 30%). |
+| `LabFeeDeductionType` | `VARCHAR(30)` | NO | Lab deduction strategy: `"BeforeCommission"`, `"AfterCommission"`, `"None"`. |
+| `SpecialtyRatesJson` | `NVARCHAR(MAX)`| NO | Serialized JSON map of category overrides (e.g., `{"Endodontics":40.0,"Implantology":35.0}`). |
+| `IsActive` | `BIT` | NO | Default: `1` (True). Active plan flag. |
+| `CreatedAt` | `DATETIME2` | NO | UTC creation timestamp. |
+| `UpdatedAt` | `DATETIME2` | YES | UTC modification timestamp. |
+
+---
+
+#### `SRS-DATA-04: CommissionPayout & CommissionPayoutItem Entity Schemas`
+- **`CommissionPayout` Table:**
+  - `Id` (`VARCHAR(36)`, PK)
+  - `DoctorId` (`VARCHAR(36)`, FK)
+  - `ClinicId` (`VARCHAR(36)`, FK)
+  - `PeriodStart` (`DATETIME2`, Start date of settlement cycle)
+  - `PeriodEnd` (`DATETIME2`, End date of settlement cycle)
+  - `TotalGrossRevenue` (`DECIMAL(18,2)`, Sum of procedure fees)
+  - `TotalLabFeesDeducted` (`DECIMAL(18,2)`, Sum of external lab deductions)
+  - `TotalNetCommission` (`DECIMAL(18,2)`, Net payout amount earned by doctor)
+  - `ClinicRetainedRevenue` (`DECIMAL(18,2)`, Net profit retained by clinic)
+  - `Status` (`VARCHAR(30)`, Lifecycle: `"Draft"`, `"Approved"`, `"Paid"`, `"Voided"`)
+  - `PaymentReference` (`VARCHAR(100)`, Bank transfer or cheque voucher ID)
+  - `PaidAt` (`DATETIME2`, Settlement timestamp)
+  - `Notes` (`NVARCHAR(500)`, Administrative audit notes)
+  - `CreatedAt` (`DATETIME2`)
+- **`CommissionPayoutItem` Table (Owned Collection):**
+  - `Id` (`VARCHAR(36)`, PK)
+  - `PayoutId` (`VARCHAR(36)`, FK)
+  - `BillingRecordId` (`VARCHAR(36)`, FK)
+  - `ProcedureName` (`NVARCHAR(200)`)
+  - `GrossFee` (`DECIMAL(18,2)`)
+  - `LabFee` (`DECIMAL(18,2)`)
+  - `CommissionRate` (`DECIMAL(5,2)`)
+  - `NetCommission` (`DECIMAL(18,2)`)
+
+---
+
+#### `SRS-DATA-05: DentalLog Entity Schema (Treatment Plans & Recipes)`
 | Field Name | Data Type | Nullable | Description / Constraints |
 | :--- | :--- | :---: | :--- |
 | `Id` | `VARCHAR(36)` | NO | Primary Key (GUID string). |
 | `PatientId` | `VARCHAR(36)` | NO | Foreign Key $\rightarrow$ `Patients.Id`. |
-| `ToothNumber` | `VARCHAR(10)` | NO | Permanent (`"1"`–`"32"` or `"11"`–`"48"`) or Deciduous (`"A"`–`"T"` / `"51"`–`"85"`). |
+| `ToothNumber` | `VARCHAR(10)` | NO | Tooth number (Permanent `1`–`32`/`11`–`48` or Deciduous `A`–`T`/`51`–`85`). |
 | `DoctorId` | `VARCHAR(36)` | NO | Attending dentist ID. |
 | `DoctorName` | `NVARCHAR(150)` | NO | Snapshot of dentist name. |
 | `Date` | `VARCHAR(30)` | NO | Date recorded. |
-| `Status` | `NVARCHAR(MAX)`| NO | **JSON Array** of serialized `ToothStatus` enum strings. |
-| `PainLevel` | `INT` | NO | Numerical visual analog scale ($0$ to $10$). |
-| `PainDetails` | `NVARCHAR(500)`| YES | Qualitative pain description. |
-| `Treatment` | `NVARCHAR(500)`| YES | Procedure description (e.g., Composite Filling, Root Canal). |
-| `Medication` | `NVARCHAR(500)`| YES | Chair-side administered drugs. |
+| `Status` | `NVARCHAR(MAX)`| NO | **JSON Array** of `ToothStatus` enum strings (e.g., `["Caries","Filled"]`). |
+| `PainLevel` | `INT` | NO | VAS scale ($0$ to $10$). |
+| `PainDetails` | `NVARCHAR(500)`| YES | Qualitative pain notes. |
+| `Treatment` | `NVARCHAR(500)`| YES | Procedural description (e.g., `"Composite Restoration"`). |
+| `Stage` | `VARCHAR(30)` | NO | Lifecycle: `"proposed"`, `"accepted"`, `"in_progress"`, `"completed"`, `"invoiced"`. |
+| `Cost` | `DECIMAL(18,2)`| NO | Agreed procedural tariff fee. |
+| `InvoiceId` | `VARCHAR(36)` | YES | Linked `BillingRecord.Id` when pushed to billing. |
 | `IsPlanned` | `BIT` | NO | `1` = Proposed / Treatment Plan; `0` = Completed. |
-| `ConsumedMaterials`| `NVARCHAR(MAX)`| NO | **JSON Array** of consumed material DTOs `[{"name":"Composite A2","quantity":1}]`. |
+| `ConsumedMaterials`| `NVARCHAR(MAX)`| NO | **JSON Array** of recipe DTOs: `[{"materialId":"...","name":"Composite A2","quantity":1}]`. Deducted upon completion (`BR-INV-03`). |
 | `ClinicId` | `VARCHAR(36)` | YES | Foreign Key $\rightarrow$ `Clinics.Id`. |
-
----
-
-#### `SRS-DATA-03: Prescription & MedicationItem Entity Schema`
-- **`Prescriptions` Table:**
-  - `Id` (`VARCHAR(36)`, PK)
-  - `PatientId` (`VARCHAR(36)`, FK)
-  - `AppointmentId` (`VARCHAR(36)`, FK, Unique)
-  - `DoctorId` (`VARCHAR(36)`, FK)
-  - `Date` (`VARCHAR(30)`)
-  - `Notes` (`NVARCHAR(MAX)`, Optional)
-- **`MedicationItems` (EF Core Owned Entity Collection):**
-  - Configured as owned JSON collection or child relational table:
-  - `Name` (`NVARCHAR(150)`, Drug trade or generic name)
-  - `Dosage` (`NVARCHAR(50)`, e.g., `"500mg"`, `"10ml"`)
-  - `Frequency` (`NVARCHAR(100)`, e.g., `"Every 8 hours"`)
-  - `Duration` (`NVARCHAR(50)`, e.g., `"7 days"`)
-
----
-
-#### `SRS-DATA-04: BillingRecord & PaymentLog Entity Schema`
-- **`BillingRecords` Table:**
-  - `Id` (`VARCHAR(36)`, PK)
-  - `PatientId` (`VARCHAR(36)`, FK)
-  - `AppointmentId` (`VARCHAR(36)`, FK, Nullable)
-  - `Amount` (`DECIMAL(18,2)`, Total gross billed amount)
-  - `PaidAmount` (`DECIMAL(18,2)`, Cumulative amount collected)
-  - `Status` (`VARCHAR(30)`, Enum: `"paid"`, `"pending"`, `"overdue"`, `"partially_paid"`)
-  - `DateIssued` (`VARCHAR(30)`)
-  - `PaymentMethod` (`VARCHAR(50)`, e.g., `"Cash"`, `"Card"`, `"Split"`)
-  - `Description` (`NVARCHAR(500)`)
-  - `ClinicId` (`VARCHAR(36)`, FK)
-- **`PaymentLogs` (Owned Entity Collection):**
-  - `PaymentId` (`VARCHAR(36)`)
-  - `Amount` (`DECIMAL(18,2)`)
-  - `PaymentDate` (`VARCHAR(30)`)
-  - `Method` (`VARCHAR(50)`)
-  - `TransactionReference` (`VARCHAR(100)`)
-
----
-
-#### `SRS-DATA-05: Domain Enums Specification`
-
-```csharp
-public enum UserRole 
-{ 
-    Admin = 0, 
-    Doctor = 1, 
-    Assistant = 2, 
-    Patient = 3 
-}
-
-public enum AppointmentStatus 
-{ 
-    Scheduled = 0, 
-    Completed = 1, 
-    Cancelled = 2 
-}
-
-public enum ToothStatus 
-{ 
-    Healthy = 0, 
-    Caries = 1, 
-    Filled = 2, 
-    UnderTreatment = 3, 
-    Missing = 4, 
-    Crown = 5, 
-    RootCanal = 6, 
-    Impacted = 7, 
-    Fractured = 8, 
-    Implant = 9 
-}
-
-public enum BillingStatus 
-{ 
-    Paid = 0, 
-    Pending = 1, 
-    Overdue = 2, 
-    PartiallyPaid = 3 
-}
-```
 
 ---
 
 ## 4. API Endpoint & Data Contract Specifications
 
-All API routes are served under the prefix `/api/`. Request and response bodies are strictly formatted as `application/json; charset=utf-8` using camelCase property naming.
+All API routes are served under prefix `/api/`. Request and response bodies are strictly formatted as `application/json; charset=utf-8` using camelCase property naming.
 
 ---
 
-### 4.1 Authentication & User Session Endpoints
+### 4.1 Operatory & Chair Management Endpoints
 
-#### `SRS-API-AUTH-01: User Login`
-- **Method:** `POST`
-- **Route:** `/api/auth/login`
-- **Authentication:** Anonymous (`[AllowAnonymous]`)
+#### `SRS-API-OPS-01: Get Operatory Chairs`
+- **Method:** `GET`
+- **Route:** `/api/chairs?clinicId={clinicId}`
+- **Authentication:** `[Authorize(Roles = "admin,doctor,assistant,receptionist")]`
+- **Response `200 OK`:** Returns array of `ClinicChair` objects. Auto-seeds 4 standard operatories if none exist for a new clinic.
+
+#### `SRS-API-OPS-02: Update Chair Status`
+- **Method:** `PUT`
+- **Route:** `/api/chairs/{id}/status`
 - **Request Payload:**
   ```json
   {
-    "email": "doctor@clinic.com",
-    "password": "StrongPassword123!"
+    "status": "cleaning",
+    "notes": "Full operatory disinfection in progress"
   }
   ```
-- **Response `200 OK`:**
+- **Side Effect:** Dispatches SignalR `ReceiveChairStatusUpdate` event to group `clinic_{clinicId}`.
+
+#### `SRS-API-OPS-03: Assign Patient to Chair`
+- **Method:** `POST`
+- **Route:** `/api/chairs/{id}/assign`
+- **Request Payload:**
   ```json
   {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-    "user": {
-      "id": "usr-881249b2-32a1-4322-98ba-23fbc01122a1",
-      "email": "doctor@clinic.com",
-      "firstName": "Ahmed",
-      "lastName": "Hassan",
-      "role": "Doctor",
-      "clinicId": "cln-99881122"
-    }
+    "patientId": "pat-10084",
+    "patientName": "Mahmoud Samy",
+    "doctorId": "doc-55412",
+    "doctorName": "Dr. Tarek Dentist",
+    "procedureName": "Root Canal - Tooth #16",
+    "notes": "Prepare endodontic motor and apex locator"
   }
   ```
-- **Error Responses:**
-  - `400 Bad Request`: Validation failure (missing email/password).
-  - `401 Unauthorized`: Invalid credentials.
+- **Response `200 OK`:** Updates chair status to `occupied`, initiates `occupancyStartedAt`, broadcasts real-time update.
+
+#### `SRS-API-OPS-04: Release Chair & Complete Cleaning`
+- **Method:** `POST`
+- **Route:** `/api/chairs/{id}/release` $\rightarrow$ Transitions status to `cleaning`, sets `cleaningStartedAt`.
+- **Route:** `/api/chairs/{id}/complete-cleaning` $\rightarrow$ Transitions status to `available`, clears patient data.
 
 ---
 
-### 4.2 Patient Management Endpoints
+### 4.2 Doctor Commission & Profit-Sharing Endpoints
 
-#### `SRS-API-PAT-01: Get Paginated Patients`
+#### `SRS-API-COMM-01: Get Commission Analytics`
 - **Method:** `GET`
-- **Route:** `/api/patients?search={query}&page={page}&pageSize={size}`
-- **Authentication:** `[Authorize(Roles = "Admin,Doctor,Assistant")]`
+- **Route:** `/api/commission/analytics?clinicId={cid}&doctorId={did}&startDate={d1}&endDate={d2}`
 - **Response `200 OK`:**
   ```json
   {
-    "items": [
+    "totalGrossRevenue": 45000.00,
+    "totalLabFeesDeducted": 6500.00,
+    "totalNetCommission": 13500.00,
+    "clinicRetainedRevenue": 25000.00,
+    "doctorBreakdowns": [
       {
-        "id": "pat-10023",
-        "firstName": "Sara",
-        "lastName": "Ibrahim",
-        "gender": "Female",
-        "dateOfBirth": "1995-04-12",
-        "contactNumber": "+20 100 987 6543",
-        "allergies": "Penicillin",
-        "chronicDiseases": "None",
+        "doctorId": "doc-55412",
+        "doctorName": "Dr. Tarek Dentist",
+        "grossRevenue": 28000.00,
+        "labFeesDeducted": 4200.00,
+        "netCommission": 9520.00,
+        "completedProceduresCount": 34
+      }
+    ]
+  }
+  ```
+
+#### `SRS-API-COMM-02: Upsert Commission Plan`
+- **Method:** `POST`
+- **Route:** `/api/commission/plans`
+- **Authentication:** `[Authorize(Roles = "admin")]`
+- **Request Payload:**
+  ```json
+  {
+    "doctorId": "doc-55412",
+    "clinicId": "cln-99881122",
+    "defaultCommissionRate": 30.0,
+    "labFeeDeductionType": "BeforeCommission",
+    "specialtyRatesJson": "{\"Endodontics\": 40.0, \"Implantology\": 35.0}"
+  }
+  ```
+
+#### `SRS-API-COMM-03: Settle Commission Payout`
+- **Method:** `PUT`
+- **Route:** `/api/commission/payouts/{id}/settle`
+- **Request Payload:**
+  ```json
+  {
+    "paymentReference": "CIB-WIRE-2026-99812",
+    "notes": "Settled via automated corporate bank transfer"
+  }
+  ```
+- **Response `200 OK`:** Updates payout to `Paid`, records `paidAt` timestamp, audit-locks line items.
+
+---
+
+### 4.3 Global Spotlight Search Endpoint
+
+#### `SRS-API-SRCH-01: Spotlight Quick Search`
+- **Method:** `GET`
+- **Route:** `/api/search?q={term}&limit={limit}`
+- **Authentication:** `[Authorize]`
+- **Response `200 OK`:**
+  ```json
+  {
+    "patients": [
+      {
+        "id": "pat-10084",
+        "name": "Mahmoud Samy",
+        "phone": "+201555102395",
+        "gender": "Male",
         "clinicId": "cln-99881122"
       }
     ],
-    "totalCount": 142,
-    "page": 1,
-    "pageSize": 20
-  }
-  ```
-
-#### `SRS-API-PAT-02: Create Patient`
-- **Method:** `POST`
-- **Route:** `/api/patients`
-- **Request Payload:**
-  ```json
-  {
-    "firstName": "Mahmoud",
-    "lastName": "Samy",
-    "gender": "Male",
-    "dateOfBirth": "1992-08-15",
-    "countryCode": "+20",
-    "phoneNumber": "1555102395",
-    "email": "msami11095@gmail.com",
-    "allergies": "Aspirin",
-    "chronicDiseases": "Asthma",
-    "clinicId": "cln-99881122"
-  }
-  ```
-- **Response `201 Created`:** Returns created `PatientDto` with assigned `Location` header.
-
----
-
-### 4.3 Appointment & Queue Endpoints
-
-#### `SRS-API-APT-01: Create Appointment`
-- **Method:** `POST`
-- **Route:** `/api/appointments`
-- **Request Payload:**
-  ```json
-  {
-    "patientId": "pat-10023",
-    "doctorId": "doc-55412",
-    "date": "2026-09-26T14:30:00Z",
-    "type": "Dental Procedure",
-    "notes": "Patient reports severe pain in upper molar",
-    "clinicId": "cln-99881122"
-  }
-  ```
-- **Response `200 OK` / `201 Created`:** Returns created `AppointmentDto`.
-
-#### `SRS-API-APT-02: Update Appointment Status (Check-In / Complete)`
-- **Method:** `PATCH` / `PUT`
-- **Route:** `/api/appointments/{id}/status`
-- **Request Payload:**
-  ```json
-  {
-    "status": "Completed"
-  }
-  ```
-- **Side Effect:** Dispatches real-time SignalR notification to connected clinic group (`QueueUpdated`).
-
----
-
-### 4.4 Prescription Endpoints
-
-#### `SRS-API-RX-01: Create Prescription`
-- **Method:** `POST`
-- **Route:** `/api/prescriptions`
-- **Authentication:** `[Authorize(Roles = "Doctor,Admin")]`
-- **Request Payload:**
-  ```json
-  {
-    "appointmentId": "apt-77112",
-    "patientId": "pat-10023",
-    "doctorId": "doc-55412",
-    "date": "2026-09-25",
-    "notes": "Take medications with food. Avoid cold beverages.",
-    "medications": [
+    "doctors": [
       {
-        "name": "Augmentin 1g",
-        "dosage": "1 Tablet",
-        "frequency": "Every 12 hours",
-        "duration": "7 days"
-      },
-      {
-        "name": "Cataflam 50mg",
-        "dosage": "1 Tablet",
-        "frequency": "When needed for pain",
-        "duration": "3 days"
+        "id": "doc-55412",
+        "name": "Dr. Tarek Dentist",
+        "specialization": "Endodontics",
+        "email": "tarek@clinic.com"
       }
-    ]
-  }
-  ```
-- **Response `200 OK`:** Returns saved `PrescriptionDto`.
-
----
-
-### 4.5 Dental Charting Endpoints
-
-#### `SRS-API-DEN-01: Get Patient Dental History`
-- **Method:** `GET`
-- **Route:** `/api/dental/patient/{patientId}`
-- **Response `200 OK`:** Array of `DentalLogDto` records representing all documented teeth, surface caries, and procedures.
-
-#### `SRS-API-DEN-02: Save Tooth Log & Procedure`
-- **Method:** `POST`
-- **Route:** `/api/dental/log`
-- **Request Payload:**
-  ```json
-  {
-    "patientId": "pat-10023",
-    "toothNumber": "16",
-    "status": ["Caries", "Filled"],
-    "painLevel": 6,
-    "painDetails": "Thermal sensitivity to cold stimuli",
-    "treatment": "Composite Restoration (Occlusal-Mesial)",
-    "isPlanned": false,
-    "consumedMaterials": [
+    ],
+    "chairs": [
       {
+        "id": "chr-101",
+        "roomNumber": "101",
+        "chairName": "Operatory 1 - Restorative Suite",
+        "status": "available"
+      }
+    ],
+    "materials": [
+      {
+        "id": "mat-302",
         "name": "Filtek Z250 Composite Shade A2",
-        "quantity": 1
-      },
-      {
-        "name": "Mepivacaine 2% Local Anesthetic",
-        "quantity": 1
+        "category": "Restorative",
+        "quantity": 18,
+        "unit": "compule"
       }
     ]
   }
@@ -430,21 +390,42 @@ All API routes are served under the prefix `/api/`. Request and response bodies 
 
 ---
 
-### 4.6 Standard Error Handling (RFC 7807 ProblemDetails)
-All error responses from `ClinicApi` conform to **RFC 7807 Problem Details for HTTP APIs**:
+### 4.4 Dental Treatment Plan & Recipe Endpoints
 
-```json
-{
-  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
-  "title": "One or more validation errors occurred.",
-  "status": 400,
-  "detail": "Patient with phone number '+201555102395' already exists in clinic 'cln-99881122'.",
-  "instance": "/api/patients",
-  "errors": {
-    "phoneNumber": ["Duplicate phone number detected."]
+#### `SRS-API-DEN-03: Push Completed Procedure to Billing`
+- **Method:** `POST`
+- **Route:** `/api/dental/{id}/push-to-billing`
+- **Validation:** Procedure must have `Stage == "completed"`.
+- **Side Effect:** Generates a new `BillingRecord` item, transitions procedure stage to `"invoiced"`, and links `InvoiceId`.
+
+---
+
+### 4.5 WhatsApp Communication & Batch Reminders
+
+#### `SRS-API-NOTIF-02: Send Appointment Reminder`
+- **Method:** `POST`
+- **Route:** `/api/appointments/{id}/send-reminder`
+- **Response `200 OK`:**
+  ```json
+  {
+    "success": true,
+    "whatsappUrl": "https://wa.me/201555102395?text=Dear%20Mahmoud...",
+    "sentAt": "2026-10-06T12:00:00Z",
+    "reminderCount": 1
   }
-}
-```
+  ```
+
+#### `SRS-API-NOTIF-03: Batch Dispatch 24h Reminders`
+- **Method:** `POST`
+- **Route:** `/api/appointments/send-batch-reminders`
+- **Response `200 OK`:**
+  ```json
+  {
+    "totalEligible": 15,
+    "dispatchedCount": 15,
+    "timestamp": "2026-10-06T12:05:00Z"
+  }
+  ```
 
 ---
 
@@ -453,81 +434,93 @@ All error responses from `ClinicApi` conform to **RFC 7807 Problem Details for H
 ### 5.1 Connection Configuration
 - **Hub Route:** `/hubs/notifications`
 - **Transport Protocols:** WebSockets (Primary), Server-Sent Events (Fallback), Long Polling (Final Fallback).
-- **Authentication:** Bearer token transmitted via query string `?access_token={jwt}` for WebSocket upgrade requests.
+- **Authentication:** Bearer token transmitted via query parameter `?access_token={jwt}` for WebSocket handshake.
 
-### 5.2 Server-to-Client Event Contracts
+### 5.2 Server-to-Client Real-Time Event Contracts
 
 | Event Name | Target Group | Payload Schema | Trigger Condition |
 | :--- | :--- | :--- | :--- |
-| **`ReceiveNotification`** | `Clinic_{ClinicId}` | `{"id":"...","title":"Patient Arrived","message":"Ahmed Hassan is waiting","type":"info"}` | Front desk marks patient as "Checked In". |
+| **`ReceiveChairStatusUpdate`** | `clinic_{clinicId}` / All | `ClinicChair` JSON DTO (Id, Room, ChairName, Status, Patient, Doctor, Timers) | Any operatory chair assignment, release, or cleaning completion (`BR-OPS-01`). |
+| **`ReceiveNotification`** | `Clinic_{ClinicId}` | `{"id":"...","title":"...","message":"...","type":"info"}` | Patient check-in, appointment cancellation, or priority alert. |
 | **`QueueUpdated`** | `Doctor_{DoctorId}` | `{"doctorId":"...","waitingCount":4,"timestamp":"..."}` | Any queue status transition. |
-| **`LowStockAlert`** | `Clinic_{ClinicId}` | `{"materialId":"...","materialName":"Mepivacaine","currentStock":3,"minThreshold":10}` | Material stock drops below reorder point. |
+| **`LowStockAlert`** | `Clinic_{ClinicId}` | `{"materialId":"...","materialName":"Mepivacaine","currentStock":4,"minThreshold":5}` | Procedure auto-deduction reduces stock to or below minimum threshold (`BR-INV-02`). |
 
 ---
 
 ## 6. Security, Authorization & Filter Pipeline
 
-### 6.1 JWT Bearer Token Specification
-- **Algorithm:** HMAC-SHA256 (`HS256`).
-- **Standard Claims:** `sub` (User ID), `email`, `jti` (Token GUID), `exp` (Expiry: 24 Hours).
-- **Custom Claims:**
-  - `role`: Maps to `UserRole` (`Admin`, `Doctor`, `Assistant`, `Patient`).
-  - `clinicId`: Unique ID of the user's primary clinic branch.
-
-### 6.2 ASP.NET Core Action Filters
-
-#### `SRS-SEC-FILT-01: AssistantClinicRequirementFilter`
-- **Logic:** Executed before any controller action for users with `UserRole == Assistant`.
-- **Enforcement:** Inspects the request context to verify that the assistant is explicitly linked to the target `ClinicId` via the `UserClinics` relational table. If unassociated, the filter immediately short-circuits the pipeline with **`403 Forbidden`**.
-
-#### `SRS-SEC-FILT-02: SubscriptionActiveFilter`
-- **Logic:** Applied to data mutation endpoints (`POST`, `PUT`, `DELETE`).
-- **Enforcement:** Verifies that the clinic associated with the user possesses an active subscription (`SubscriptionSetting.IsActive == true` and `ExpiryDate > UtcNow`). If expired, mutations are blocked with **`402 Payment Required`**.
+### 6.1 Action Filters Architecture
+- **`AssistantClinicRequirementFilter`:** Validates assistant belongs to target clinic before executing mutations. Short-circuits with `403 Forbidden` if unassigned.
+- **`SubscriptionFilter`:** Enforces clinic subscription active status on mutation endpoints. Returns `402 Payment Required` if expired.
+- **`ReceptionistClinicalPrivacyFilter`:** Restricts clinical encounter notes and diagnoses from receptionist roles (`403 Forbidden`).
 
 ---
 
-## 7. Frontend Architecture & State Specification
+## 7. Frontend Architecture & Modern Engineering Specification
 
-### 7.1 Architecture & Modern Web Standards
-- **Framework:** Angular 18+ utilizing Standalone Components (No legacy `NgModule`).
-- **Typography:** Web-safe optimized Google Fonts (`Cairo` for Arabic RTL localization, `Inter` for English LTR).
-- **Styling Architecture:** Modern Tailwind CSS / SCSS with CSS Variable Design Tokens.
+### 7.1 Angular 19+ Signal Primitives Standard
+The frontend application architecture conforms to Angular 19+ modern reactive primitives:
+1. **Inputs:** Migrated from legacy `@Input()` to signal inputs:
+   ```typescript
+   readonly patientId = input.required<string>();
+   readonly isReadOnly = input<boolean>(false);
+   ```
+2. **Outputs:** Migrated from legacy `@Output() EventEmitter` to:
+   ```typescript
+   readonly statusChange = output<ChairStatus>();
+   ```
+3. **Two-Way Models:** Using `model()` for two-way state binding:
+   ```typescript
+   readonly isOpen = model<boolean>(false);
+   ```
+4. **Computed State:** Using `computed()` for declarative, memoized state derivation:
+   ```typescript
+   readonly activeChairsCount = computed(() => this.chairs().filter(c => c.status === 'occupied').length);
+   ```
 
-### 7.2 Angular HTTP Interceptors
+### 7.2 Performance, Lazy Loading & Bundle Budgets
+- **Route-Level Code Splitting:** Every major feature module is lazily loaded via `loadComponent` / `loadChildren` in `app.routes.ts`.
+- **Deferred Rendering (`@defer`):** Heavy UI elements (e.g., interactive 3D/SVG charts, scan zoom viewers, and analytics graphs) are wrapped in `@defer (on viewport)` and `@defer (on idle)` blocks.
+- **Dynamic Vendor Chunking:** Heavy external libraries (e.g., Leaflet interactive maps) are dynamically imported (`await import('leaflet')`) only when the location modal is opened.
+- **Initial Bundle Budget Constraint:** Main entry bundle transfer size must not exceed **200 KB** (gzipped).
 
-#### `SRS-UI-INT-01: AuthInterceptor`
-- Automatically intercepts every outgoing HTTP request to `environment.apiUrl`.
-- Clones request and injects `Authorization: Bearer <token>` header if user session is active.
-
-#### `SRS-UI-INT-02: ErrorInterceptor`
-- Centralized HTTP response error handling:
-  - **`401 Unauthorized`:** Clears local storage session and redirects user to `/login`.
-  - **`403 Forbidden`:** Displays toast notification: *"Access Denied: You do not possess necessary permissions"*.
-  - **`402 Payment Required`:** Redirects to `/subscription/renew`.
-  - **`500 Internal Server Error`:** Displays generic user-friendly banner; logs detail to console.
+### 7.3 Progressive Web App (PWA) Offline Strategy
+- **Service Worker Caching:**
+  - `CacheFirst` for static fonts (`Cairo`, `Inter`), CSS, and application JavaScript chunks.
+  - `NetworkFirst` with IndexedDB local storage cache for patient profiles and active queue data.
+- **Optimistic Offline Outbox:** Offline form submissions are queued locally with GUIDs and synced automatically when network connectivity returns.
 
 ---
 
-## 8. Software Quality Attributes & Benchmarks
+## 8. Software Quality Attributes & Performance Benchmarks
 
 | Metric | Target Specification | Verification Method |
 | :--- | :--- | :--- |
 | **API Response Time ($P_{95}$)** | $\le 300\text{ ms}$ for standard CRUD operations | K6 load testing against Azure App Service |
 | **Search Response ($P_{99}$)** | $\le 400\text{ ms}$ across 50,000 patient records | SQL indexing on `PhoneNumber` & `LastName` |
+| **Command Palette Search** | $\le 150\text{ ms}$ search execution | Debounced API query with in-memory caching |
 | **WebSocket Latency** | $\le 100\text{ ms}$ transmission time | SignalR ping-pong roundtrip telemetry |
-| **Frontend Bundle Size** | Initial bundle $\le 500\text{ KB}$ (gzipped) | Route-level lazy loading in Angular routes |
-| **Touch Ergonomics** | Minimum touch target size $48 \times 48\text{ px}$ | Tablet chair-side odontogram click audit |
+| **Frontend Initial Transfer** | Initial bundle $\le 200\text{ KB}$ (gzipped) | Angular build statistics & Lighthouse audit |
+| **Backend Test Execution** | 340 tests executed in $\le 30\text{ seconds}$ | xUnit 2.9 + Moq test runner execution |
 
 ---
 
-## 9. Requirements Traceability Matrix (CRD to SRS)
+## 9. Requirements Traceability Matrix (CRD v3.0.0 to SRS v2.0.0)
 
-| Customer Requirement (CRD v2.0.0) | Technical Software Requirement (SRS) | Implemented By |
+| Customer Requirement (CRD v3.0.0) | Technical Software Requirement (SRS v2.0.0) | Implementation Source File / Class |
 | :--- | :--- | :--- |
-| **REQ-PAT-01 (Intake in <45s)** | `SRS-DATA-01`, `SRS-API-PAT-02` | `PatientsController.Create()`, Angular Reactive Form |
-| **REQ-PAT-03 (Allergy Warning)** | `SRS-DATA-01`, `SRS-UI-01` | `Patient.Allergies`, Consultation Header Banner |
-| **REQ-APT-02 (Live Queue)** | `SRS-API-APT-02`, `SRS-SIG-01` | `AppointmentsController`, `NotificationHub` SignalR |
-| **REQ-RX-02 (Medication Auto-fill)** | `SRS-DATA-03`, `SRS-API-RX-01` | `PrescriptionsController`, Medication DTO |
-| **REQ-DEN-01/02 (Dental Odontogram)**| `SRS-DATA-02`, `SRS-API-DEN-02` | `DentalController`, SVG Interactive Odontogram Component |
-| **REQ-BIL-02 (Split Payments)** | `SRS-DATA-04`, `SRS-API-BIL-01` | `BillingController`, `PaymentLog` Owned Entity Collection |
-| **REQ-SEC-02 (Confidentiality)** | `SRS-SEC-01`, `SRS-SEC-FILT-01` | ASP.NET Core `[Authorize]`, Action Filters |
+| **REQ-CLI-03 (Multi-Branch/Room)** | `SRS-DATA-02`, `SRS-API-OPS-01` | `ChairsController.cs`, `ClinicChair.cs` |
+| **REQ-PAT-03 (Allergy Warning)** | `SRS-DATA-01`, `BR-RX-01` | `Patient.cs`, `allergy-conflict.service.ts` |
+| **REQ-PAT-04 (Consent Signature)**| `SRS-DATA-01`, `REQ-PLAN-03` | `signature-pad-modal.component.ts` |
+| **REQ-RX-02 (E-Rx Allergy Check)** | `SRS-API-RX-01`, `BR-RX-01` | `PrescriptionsController.cs`, `prescription-form` |
+| **REQ-AI-01/02 (Voice Scribe SOAP)**| `BR-AI-01`, `SRS-UI-01` | `voice-scribe-modal.component.ts`, `voice-scribe.service.ts` |
+| **REQ-DEN-01/02 (Odontogram)** | `SRS-DATA-05`, `BR-DEN-01` | `DentalController.cs`, `skeuomorphic-dental-chart` |
+| **REQ-PLAN-01/02 (Treatment Plan)**| `SRS-DATA-05`, `BR-PLAN-01` | `treatment-plan-modal.component.ts`, `DentalController.cs` |
+| **REQ-RAD-02/03/04 (Caliper/Compare)**| `SRS-UI-02`, `BR-RAD-01` | `scan-viewer-modal.component.ts` |
+| **REQ-INV-03 (Recipe Auto-Deduct)**| `SRS-DATA-05`, `BR-INV-03` | `DentalController.cs`, `MaterialsController.cs` |
+| **REQ-OPS-01/02/03 (Chair Board)** | `SRS-DATA-02`, `SRS-API-OPS-01..04`, `SRS-SIG-01` | `ChairsController.cs`, `chair.service.ts`, `chairs-board` |
+| **REQ-COMM-01/02/03 (Commissions)**| `SRS-DATA-03/04`, `SRS-API-COMM-01..03` | `CommissionController.cs`, `CommissionService.cs`, `doctor-commissions` |
+| **REQ-NOTIF-01/02 (WhatsApp Hub)**| `BR-NOTIF-01`, `SRS-API-NOTIF-02/03` | `AppointmentsController.cs`, `whatsapp.service.ts` |
+| **REQ-NAV-01/02 (Command Palette)**| `SRS-API-SRCH-01`, `BR-UX-01` | `SearchController.cs`, `command-palette.component.ts` |
+| **REQ-I18N-01 (100% Arabic RTL)** | `SRS-UI-03` | `TranslatePipe`, `Cairo` Font, `dir="rtl"` layout |
+| **REQ-PWA-01 (Offline Resilience)**| `SRS-UI-04`, `BR-PWA-01` | `offline.service.ts`, `offline-banner.component.ts` |
