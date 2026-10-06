@@ -51,14 +51,18 @@ The system has completed full implementation, automated test verification, and l
 
 The documentation suite provides exhaustive, ISO-compliant coverage across all architectural, clinical, and operational domains:
 
-1. **[CUSTOMER_REQUIREMENTS_DOCUMENT.md](CUSTOMER_REQUIREMENTS_DOCUMENT.md) (v3.0.0)**
+1. **[RELEASE_NOTES_v3.0.0.md](RELEASE_NOTES_v3.0.0.md) (v3.0.0)**
+   - Official Version 3.0.0 Enterprise Enhancement Release Notes.
+   - Comprehensive inventory of the 12 Master Enhancements, cloud endpoints, quality scorecard, and formal client sign-off certificate.
+
+2. **[CUSTOMER_REQUIREMENTS_DOCUMENT.md](CUSTOMER_REQUIREMENTS_DOCUMENT.md) (v3.0.0)**
    - Business Case, Scope Boundaries, and RACI Governance Matrix across all roles.
    - Enriched Clinical Business Rules: Allergy Interceptor (`BR-RX-01`), Prescription Immutability (`BR-RX-02`), Multi-Stage Treatment Plans (`BR-PLAN-01`), Recipe Auto-Deductions (`BR-INV-03`), Operatory Chairs (`BR-OPS-01`), Doctor Commissions (`BR-COMM-01`), AI Voice Scribe (`BR-AI-01`), WhatsApp Hub (`BR-NOTIF-01`), and Offline PWA (`BR-PWA-01`).
    - 14 Functional Customer Requirement Modules with User Stories and Given-When-Then Acceptance Criteria.
    - Output Specifications (A4 Rx PDF, 80mm ESC/POS Thermal Receipt, Phased Treatment Plan Estimate, Commission Settlement Statement).
    - 15 Complete End-to-End Customer Acceptance Verification Scenarios.
 
-2. **[SOFTWARE_REQUIREMENTS_SPECIFICATION.md](SOFTWARE_REQUIREMENTS_SPECIFICATION.md) (v2.0.0)**
+3. **[SOFTWARE_REQUIREMENTS_SPECIFICATION.md](SOFTWARE_REQUIREMENTS_SPECIFICATION.md) (v2.0.0)**
    - IEEE Std 830-1998 / ISO/IEC/IEEE 29148 Engineering Specification.
    - 4-Tier Clean Architecture Backend (.NET 9.0) and Angular 19+ Standalone Frontend with Signal Primitives.
    - Entity Relationship Model (ERD) & Schemas (`Patient`, `ClinicChair`, `DoctorCommissionPlan`, `CommissionPayout`, `DentalLog`, `Material`).
@@ -68,7 +72,7 @@ The documentation suite provides exhaustive, ISO-compliant coverage across all a
    - Non-Functional Performance Budgets (Initial Bundle $<200\text{ KB}$, $P_{95}$ API $<300\text{ ms}$, WebSocket $<100\text{ ms}$).
    - Bi-directional Requirements Traceability Matrix (CRD v3.0.0 to SRS v2.0.0).
 
-3. **[CLINIC_USER_MANUAL_AND_SOP.md](CLINIC_USER_MANUAL_AND_SOP.md) (v2.0.0)**
+4. **[CLINIC_USER_MANUAL_AND_SOP.md](CLINIC_USER_MANUAL_AND_SOP.md) (v2.0.0)**
    - Step-by-step Standard Operating Procedures for Front Desk, Doctors, Dental Specialists, Clinic Assistants, and Practice Managers.
    - Rapid patient intake in $<45\text{ seconds}$, appointment scheduling, and queue check-in.
    - AI Chair-Side Voice Scribe dictation and SOAP note structuring SOP.
@@ -78,22 +82,35 @@ The documentation suite provides exhaustive, ISO-compliant coverage across all a
    - Doctor commission plan setup, monthly payout ledger approval, and settlement SOP.
    - Global Spotlight Command Palette (`Ctrl + K`) quick reference guide.
 
-4. **[AUTOMATED_TEST_SUITE_REPORT.md](AUTOMATED_TEST_SUITE_REPORT.md)**
+5. **[CLINIC_QUICK_START_GUIDE.md](CLINIC_QUICK_START_GUIDE.md) (v2.0.0)**
+   - 4 laminated quick-reference desk cards (Reception 5-Step, Doctor Chair-Side, Operatory Chair Turnaround, Advanced Modules).
+
+6. **[UAT_ACCEPTANCE_TEST_PLAN.md](UAT_ACCEPTANCE_TEST_PLAN.md) (v3.0.0)**
+   - User Acceptance Testing protocol, defect severity taxonomy, and 28 execution test procedures across 14 UAT domains.
+   - Formal customer handover and acceptance sign-off certificate.
+
+7. **[AUTOMATED_TEST_SUITE_REPORT.md](AUTOMATED_TEST_SUITE_REPORT.md) (v3.0.0)**
    - Full-stack test execution scorecard across 657 automated tests passing at 100%.
    - 340 Backend Tests (.NET 9.0 xUnit & Integration Tests) and 277 Frontend Specs + 40 Playwright E2E browser tests.
    - Systematic feature coverage directory across all 12 master enhancements.
 
-5. **[UAT_ACCEPTANCE_TEST_PLAN.md](UAT_ACCEPTANCE_TEST_PLAN.md)**
-   - User Acceptance Testing protocol, defect severity taxonomy, and execution test scripts.
-   - Formal customer handover and acceptance sign-off certificate.
+8. **[LIVE_SMOKE_TEST_REPORT.md](LIVE_SMOKE_TEST_REPORT.md) (v3.0.0)**
+   - Live production cloud verification log validating 29 browser tests across Desktop and iPad tablet viewports against Vercel and Azure.
 
-6. **[SYSTEM_ADMINISTRATION_AND_DISASTER_RECOVERY.md](SYSTEM_ADMINISTRATION_AND_DISASTER_RECOVERY.md)**
-   - Hardware topology, 80mm ESC/POS thermal printer setup, and chair-side tablet configurations.
-   - Automated 3-2-1 backup strategy and Disaster Recovery runbook (RPO $<2\text{ hours}$, RTO $<1\text{ hour}$).
+9. **[SYSTEM_PERFORMANCE_AND_ARCHITECTURE_OPTIMIZATION.md](SYSTEM_PERFORMANCE_AND_ARCHITECTURE_OPTIMIZATION.md) (v3.0.0)**
+   - High-throughput compound B-Tree indexing benchmarks, soft-delete relation optimization, in-memory LINQ bottleneck eradication.
+   - Low-latency SignalR hub architecture (<100 ms), Angular 19 Signal Primitives, `@defer` views, and bundle budget governance.
 
-7. **[LIVE_DEPLOYMENT_AND_CLOUD_INFRASTRUCTURE.md](LIVE_DEPLOYMENT_AND_CLOUD_INFRASTRUCTURE.md)**
-   - Decoupled cloud architecture (Vercel Edge CDN + Azure App Service + Azure SQL Database).
-   - CORS policy, SSL/TLS 1.3 certificates, and zero-downtime deployment workflows.
+10. **[LIVE_DEPLOYMENT_AND_CLOUD_INFRASTRUCTURE.md](LIVE_DEPLOYMENT_AND_CLOUD_INFRASTRUCTURE.md) (v3.0.0)**
+    - Decoupled cloud architecture (Vercel Edge CDN + Azure App Service + Azure SQL Database).
+    - CORS policy, SSL/TLS 1.3 certificates, and zero-downtime deployment workflows.
+
+11. **[SYSTEM_ADMINISTRATION_AND_DISASTER_RECOVERY.md](SYSTEM_ADMINISTRATION_AND_DISASTER_RECOVERY.md) (v2.0.0)**
+    - Hardware topology, 80mm ESC/POS thermal printer setup, and chair-side tablet configurations.
+    - Automated 3-2-1 backup strategy and Disaster Recovery runbook (RPO $<2\text{ hours}$, RTO $<1\text{ hour}$).
+
+12. **[REPOSITORY_ARCHITECTURE_AND_API_REFERENCE.md](REPOSITORY_ARCHITECTURE_AND_API_REFERENCE.md) (v2.0.0)**
+    - Clean Architecture solution structure, dependency injection topology, and REST endpoint catalog.
 
 ---
 
