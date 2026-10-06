@@ -5,10 +5,10 @@
 | :--- | :--- |
 | **SRS Specification** | v2.0.0 (IEEE Std 830 / ISO 29148 Standard) |
 | **User Manual & SOP** | v2.0.0 (Enterprise Enhancement Edition) |
-| **Total Automated Tests** | **663 Tests** (346 Backend [.NET 9.0: 273 Unit + 73 Integration] + 277 Frontend Specs + 40 Playwright E2E) — **100% Pass** |
+| **Total Automated Tests** | **665 Tests** (348 Backend [.NET 9.0: 273 Unit + 75 Integration] + 277 Frontend Specs + 40 Playwright E2E) — **100% Pass** |
 | **Frontend Production URL** | [https://clinic-app-ten-topaz.vercel.app](https://clinic-app-ten-topaz.vercel.app) |
 | **Backend Production API** | [https://clinic-api-123-a0ghf9aeb5ccawha.swedencentral-01.azurewebsites.net/api](https://clinic-api-123-a0ghf9aeb5ccawha.swedencentral-01.azurewebsites.net/api) |
-| **Active Release** | **v3.1.0 Enterprise Edition** (Patient Portal, QR Downloads & Cloud Canary Monitoring) |
+| **Active Release** | **v3.1.0 Enterprise Edition** (Patient Portal, QR Downloads & Verification) |
 
 ---
 
@@ -18,6 +18,7 @@
 | :--- | :--- | :--- | :---: |
 | **Frontend SPA / PWA** | **Vercel** (Global Edge CDN) | [https://clinic-app-ten-topaz.vercel.app/login](https://clinic-app-ten-topaz.vercel.app/login) | 🟢 **Live & Active** |
 | **Patient Portal PWA** | **Vercel** (Global Edge CDN) | [https://clinic-app-ten-topaz.vercel.app/portal/login](https://clinic-app-ten-topaz.vercel.app/portal/login) | 🟢 **Live & Active** |
+| **Public Verification Portal** | **Vercel** (Global Edge CDN) | [https://clinic-app-ten-topaz.vercel.app/verify/rx/:id](https://clinic-app-ten-topaz.vercel.app/verify/rx/demo) | 🟢 **Live & Active** |
 | **Backend REST API** | **Microsoft Azure** (Sweden Central) | [/api Root Endpoint](https://clinic-api-123-a0ghf9aeb5ccawha.swedencentral-01.azurewebsites.net/api) | 🟢 **Live & Active** |
 | **API Health Probe** | Azure App Service | [/api/health Check](https://clinic-api-123-a0ghf9aeb5ccawha.swedencentral-01.azurewebsites.net/api/health) | 🟢 **200 OK** |
 | **Liveness & Readiness** | Azure App Service | [/api/health/liveness](https://clinic-api-123-a0ghf9aeb5ccawha.swedencentral-01.azurewebsites.net/api/health/liveness) • [/api/health/readiness](https://clinic-api-123-a0ghf9aeb5ccawha.swedencentral-01.azurewebsites.net/api/health/readiness) | 🟢 **200 OK** |
@@ -62,7 +63,11 @@ Building upon Release v3.0.0, Release v3.1.0 delivers patient empowerment, autom
    - **Official Prescription (`℞`):** A4 medical letterhead layout, complete medication schedule, doctor digital signature, and verification QR code linking to `/verify/rx/{id}`.
    - **Official Payment Receipt:** Electronic tax compliance invoice receipt, itemized breakdown, clinic VAT stamp, and verification QR code linking to `/verify/inv/{id}`.
    - Browser 1-click instant PDF export (`window.print()`) with print-optimized CSS.
-3. **Automated Cloud Monitoring & Quality CI/CD Gates:**
+3. **Public Real-Time Document Verification Portal (`/verify/rx/:id` & `/verify/inv/:id`):**
+   - Instant cryptographic verification for pharmacists, insurance auditors, and patients scanning printed QR codes.
+   - Privacy-preserving patient name masking (e.g. `A**** H****`) and full medication/tax compliance validation.
+   - Verified certification badges with security hash fingerprints and bilingual Arabic/English layout.
+4. **Automated Cloud Monitoring & Quality CI/CD Gates:**
    - Live Azure health probes: `/api/health`, `/api/health/readiness`, `/api/health/liveness`.
    - GitHub Actions automated canary monitor running every 6 hours across production.
    - Windows scheduled task watchdog monitoring live endpoints every 60 minutes.
