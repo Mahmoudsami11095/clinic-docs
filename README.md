@@ -118,6 +118,9 @@ The documentation suite provides exhaustive, ISO-compliant coverage across all a
 14. **[ENTERPRISE_FEATURE_ROADMAP_v3.1.0_v4.0.0.md](ENTERPRISE_FEATURE_ROADMAP_v3.1.0_v4.0.0.md)**
     - Strategic engineering blueprint for future releases: Patient Self-Service Portal (v3.1.0), Encrypted Telehealth WebRTC (v3.2.0), AI Radiograph Computer Vision (v4.0.0), and Multi-Branch Enterprise Sync (v4.1.0).
 
+15. **[LOAD_AND_STRESS_TEST_REPORT.md](LOAD_AND_STRESS_TEST_REPORT.md)**
+    - High-concurrency load and stress test benchmarks against Azure App Service (56.7 req/sec throughput, 91.8 ms median latency, 100% success rate across parallel bursts).
+
 ---
 
 ## 🔬 Multi-Level Automated Test Scorecard
@@ -125,11 +128,11 @@ The documentation suite provides exhaustive, ISO-compliant coverage across all a
 | Testing Tier | Technology / Framework | Target Scope | Passing Count |
 | :--- | :--- | :--- | :---: |
 | **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | Domain entities, business rules, helpers, commissions, chairs, recipes | **273 Passing** |
-| **Backend Integration Tests**| `WebApplicationFactory`, EF Core InMemory | REST API contracts, SignalR broadcasting, auth, action filters | **67 Passing** |
-| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | Signal services, state stores, modals, odontogram, voice scribe | **197 Passing** |
+| **Backend Integration Tests**| `WebApplicationFactory`, EF Core InMemory | REST API contracts, SignalR broadcasting, auth, action filters, portal APIs | **71 Passing** |
+| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | Signal services, state stores, modals, odontogram, voice scribe, portal | **198 Passing** |
 | **Frontend Workflows & Rules**| Karma, Jasmine, Angular Testing | Queue, pediatric safety, allergy conflict, split cashiering | **80 Passing** |
-| **Playwright E2E Automation** | Playwright Chromium & Tablet iPad | Live browser testing: odontogram, caliper, operatory board, RTL | **40 Passing** |
-| **TOTAL AUTOMATED SUITE** | Full Stack Solution Test Runner | **Entire System Stack (Backend + Frontend + E2E)** | 🟢 **657 / 657 (100%)** |
+| **Playwright E2E Automation** | Playwright Chromium & Tablet iPad | Live browser testing: odontogram, caliper, operatory board, portal, RTL | **41 Passing** |
+| **TOTAL AUTOMATED SUITE** | Full Stack Solution Test Runner | **Entire System Stack (Backend + Frontend + E2E)** | 🟢 **663 / 663 (100%)** |
 
 ---
 
