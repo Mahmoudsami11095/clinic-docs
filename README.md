@@ -1,14 +1,14 @@
 # Smart Clinic Management System (Clinic App)
 ## Official Enterprise Documentation & Architecture Portal
 
-| **CRD Specification** | v3.0.0 (Enterprise Enhancement Edition) |
+| **CRD Specification** | v4.0.0 (AI Diagnostic Vision Edition) |
 | :--- | :--- |
-| **SRS Specification** | v2.0.0 (IEEE Std 830 / ISO 29148 Standard) |
-| **User Manual & SOP** | v2.0.0 (Enterprise Enhancement Edition) |
-| **Total Automated Tests** | **665 Tests** (348 Backend [.NET 9.0: 273 Unit + 75 Integration] + 277 Frontend Specs + 40 Playwright E2E) — **100% Pass** |
+| **SRS Specification** | v3.0.0 (IEEE Std 830 / ISO 29148 Standard) |
+| **User Manual & SOP** | v3.0.0 (Enterprise Enhancement Edition) |
+| **Total Automated Tests** | **672 Tests** (350 Backend [.NET 9.0: 273 Unit + 77 Integration] + 282 Frontend Specs + 40 Playwright E2E) — **100% Pass** |
 | **Frontend Production URL** | [https://clinic-app-ten-topaz.vercel.app](https://clinic-app-ten-topaz.vercel.app) |
 | **Backend Production API** | [https://clinic-api-123-a0ghf9aeb5ccawha.swedencentral-01.azurewebsites.net/api](https://clinic-api-123-a0ghf9aeb5ccawha.swedencentral-01.azurewebsites.net/api) |
-| **Active Release** | **v3.1.0 Enterprise Edition** (Patient Portal, QR Downloads & Verification) |
+| **Active Release** | **v4.0.0 Enterprise Edition** (AI Radiograph Computer Vision Diagnostics & Odontogram Sync) |
 
 ---
 
@@ -48,6 +48,27 @@ The system has completed full implementation, automated test verification, and l
 │     Sharing Analytics & Payouts  │     Bundle Budgets (<200 kB)    │     Signal Primitives Modern│
 └──────────────────────────────────┴─────────────────────────────────┴─────────────────────────────┘
 ```
+
+---
+
+## 🧠 Release v4.0.0: AI-Powered Computer Vision Radiograph Diagnostics Suite
+
+Building upon the diagnostic imaging infrastructure, Release v4.0.0 introduces multi-head artificial intelligence computer vision directly into the clinical viewer, bridging automated image pathology detection with seamless odontogram charting:
+
+1. **Multi-Head Radiograph Computer Vision Pipeline (`DentalVision YOLOv11 Ensemble`):**
+   - **Caries Detection & Segmentation:** Interproximal and occlusal enamel/dentin lesion localization mapped to FDI/Universal numbering (#16 / Univ #3).
+   - **Periapical Pathology:** Active apical radiolucency & apical periodontitis boundary detection (#46 / Univ #30).
+   - **Alveolar Bone Loss & Caliper:** Horizontal/vertical crest resorption calculation with millimetric CEJ distance (#25 / Univ #13).
+   - **Third Molar Impaction:** Winter's classification analysis for mesioangular mandibular third molar impactions (#38 / Univ #17).
+2. **Clinical Safety Governance (`BR-AI-RAD-01`):**
+   - **Physician-in-the-Loop Review:** AI detections render as non-destructive, toggleable bounding boxes with confidence scores (>85%) and clinical recommendations in English and Arabic.
+   - Attending dentists maintain complete autonomy to accept, reject, or annotate findings prior to committing them to medical records.
+3. **1-Click Odontogram Synchronization:**
+   - Single-click action committed accepted AI findings directly into the patient's dental chart as proposed treatment entries (`DentalLog`), complete with treatment procedure, ICD-equivalent status codes, and itemized cost estimates.
+4. **Interactive Multi-Touch Viewer Enhancements:**
+   - Integrated AI vision toggle button `[ 🧠 AI Vision (v4.0) ]` with live scanning beam laser animation.
+   - Color-coded pathology bounding boxes (Rose for Caries, Purple for Periapical, Amber for Bone Loss, Cyan for Impactions) with live interactive selection and hover inspection.
+   - Synchronized drawer with diagnostic summaries and quick accept toggles.
 
 ---
 
