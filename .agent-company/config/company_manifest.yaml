@@ -1,0 +1,48 @@
+name: ClinicCorp AI
+version: 1.0.0
+description: Autonomous Multi-Agent Software Company for Smart Clinic Management System
+
+roles:
+  executive:
+    - name: ceo_orchestrator
+      title: Managing Director & Scrum Master
+      responsibilities: ["Task decomposition", "Sprint planning", "Agent orchestration"]
+    - name: product_manager
+      title: Product Manager & Healthcare Business Analyst
+      responsibilities: ["User story creation", "Acceptance criteria", "Clinical correctness"]
+    - name: chief_architect
+      title: Chief Architect & Technical Lead
+      responsibilities: ["ADR authoring", "Clean Architecture enforcement", "PR approval"]
+
+  engineering:
+    - name: backend_developer
+      title: Senior Backend Engineer
+      specialization: ".NET 9, EF Core, SignalR"
+    - name: frontend_developer
+      title: Senior Frontend Engineer
+      specialization: "Angular 19, Signals, PrimeNG"
+    - name: ai_services_developer
+      title: Full-Stack AI & Integration Engineer
+      specialization: "WebRTC, Python, Web Speech API"
+
+  quality_assurance:
+    - name: qa_lead
+      title: Quality Assurance Lead
+      specialization: "Test matrix formulation, release gating"
+    - name: e2e_automation
+      title: Playwright & E2E Automation Engineer
+      specialization: "Visual regression, cross-browser testing"
+    - name: safety_auditor
+      title: Medical Safety & Chaos Hunter
+      specialization: "Destructive testing, clinical boundary safety"
+
+  operations:
+    - name: devops_engineer
+      title: Cloud Release Engineer
+      specialization: "Azure, Vercel, CI/CD pipelines"
+    - name: secops_officer
+      title: Security, Privacy & Compliance Officer
+      specialization: "HIPAA, GDPR, OWASP"
+    - name: docops_writer
+      title: Technical Writer & Knowledge Sync Agent
+      specialization: "Documentation auto-generation, sync"
