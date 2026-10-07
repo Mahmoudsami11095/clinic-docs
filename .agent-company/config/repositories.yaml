@@ -1,0 +1,65 @@
+# Repository & Tooling Configuration for ClinicCorp AI
+version: 1.0.0
+
+repositories:
+  docs:
+    name: "clinic-docs"
+    path: "."
+    role: "System Architecture, CRD, SRS, SOP, UAT, and Master Documentation"
+    branch: "main"
+    key_files:
+      - "CUSTOMER_REQUIREMENTS_DOCUMENT.md"
+      - "SOFTWARE_REQUIREMENTS_SPECIFICATION.md"
+      - "CLINIC_USER_MANUAL_AND_SOP.md"
+      - "UAT_ACCEPTANCE_TEST_PLAN.md"
+      - "ENTERPRISE_FEATURE_ROADMAP_v3.1.0_v4.0.0.md"
+      - "AGENT_HANDOFF.md"
+      - "README.md"
+
+  frontend:
+    name: "clinic-app"
+    path: "clinic-app"
+    role: "Single Page Application (SPA) & Progressive Web App (PWA)"
+    framework: "Angular 20 (Standalone Components + Signals)"
+    styling: "TailwindCSS + PrimeNG (Cairo Arabic Font)"
+    branch: "master"
+    commands:
+      install: "npm install"
+      build: "npm run build"
+      test_unit: "npm run test:ci"
+      test_e2e: "npx playwright test"
+      test_e2e_headed: "npx playwright test --headed"
+      serve: "npm run start"
+    budgets:
+      initial_bundle_kb: 200
+      max_component_kb: 30
+    production_url: "https://clinic-app-ten-topaz.vercel.app"
+
+  backend:
+    name: "ClinicApi"
+    path: "ClinicApi"
+    role: "Clean Architecture REST & SignalR API"
+    framework: ".NET 9.0 (C# 13)"
+    database: "Azure SQL / EF Core 9"
+    solution_file: "ClinicApi/ClinicApi.sln"
+    branch: "master"
+    layers:
+      domain: "ClinicApi/src/Clinic.Domain"
+      application: "ClinicApi/src/Clinic.Application"
+      infrastructure: "ClinicApi/src/Clinic.Infrastructure"
+      api: "ClinicApi/src/Clinic.API"
+      unit_tests: "ClinicApi/tests/Clinic.UnitTests"
+      integration_tests: "ClinicApi/tests/Clinic.IntegrationTests"
+    commands:
+      restore: "dotnet restore ClinicApi/ClinicApi.sln"
+      build: "dotnet build ClinicApi/ClinicApi.sln -c Release"
+      test_all: "dotnet test ClinicApi/ClinicApi.sln -c Release --verbosity normal"
+      test_unit: "dotnet test ClinicApi/tests/Clinic.UnitTests/Clinic.UnitTests.csproj -c Release"
+      test_integration: "dotnet test ClinicApi/tests/Clinic.IntegrationTests/Clinic.IntegrationTests.csproj -c Release"
+      add_migration: "dotnet ef migrations add {MigrationName} --project ClinicApi/src/Clinic.Infrastructure --startup-project ClinicApi/src/Clinic.API"
+    production_url: "https://clinic-api-123-a0ghf9aeb5ccawha.swedencentral-01.azurewebsites.net/api"
+    health_probes:
+      root: "/api/health"
+      readiness: "/api/health/readiness"
+      liveness: "/api/health/liveness"
+      signalr: "/hubs/notifications"

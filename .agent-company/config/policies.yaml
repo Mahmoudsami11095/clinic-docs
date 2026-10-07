@@ -1,0 +1,70 @@
+# Engineering Policies & Quality Gates for ClinicCorp AI
+version: 1.0.0
+
+quality_gates:
+  compiler_warnings:
+    allowed: 0
+    enforce_on: ["ClinicApi", "clinic-app"]
+
+  test_pass_threshold:
+    percentage: 100
+    baseline_counts:
+      backend_unit: 273
+      backend_integration: 77
+      frontend_unit: 282
+      playwright_e2e: 40
+      total_minimum: 672
+    allow_regressions: false
+
+  code_coverage_floor:
+    backend_domain_line_coverage: 90
+    backend_application_line_coverage: 85
+    frontend_service_line_coverage: 80
+
+architecture_rules:
+  backend:
+    clean_architecture:
+      rules:
+        - "Domain must have 0 external project dependencies"
+        - "Application depends ONLY on Domain"
+        - "Infrastructure depends on Application & Domain (implements interfaces)"
+        - "API depends on Infrastructure & Application (composition root)"
+        - "Controllers must never inject DbContext directly (use MediatR/CQRS or Services)"
+        - "DTOs must never expose raw EF Core entity navigation collections"
+    realtime:
+      rules:
+        - "All real-time events must use strongly-typed SignalR hubs"
+        - "SignalR dispatch must complete in <100ms"
+
+  frontend:
+    angular:
+      rules:
+        - "Standalone components ONLY (No NgModules allowed)"
+        - "Must use modern Angular 19+ Signal primitives: input(), output(), model(), computed()"
+        - "Prohibited: @Input(), @Output(), @ViewChild() legacy decorators"
+        - "Initial gzipped bundle transfer budget <= 200 KB"
+        - "Feature routes must be lazy-loaded with @defer block chunking"
+    internationalization:
+      rules:
+        - "100% Arabic (RTL) & English (LTR) layout parity"
+        - "Arabic font: Cairo (Google Fonts) with correct typography line heights"
+        - "Mirrored navigation, icon flipping, and dental odontogram orientation"
+
+compliance_and_security:
+  hipaa_gdpr:
+    rules:
+      - "Never log Protected Health Information (PHI) in plaintext logs or exceptions"
+      - "Patient full name, national ID, and phone number must be masked on public endpoints"
+      - "Prescription & invoice verification QR codes must be cryptographically hashed (SHA-256)"
+      - "Prescription records cannot be modified once in Dispensed status"
+  medical_safety:
+    rules:
+      - "AI chair-side voice scribe recommendations require explicit clinician sign-off"
+      - "AI radiograph bounding boxes are suggestions only; cannot commit to chart without doctor approval"
+      - "Automatic stock recipe deduction occurs only upon explicit procedure completion"
+
+approval_gates:
+  human_in_the_loop:
+    scope_change: true
+    database_migration_apply: true
+    production_release_merge: true

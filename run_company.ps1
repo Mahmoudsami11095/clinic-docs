@@ -3,7 +3,8 @@
 param (
     [switch]$Start,
     [switch]$Stop,
-    [string]$FeatureId
+    [string]$FeatureId = "v3.2.0-telehealth-webrtc",
+    [switch]$LiveTests
 )
 
 $ErrorActionPreference = "Stop"
@@ -11,8 +12,12 @@ $agentDir = "$PSScriptRoot\.agent-company"
 
 if ($Stop) {
     Write-Host "[SYSTEM] Emergency Stop Activated. Halting all agent processes..." -ForegroundColor Red
-    # Placeholder for actual kill logic (e.g., Get-Process python | Stop-Process)
-    Write-Host "[SYSTEM] All agent processes stopped." -ForegroundColor Yellow
+    try {
+        Get-Process python -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -like "*state_graph.py*" } | Stop-Process -Force
+        Write-Host "[SYSTEM] All agent processes stopped." -ForegroundColor Yellow
+    } catch {
+        Write-Host "[SYSTEM] No active agent processes found." -ForegroundColor DarkGray
+    }
     exit 0
 }
 
@@ -26,7 +31,7 @@ if ($Start) {
         $pythonVer = python --version
         Write-Host " [OK] Python detected: $pythonVer" -ForegroundColor Green
     } catch {
-        Write-Host " [FAIL] Python 3.12+ is required but not found in PATH." -ForegroundColor Red
+        Write-Host " [FAIL] Python 3.10+ is required but not found in PATH." -ForegroundColor Red
         exit 1
     }
 
@@ -49,16 +54,25 @@ if ($Start) {
     }
 
     Write-Host "================================================="
-    if ($FeatureId) {
-        Write-Host "[CEO Agent] Initializing Sprint for Feature: $FeatureId" -ForegroundColor Magenta
-    } else {
-        Write-Host "[CEO Agent] Scanning ENTERPRISE_FEATURE_ROADMAP_v3.1.0_v4.0.0.md for next priority..." -ForegroundColor Magenta
+    Write-Host "[CEO Agent] Initializing Sprint for Feature: $FeatureId" -ForegroundColor Magenta
+    Write-Host "[SYSTEM] Transitioning control to Python State Machine..." -ForegroundColor DarkGray
+
+    $stateScript = "$agentDir\src\orchestrator\state_graph.py"
+    $pyArgs = @($stateScript, "--feature", $FeatureId)
+    if ($LiveTests) {
+        $pyArgs += "--live-tests"
     }
-    
-    Write-Host "[SYSTEM] Transitioning control to Python Orchestrator (LangGraph)..." -ForegroundColor DarkGray
-    
-    # Placeholder for: python "$agentDir/src/orchestrator/state_graph.py" --feature $FeatureId
-    Write-Host "[Dry Run] Orchestrator started successfully." -ForegroundColor Green
+
+    python @pyArgs
+
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "================================================="
+        Write-Host "[SUCCESS] Sprint Cycle for $FeatureId completed successfully." -ForegroundColor Green
+    } else {
+        Write-Host "================================================="
+        Write-Host "[ERROR] Sprint Cycle encountered an error (Code: $LASTEXITCODE)." -ForegroundColor Red
+        exit $LASTEXITCODE
+    }
 } else {
-    Write-Host "Usage: .\run_company.ps1 -Start [-FeatureId <ID>] | -Stop"
+    Write-Host "Usage: .\run_company.ps1 -Start [-FeatureId <ID>] [-LiveTests] | -Stop"
 }

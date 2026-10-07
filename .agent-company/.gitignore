@@ -1,0 +1,10 @@
+# Python caches
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+
+# Ephemeral run execution logs
+runs/*.json
+!runs/.gitkeep
