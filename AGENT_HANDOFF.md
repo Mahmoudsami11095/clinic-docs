@@ -81,3 +81,19 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
 - `UAT_ACCEPTANCE_TEST_PLAN.md` (v3.0.0): 14 UAT domains, 28 test procedures, formal sign-off certificate.
 - `AUTOMATED_TEST_SUITE_REPORT.md`: Comprehensive coverage report for the 657 automated tests.
 - `README.md`: Central portal index linking all repositories, live URLs, and documentation.
+- `MULTI_AGENT_COMPANY_PLAN.md`: Complete blueprint and architecture for ClinicCorp AI multi-agent software company.
+
+---
+
+## 5. ClinicCorp AI — Autonomous Multi-Agent Software Company
+
+The repository features an autonomous multi-agent software engineering company (**ClinicCorp AI**) located in `.agent-company/`:
+- **11 Domain-Grounded Agent Personas**: `ceo_orchestrator`, `product_manager`, `chief_architect`, `backend_developer`, `frontend_developer`, `qa_lead`, `e2e_automation`, `safety_auditor`, `devops_engineer`, `secops_officer`, `docops_writer`.
+- **Master Launch Script**: `powershell .\run_company.ps1 -Start [-FeatureId <ID>]`
+- **Interactive Multi-Agent CLI**:
+  - `python .agent-company/src/agent_cli.py list-agents`: Display registered squads and agent mandates.
+  - `python .agent-company/src/agent_cli.py query-kb <query>`: Search indexed specifications (CRD, SRS, SOP, Roadmap).
+  - `python .agent-company/src/agent_cli.py check-health`: Probe live production cloud endpoints (Azure & Vercel).
+  - `python .agent-company/src/agent_cli.py audit-docs`: Verify completeness of all master specifications.
+  - `python .agent-company/src/agent_cli.py sprint --feature <id>`: Execute full 8-stage autonomous SDLC cycle.
+
