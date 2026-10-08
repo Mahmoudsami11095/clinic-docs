@@ -536,6 +536,61 @@ All API routes are served under prefix `/api/`. Request and response bodies are 
 - **Authorization:** `Roles = "admin,doctor,assistant"`
 - **Response `200 OK`:** Returns SVG/PNG QR Code image data and printable A4 poster PDF metadata.
 
+### 4.9 Inter-Branch Inventory Stock Transfer Requisition Endpoints
+
+#### `SRS-API-TRANS-01: Submit Inter-Branch Stock Requisition`
+- **Method:** `POST`
+- **Route:** `/api/inventory/transfers/request`
+- **Authorization:** `Roles = "admin,doctor,assistant"`
+- **Payload Schema:**
+  ```json
+  {
+    "sourceClinicId": "c-central-guid",
+    "destinationClinicId": "c-westside-guid",
+    "materialId": "mat-graft-guid",
+    "quantityRequested": 10,
+    "priority": "Urgent",
+    "notes": "Emergency reconstructive surgery tomorrow morning"
+  }
+  ```
+- **Response `201 Created`:** Returns `StockTransferRequisitionResponseDto` with generated token `TRF-YYYYMM-XXXX` in status `Requested`.
+
+#### `SRS-API-TRANS-02: Query Transfer Requisitions`
+- **Method:** `GET`
+- **Route:** `/api/inventory/transfers?clinicId={clinicId}&status={status}&direction={all|inbound|outbound}`
+- **Authorization:** `Roles = "admin,doctor,assistant"`
+- **Response `200 OK`:** Returns array of requisitions with source, destination, batch numbers, and audit details.
+
+#### `SRS-API-TRANS-03: Dispatch Shipment with Source Stock Deduction (BR-LOG-01)`
+- **Method:** `PUT`
+- **Route:** `/api/inventory/transfers/{id}/dispatch`
+- **Authorization:** `Roles = "admin,doctor,assistant"`
+- **Payload Schema:**
+  ```json
+  {
+    "quantityDispatched": 10,
+    "batchNumber": "LOT-202610-09",
+    "expiryDate": "2028-06-30T00:00:00Z",
+    "notes": "Courier pickup confirmed"
+  }
+  ```
+- **Response `200 OK`:** Transitions requisition to `InTransit` and atomically decrements source clinic material quantity.
+
+#### `SRS-API-TRANS-04: Receive Shipment & Credit Destination Stock (BR-LOG-02)`
+- **Method:** `PUT`
+- **Route:** `/api/inventory/transfers/{id}/receive`
+- **Authorization:** `Roles = "admin,doctor,assistant"`
+- **Payload Schema:**
+  ```json
+  {
+    "quantityReceived": 10,
+    "quantityDamaged": 1,
+    "damageReason": "Vial cracked during transport",
+    "notes": "9 usable units stored in cabinet B"
+  }
+  ```
+- **Response `200 OK`:** Transitions requisition to `Received` and credits usable quantity to destination clinic inventory.
+
 ---
 
 ## 5. Real-Time SignalR Event Specification
@@ -554,6 +609,9 @@ All API routes are served under prefix `/api/`. Request and response bodies are 
 | **`QueueUpdated`** | `Doctor_{DoctorId}` | `{"doctorId":"...","waitingCount":4,"timestamp":"..."}` | Any queue status transition. |
 | **`LowStockAlert`** | `Clinic_{ClinicId}` | `{"materialId":"...","materialName":"Mepivacaine","currentStock":4,"minThreshold":5}` | Procedure auto-deduction reduces stock to or below minimum threshold (`BR-INV-02`). |
 | **`ReceiveDiagnosticResultsUploaded`** | `Doctor_{DoctorId}` | `{"orderToken":"LAB-8F29A","patientName":"Kareem Adel","partnerName":"Apex Lab","serviceType":"DentalLab"}` | External diagnostic partner uploads completed results via public dropzone (`BR-LAB-03`). |
+| **`ReceiveStockTransferAlert`** | `Clinic_{SourceClinicId}` | `{"requisitionNumber":"TRF-202610-001","sourceClinicId":"...","materialName":"Bio-Oss","quantity":10}` | A satellite clinic submits a new inter-branch transfer request (`REQ-LOG-01`). |
+| **`ReceiveStockTransferInTransit`** | `Clinic_{DestinationClinicId}` | `{"requisitionNumber":"TRF-202610-001","batchNumber":"LOT-09","quantityDispatched":10}` | Source clinic dispatches courier shipment; inventory is in-transit (`BR-LOG-01`). |
+| **`ReceiveStockTransferCompleted`** | Audit Ledger | `{"requisitionNumber":"TRF-202610-001","receivedQuantity":9,"damagedQuantity":1}` | Receiving clinic inspects shipment and confirms receipt (`BR-LOG-02`). |
 
 ---
 

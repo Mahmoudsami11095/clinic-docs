@@ -308,6 +308,25 @@ The following business rules represent strict operational invariants enforced ac
 - The system dispatches an instantaneous SignalR WebSocket push notification and WhatsApp alert to the attending doctor: *"Diagnostic results for Patient [Name] ([Order Type]) have been received and attached to their clinical chart."*
 - The patient's EMR timeline highlights the new diagnostic artifact with a "New External Result" badge for immediate physician review.
 
+### 5.14 Inter-Branch Stock Transfers & Centralized Supply Chain Logistics Rules (BR-LOG)
+
+#### `BR-LOG-01: Transfer Custody & Source Stock Deduction`
+- Inventory stock is deducted from the source facility ONLY upon explicit transition to `Dispatched`.
+- Prior to dispatch, stock can be reserved in status `Approved`, but physical inventory remains recorded at the source facility.
+
+#### `BR-LOG-02: Receiving Physical Verification & Destination Inward Credit`
+- Inventory stock is credited to the destination clinic ONLY when the receiving custodian performs physical inspection and marks `Receive Shipment`.
+- In-transit stock cannot be consumed for medical procedures until receiving confirmation is completed.
+
+#### `BR-LOG-03: FEFO (First-Expired, First-Out) & Expiry Protection Guardrail`
+- Consumables with less than 30 days remaining shelf life cannot be approved for inter-branch transfer unless accompanied by an explicit clinical supervisor override string `"OVERRIDE"`.
+
+#### `BR-LOG-04: Discrepancy, Leakage & Damage Quarantine Logging`
+- If received units are less than dispatched units, or if packages arrive damaged, the receiving custodian records the damaged count and reason (`BrokenSeal`, `TemperatureExcursion`, `MissingInTransit`). Damaged units are isolated to quarantine and not added to active inventory.
+
+#### `BR-LOG-05: Immutable Transport Audit Trail`
+- Requisitions in `Received` or `Cancelled` status are permanently audit-locked and cannot be modified or deleted.
+
 ---
 
 ## 6. End-to-End Clinical Workflows
@@ -791,6 +810,26 @@ Requirements are tagged with unique traceable IDs, prioritized using MoSCoW (**M
   - **When** the upload completes,
   - **Then** the system automatically associates the files with the patient's record, encounter, and target tooth/procedure without manual intervention.
   - **And** an instantaneous SignalR push notification and WhatsApp alert are dispatched to the attending doctor notifying them that results have arrived.
+
+---
+
+### Module 18: Inter-Branch Stock Transfers & Centralized Supply Chain Logistics (REQ-LOG)
+
+#### `REQ-LOG-01: Inter-Branch Stock Requisition Workflow` [Must Have]
+- **User Story:** *As an Inventory Custodian at Branch A, I want to submit a formal stock transfer requisition to the Central Warehouse or another branch, specifying material, quantity, and clinical urgency, so that stockouts are prevented.*
+- **Acceptance Criteria:**
+  - **Given** Branch A has low stock of Composite Shade A2,
+  - **When** the custodian selects Source Branch B, quantity 10, and priority "Urgent",
+  - **Then** the system creates requisition `TRF-YYYYMM-XXXX` in `Requested` status and alerts the source branch custodian.
+
+#### `REQ-LOG-02: Two-Phase Commit Transfer State Machine & Real-Time Logistics Tracking` [Must Have]
+- **User Story:** *As a Clinic Network Administrator, I want stock movements to follow a strict two-phase commit state machine (Requested -> Approved -> InTransit -> Received), so that zero phantom inventory or double consumption occurs.*
+- **Acceptance Criteria:**
+  - **Given** a requisition is in `Requested` status,
+  - **When** the source custodian clicks "Dispatch",
+  - **Then** source inventory quantity is deducted, status transitions to `InTransit`, and an automated courier dispatch alert is sent.
+  - **When** the destination branch inspects and clicks "Receive",
+  - **Then** destination inventory is credited with usable quantity, damages are logged to quarantine, and the requisition is locked.
 
 ---
 

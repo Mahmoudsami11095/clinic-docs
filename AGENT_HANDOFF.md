@@ -63,6 +63,10 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
     - Doctor-centric multi-facility tenancy and assistant operational delegation with clinical SOAP governance guardrails.
     - Zero-login public clinic booking portal (`/book/:clinicSlug`) and printable A4 QR Code Stand Kit.
     - External diagnostic partner drop-off portal (`/partner-dropzone`) linking STL/DICOM/PDF results directly to patient EMR.
+14. **Inter-Branch Stock Transfers & Centralized Supply Chain Logistics (`BR-LOG-01..05`, `REQ-LOG-01..02`)**:
+    - Requisition state machine (`Requested` $\rightarrow$ `Approved` $\rightarrow$ `InTransit` $\rightarrow$ `Received`) with sequential tokens (`TRF-YYYYMM-XXXX`).
+    - Two-phase commit inventory reservation: source deduction strictly on dispatch, destination credit strictly on physical receiving verification.
+    - FEFO expiry protection (< 30 days barred without override) and damaged unit quarantine ledger.
 
 ---
 
@@ -70,15 +74,17 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
 
 | Test Layer | Technology | Count | Pass Rate |
 | :--- | :--- | :---: | :---: |
-| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **280+** | 🟢 **100%** |
+| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **286+** | 🟢 **100%** |
 | **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **77** | 🟢 **100%** |
-| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **451** | 🟢 **100%** |
-| **Playwright E2E Browser Tests** | Playwright Chromium & Tablet iPad (25 files) | **144** | 🟢 **100%** |
-| **TOTAL VERIFIED SUITE** | Full Application Stack | **843+** | 🟢 **100%** |
+| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **461** | 🟢 **100%** |
+| **Playwright E2E Browser Tests** | Playwright Chromium & Tablet iPad (25 files) | **148** | 🟢 **100%** |
+| **TOTAL VERIFIED SUITE** | Full Application Stack | **857+** | 🟢 **100%** |
 
 ---
 
 ## 4. Key Documentation Files in `clinic-docs`
+- `specs/features/FEATURE_v4.3.0_SPEC.md`: Clinical & Supply Chain Specification for Inter-Branch Stock Transfers.
+- `specs/features/FEATURE_v4.3.0_ADR.md`: Architecture Decision Record for Two-Phase Inter-Branch Stock State Machine.
 - `ENTERPRISE_DOCTOR_SAAS_AND_PARTNER_ECOSYSTEM_PLAN.md`: Complete blueprint for Doctor SaaS, Assistant Hub, Public QR Booking, and Partner Dropzone.
 - `PRODUCTION_VERIFICATION_AND_AUDIT_REPORT.md` (v3.2.0): Full production verification audit across all 835+ tests and 14 clinical domains.
 - `CUSTOMER_REQUIREMENTS_DOCUMENT.md` (v3.0.0): Business rules, RACI matrix, 14 modules, 15 UAT scenarios.
