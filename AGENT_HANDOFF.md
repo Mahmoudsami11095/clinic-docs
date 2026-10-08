@@ -66,20 +66,21 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
 
 | Test Layer | Technology | Count | Pass Rate |
 | :--- | :--- | :---: | :---: |
-| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **273** | 🟢 **100%** |
-| **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **67** | 🟢 **100%** |
-| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **277** | 🟢 **100%** |
-| **Playwright E2E Browser Tests** | Playwright Chromium & Tablet iPad | **40** | 🟢 **100%** |
-| **TOTAL VERIFIED SUITE** | Full Application Stack | **657** | 🟢 **100%** |
+| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **275** | 🟢 **100%** |
+| **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **77** | 🟢 **100%** |
+| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **443** | 🟢 **100%** |
+| **Playwright E2E Browser Tests** | Playwright Chromium & Tablet iPad (25 files) | **144** | 🟢 **100%** |
+| **TOTAL VERIFIED SUITE** | Full Application Stack | **835+** | 🟢 **100%** |
 
 ---
 
 ## 4. Key Documentation Files in `clinic-docs`
+- `PRODUCTION_VERIFICATION_AND_AUDIT_REPORT.md` (v3.2.0): Full production verification audit across all 835+ tests and 14 clinical domains.
 - `CUSTOMER_REQUIREMENTS_DOCUMENT.md` (v3.0.0): Business rules, RACI matrix, 14 modules, 15 UAT scenarios.
 - `SOFTWARE_REQUIREMENTS_SPECIFICATION.md` (v2.0.0): IEEE 830 architecture, data schemas, REST & SignalR contracts, Signal primitives.
 - `CLINIC_USER_MANUAL_AND_SOP.md` (v2.0.0): Complete operational procedures for all clinic roles.
 - `UAT_ACCEPTANCE_TEST_PLAN.md` (v3.0.0): 14 UAT domains, 28 test procedures, formal sign-off certificate.
-- `AUTOMATED_TEST_SUITE_REPORT.md`: Comprehensive coverage report for the 657 automated tests.
+- `AUTOMATED_TEST_SUITE_REPORT.md`: Comprehensive coverage report for the automated test suite.
 - `README.md`: Central portal index linking all repositories, live URLs, and documentation.
 - `MULTI_AGENT_COMPANY_PLAN.md`: Complete blueprint and architecture for ClinicCorp AI multi-agent software company.
 

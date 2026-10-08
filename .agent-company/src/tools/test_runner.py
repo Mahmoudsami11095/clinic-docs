@@ -48,18 +48,25 @@ class MultiTierTestRunner:
         cmd = ["dotnet", "test", sln_path, "-c", "Release", "--verbosity", "normal"]
         res = self._execute_command(cmd, cwd=self.clinic_api_dir)
 
-        # Parse .NET test summary: Passed! - Failed: 0, Passed: 350, Skipped: 0, Total: 350
+        # Parse .NET test summary: total: 352, failed: 0, succeeded: 352, skipped: 0
         passed = 0
         failed = 0
         skipped = 0
         total = 0
 
-        match = re.search(r"Failed:\s*(\d+),\s*Passed:\s*(\d+),\s*Skipped:\s*(\d+),\s*Total:\s*(\d+)", res["stdout"])
+        match = re.search(r"total:\s*(\d+),\s*failed:\s*(\d+),\s*succeeded:\s*(\d+),\s*skipped:\s*(\d+)", res["stdout"], re.IGNORECASE)
         if match:
-            failed = int(match.group(1))
-            passed = int(match.group(2))
-            skipped = int(match.group(3))
-            total = int(match.group(4))
+            total = int(match.group(1))
+            failed = int(match.group(2))
+            passed = int(match.group(3))
+            skipped = int(match.group(4))
+        else:
+            match_legacy = re.search(r"Failed:\s*(\d+),\s*Passed:\s*(\d+),\s*Skipped:\s*(\d+),\s*Total:\s*(\d+)", res["stdout"])
+            if match_legacy:
+                failed = int(match_legacy.group(1))
+                passed = int(match_legacy.group(2))
+                skipped = int(match_legacy.group(3))
+                total = int(match_legacy.group(4))
 
         return {
             "tier": "backend_dotnet",
@@ -76,20 +83,25 @@ class MultiTierTestRunner:
         cmd = ["npm", "run", "test:ci"]
         res = self._execute_command(cmd, cwd=self.clinic_app_dir)
 
-        # Parse Karma summary: Executed 282 of 282 SUCCESS
+        # Parse Karma summary: TOTAL: 443 SUCCESS or Executed 443 of 443 SUCCESS
         passed = 0
         failed = 0
         total = 0
 
-        match = re.search(r"Executed\s+(\d+)\s+of\s+(\d+)\s+(SUCCESS|FAILED)", res["stdout"])
-        if match:
-            executed = int(match.group(1))
-            total = int(match.group(2))
-            status = match.group(3)
-            if status == "SUCCESS":
-                passed = executed
-            else:
-                failed = executed - passed
+        match_total = re.search(r"TOTAL:\s*(\d+)\s+SUCCESS", res["stdout"])
+        if match_total:
+            passed = int(match_total.group(1))
+            total = passed
+        else:
+            match = re.search(r"Executed\s+(\d+)\s+of\s+(\d+)\s+(SUCCESS|FAILED)", res["stdout"])
+            if match:
+                executed = int(match.group(1))
+                total = int(match.group(2))
+                status = match.group(3)
+                if status == "SUCCESS":
+                    passed = executed
+                else:
+                    failed = executed - passed
 
         return {
             "tier": "frontend_karma",

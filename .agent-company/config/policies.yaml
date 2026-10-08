@@ -9,11 +9,11 @@ quality_gates:
   test_pass_threshold:
     percentage: 100
     baseline_counts:
-      backend_unit: 273
+      backend_unit: 275
       backend_integration: 77
-      frontend_unit: 282
+      frontend_unit: 443
       playwright_e2e: 40
-      total_minimum: 672
+      total_minimum: 835
     allow_regressions: false
 
   code_coverage_floor:
