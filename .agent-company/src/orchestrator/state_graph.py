@@ -11,6 +11,13 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 agent_company_root = os.path.abspath(os.path.join(current_dir, "..", ".."))
 clinic_docs_root = os.path.abspath(os.path.join(agent_company_root, ".."))
 
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+        sys.stderr.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+
 if agent_company_root not in sys.path:
     sys.path.insert(0, agent_company_root)
 

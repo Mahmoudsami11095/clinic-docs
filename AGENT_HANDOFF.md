@@ -82,6 +82,10 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
     - Automated patient copay calculation and insurance balance splitting (`BR-INS-01`).
     - Financial pre-authorization threshold guardrail for high-tariff restorations and surgeries (`BR-INS-02`).
     - Complete claim adjudication state machine (`Draft` $\rightarrow$ `Submitted` $\rightarrow$ `PreAuthorized` $\rightarrow$ `Approved` $\rightarrow$ `PartiallyApproved` $\rightarrow$ `Rejected` $\rightarrow$ `Settled`).
+18. **Clinical Informed Consent & Medico-Legal Audit Dossier Suite (`BR-CONSENT-01..04`, `REQ-CONSENT-01..02`)**:
+    - Procedure-specific clinical risk disclosure templates (Dental Implants, Surgical Extractions, Root Canals, Orthodontics, Botox).
+    - Touchscreen signature canvas capture for patients/guardians and doctor countersignatures with syndicate registration credentials.
+    - Cryptographic SHA-256 tamper-proof checksum (`ComputeDocumentSha256`) and permanent `ArchivedLocked` immutability.
 
 ---
 
@@ -89,15 +93,18 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
 
 | Test Layer | Technology | Count | Pass Rate |
 | :--- | :--- | :---: | :---: |
-| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **295+** | 🟢 **100%** |
+| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **299+** | 🟢 **100%** |
 | **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **77** | 🟢 **100%** |
-| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **480** | 🟢 **100%** |
+| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **488** | 🟢 **100%** |
 | **Playwright E2E Browser Tests** | Playwright Chromium & Tablet iPad (25 files) | **148** | 🟢 **100%** |
-| **TOTAL VERIFIED SUITE** | Full Application Stack | **880+** | 🟢 **100%** |
+| **TOTAL VERIFIED SUITE** | Full Application Stack | **888+** | 🟢 **100%** |
 
 ---
 
 ## 4. Key Documentation Files in `clinic-docs`
+- `specs/features/FEATURE_v4.6.0_SPEC.md`: Clinical & Legal Specification for Informed Consent Dossier.
+- `specs/features/FEATURE_v4.6.0_ADR.md`: Architecture Decision Record for Cryptographic Consent Immutability.
+- `specs/features/FEATURE_v4.5.0_SPEC.md`: Clinical & Insurance Specification for Dental & Medical Claims Suite.
 - `specs/features/FEATURE_v4.5.0_SPEC.md`: Clinical & Insurance Specification for Dental & Medical Claims Suite.
 - `specs/features/FEATURE_v4.5.0_ADR.md`: Architecture Decision Record for Insurance Claims & Adjudication Pipeline.
 - `specs/features/FEATURE_v4.4.0_SPEC.md`: Clinical & Executive Specification for Multi-Branch Intelligence Suite.
