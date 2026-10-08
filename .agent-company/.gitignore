@@ -5,6 +5,12 @@ __pycache__/
 .venv/
 env/
 
+# Environment and secrets protection
+.env
+*.env
+*.key
+*.token
+
 # Ephemeral run execution logs
 runs/*.json
 !runs/.gitkeep

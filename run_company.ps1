@@ -3,6 +3,8 @@
 param (
     [switch]$Start,
     [switch]$Stop,
+    [switch]$Dashboard,
+    [int]$Port = 8088,
     [string]$FeatureId = "v3.2.0-telehealth-webrtc",
     [switch]$LiveTests
 )
@@ -13,11 +15,18 @@ $agentDir = "$PSScriptRoot\.agent-company"
 if ($Stop) {
     Write-Host "[SYSTEM] Emergency Stop Activated. Halting all agent processes..." -ForegroundColor Red
     try {
-        Get-Process python -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -like "*state_graph.py*" } | Stop-Process -Force
+        Get-Process python -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -like "*state_graph.py*" -or $_.CommandLine -like "*server.py*" } | Stop-Process -Force
         Write-Host "[SYSTEM] All agent processes stopped." -ForegroundColor Yellow
     } catch {
         Write-Host "[SYSTEM] No active agent processes found." -ForegroundColor DarkGray
     }
+    exit 0
+}
+
+if ($Dashboard) {
+    Write-Host "[SYSTEM] Launching ClinicCorp AI Mission Control Dashboard..." -ForegroundColor Cyan
+    Write-Host "Target: http://localhost:$Port" -ForegroundColor Green
+    python "$agentDir\src\dashboard\server.py" $Port
     exit 0
 }
 
@@ -74,5 +83,8 @@ if ($Start) {
         exit $LASTEXITCODE
     }
 } else {
-    Write-Host "Usage: .\run_company.ps1 -Start [-FeatureId <ID>] [-LiveTests] | -Stop"
+    Write-Host "Usage:"
+    Write-Host "  .\run_company.ps1 -Start [-FeatureId <ID>] [-LiveTests]"
+    Write-Host "  .\run_company.ps1 -Dashboard [-Port 8088]"
+    Write-Host "  .\run_company.ps1 -Stop"
 }
