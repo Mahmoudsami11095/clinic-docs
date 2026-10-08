@@ -67,6 +67,11 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
     - Requisition state machine (`Requested` $\rightarrow$ `Approved` $\rightarrow$ `InTransit` $\rightarrow$ `Received`) with sequential tokens (`TRF-YYYYMM-XXXX`).
     - Two-phase commit inventory reservation: source deduction strictly on dispatch, destination credit strictly on physical receiving verification.
     - FEFO expiry protection (< 30 days barred without override) and damaged unit quarantine ledger.
+15. **Enterprise Optimizations, Component Reuse & Performance Hardening**:
+    - Universal `<app-status-badge>` and standardized `<app-modal>` component reuse across inventory, transfers, and clinic QR kits.
+    - Fine-grained reactivity using `ChangeDetectionStrategy.OnPush` across feature and list boards.
+    - Viewport `@defer (on viewport; prefetch on idle)` lazy chunking for interactive Leaflet maps.
+    - Zero-login PHI masking on public diagnostic dropzone and EF Core `.AsNoTracking()` query throughput boost.
 
 ---
 
@@ -74,11 +79,11 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
 
 | Test Layer | Technology | Count | Pass Rate |
 | :--- | :--- | :---: | :---: |
-| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **286+** | 🟢 **100%** |
+| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **287+** | 🟢 **100%** |
 | **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **77** | 🟢 **100%** |
-| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **461** | 🟢 **100%** |
+| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **465** | 🟢 **100%** |
 | **Playwright E2E Browser Tests** | Playwright Chromium & Tablet iPad (25 files) | **148** | 🟢 **100%** |
-| **TOTAL VERIFIED SUITE** | Full Application Stack | **857+** | 🟢 **100%** |
+| **TOTAL VERIFIED SUITE** | Full Application Stack | **861+** | 🟢 **100%** |
 
 ---
 
