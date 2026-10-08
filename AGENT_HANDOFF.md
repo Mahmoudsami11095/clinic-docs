@@ -87,24 +87,37 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
     - Touchscreen signature canvas capture for patients/guardians and doctor countersignatures with syndicate registration credentials.
     - Cryptographic SHA-256 tamper-proof checksum (`ComputeDocumentSha256`) and permanent `ArchivedLocked` immutability.
 
+19. **Real-Time PACS DICOM Web Modality & Window/Level HU Presets (`BR-RAD-05..07`, `REQ-RAD-05..06`, Release v4.1.0)**:
+    - Web DICOM modality loader supporting multi-slice 3D CBCT axial, coronal, and sagittal volume scrubber.
+    - Clinical Hounsfield Unit (HU) presets: Soft Tissue (350/40), Enamel & Dentin (1000/500), Trabecular Bone (2000/600), Cortical / Implant Bed (3000/1000).
+    - Real-time HU density probe calculating live HU attenuation and Bone Type categorization (D1-D4).
+    - 48-slice CBCT Cine loop playback and comprehensive DICOM PS3.3 Tag Header Inspector drawer.
+20. **AI Dental Insurance Pre-Authorization & Cryptographic Claim Bundler (`BR-INS-05..07`, `REQ-INS-03..04`, Release v4.2.0)**:
+    - 1-click clinical claim compilation from accepted AI Computer Vision findings (Caries $\rightarrow$ D2391, Endo $\rightarrow$ D3330, Perio $\rightarrow$ D4341, Impaction $\rightarrow$ D7230).
+    - Real-time EDI 270/271 eligibility verification simulation with automated member deductible & copay adjudication.
+    - ADA Standard Dental Claim Form packet generator bundling radiographic evidence, doctor syndicate credentials, and itemized CDT fee breakdown.
+    - Cryptographic SHA-256 digital tamper seal and QR verification payload (`urn:ada:claim:sha256:...`).
+
 ---
 
 ## 3. Automated Test Suite Scorecard (100% Pass)
 
 | Test Layer | Technology | Count | Pass Rate |
 | :--- | :--- | :---: | :---: |
-| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **299+** | 🟢 **100%** |
+| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **304** | 🟢 **100%** |
 | **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **77** | 🟢 **100%** |
-| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **488** | 🟢 **100%** |
+| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **495** | 🟢 **100%** |
 | **Playwright E2E Browser Tests** | Playwright Chromium & Tablet iPad (25 files) | **148** | 🟢 **100%** |
-| **TOTAL VERIFIED SUITE** | Full Application Stack | **888+** | 🟢 **100%** |
+| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,024** | 🟢 **100%** |
 
 ---
 
 ## 4. Key Documentation Files in `clinic-docs`
+- `specs/features/FEATURE_v4.1.0_DICOM_PACS_SPEC.md`: Gherkin & Technical Spec for PACS DICOM CBCT Loader & HU Presets.
+- `specs/features/FEATURE_v4.2.0_AI_INSURANCE_PREAUTH_SPEC.md`: Gherkin & Technical Spec for AI Insurance Pre-Authorization & ADA Packet.
+- `docs/architecture/ADR-005-PACS-DICOM-AND-AI-CLAIMS-PREAUTH.md`: Chief Architect ADR for DICOM Attenuation & Cryptographic ADA Seals.
 - `specs/features/FEATURE_v4.6.0_SPEC.md`: Clinical & Legal Specification for Informed Consent Dossier.
 - `specs/features/FEATURE_v4.6.0_ADR.md`: Architecture Decision Record for Cryptographic Consent Immutability.
-- `specs/features/FEATURE_v4.5.0_SPEC.md`: Clinical & Insurance Specification for Dental & Medical Claims Suite.
 - `specs/features/FEATURE_v4.5.0_SPEC.md`: Clinical & Insurance Specification for Dental & Medical Claims Suite.
 - `specs/features/FEATURE_v4.5.0_ADR.md`: Architecture Decision Record for Insurance Claims & Adjudication Pipeline.
 - `specs/features/FEATURE_v4.4.0_SPEC.md`: Clinical & Executive Specification for Multi-Branch Intelligence Suite.
