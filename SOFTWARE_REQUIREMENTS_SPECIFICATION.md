@@ -642,6 +642,44 @@ All API routes are served under prefix `/api/`. Request and response bodies are 
 - **Authorization:** `Roles = "admin,doctor,assistant"`
 - **Response `200 OK`:** Sets status to `Settled` upon TPA remittance payment.
 
+### 4.11 Clinical Informed Consent & Medico-Legal Dossier Endpoints
+
+#### `SRS-API-CONSENT-01: Query Statutory Consent Templates`
+- **Method:** `GET`
+- **Route:** `/api/consents/templates`
+- **Authorization:** `Roles = "admin,doctor,assistant"`
+- **Response `200 OK`:** Returns standardized procedure consent templates with statutory risk disclosures.
+
+#### `SRS-API-CONSENT-02: Create & Sign Informed Consent Document (BR-CONSENT-01..03)`
+- **Method:** `POST` / `PUT`
+- **Route:** `/api/consents`, `/api/consents/{id}/sign-patient`, `/api/consents/{id}/countersign`
+- **Authorization:** `Roles = "admin,doctor,assistant"`
+- **Response `200 OK`:** Computes immutable SHA-256 digital checksum and locks document to `ArchivedLocked`.
+
+### 4.12 AI Clinical Decision Support (CDS) & Drug-Drug Interaction Endpoints
+
+#### `SRS-API-CDS-01: Real-Time Prescription Safety & Interaction Evaluator (BR-CDS-01..02)`
+- **Method:** `POST`
+- **Route:** `/api/cds/evaluate`
+- **Authorization:** `Roles = "admin,doctor,assistant"`
+- **Payload Schema:**
+  ```json
+  {
+    "prescribedMolecules": ["Ibuprofen", "Amoxicillin"],
+    "patientChronicMedications": ["Warfarin"],
+    "patientChronicConditions": ["Peptic Ulcer"],
+    "patientWeightKg": 25.0,
+    "patientAgeYears": 8
+  }
+  ```
+- **Response `200 OK`:** Returns `CdsEvaluationResponseDto` flagging Critical DDIs, disease contraindications, and pediatric mg/kg dosage calculations.
+
+#### `SRS-API-CDS-02: Calculate Pediatric Weight-Based Dosage (BR-CDS-03)`
+- **Method:** `GET`
+- **Route:** `/api/cds/pediatric-dose?drugName={drug}&weightKg={weight}&ageYears={age}`
+- **Authorization:** `Roles = "admin,doctor,assistant"`
+- **Response `200 OK`:** Returns calculated dose capped at adult maximum ceiling.
+
 ---
 
 ## 5. Real-Time SignalR Event Specification

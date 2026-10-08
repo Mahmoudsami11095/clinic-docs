@@ -345,6 +345,21 @@ The following business rules represent strict operational invariants enforced ac
 #### `BR-INS-04: Diagnostic Evidence Traceability`
 - Dental claims must link target FDI tooth numbers (11–48) and attach diagnostic radiograph scan URLs to prevent administrative payer rejections.
 
+### 5.16 Clinical Decision Support & Pharmacological Safety Rules (BR-CDS)
+
+#### `BR-CDS-01: Critical Interaction Hard Stop & Override Mandate`
+- When the Clinical Decision Support engine flags a Critical Contraindication (Red Alert) between prescribed drugs, patient chronic medications, or chronic systemic diseases, the prescription cannot be finalized or signed without an explicit clinical justification string (`OverrideReason`).
+- Overrides are permanently logged in the medico-legal audit ledger.
+
+#### `BR-CDS-02: Tri-Vector Safety Cross-Verification`
+- The prescription evaluator evaluates three concurrent vectors before issuing an electronic prescription:
+  1. Patient documented drug allergies (e.g. Penicillin / Sulfa).
+  2. Intra-prescription drug-drug interactions (e.g. NSAID + NSAID).
+  3. Patient chronic medication cross-interactions (e.g. NSAID + Warfarin / Clarithromycin + Statin).
+
+#### `BR-CDS-03: Pediatric Dosage Safety Ceiling`
+- Weight-based pediatric dosing calculations (Weight * mg/kg) can NEVER exceed the standard adult maximum single or daily dose ceiling.
+
 ---
 
 ## 6. End-to-End Clinical Workflows
@@ -868,6 +883,25 @@ Requirements are tagged with unique traceable IDs, prioritized using MoSCoW (**M
   - **Then** the system computes Patient Copay (20%) and Insurance Claimed Balance (80%).
   - **And** procedures exceeding the PreAuthThreshold default to `PreAuthorized` until approved by the payer.
   - **And** upon approval, the claim can be settled with recorded voucher references.
+
+---
+
+### Module 22: AI Clinical Decision Support (CDS) & Drug-Drug Interaction Engine (REQ-CDS)
+
+#### `REQ-CDS-01: Real-Time Drug-Drug Interaction (DDI) Evaluator` [Must Have]
+- **User Story:** *As an Attending Doctor, when drafting prescriptions, I want the system to cross-reference prescribed molecules against the patient's chronic medications in real time (< 50ms), so that adverse drug interactions are caught before dispensing.*
+- **Acceptance Criteria:**
+  - **Given** a doctor prescribes Ibuprofen to a patient taking Warfarin,
+  - **When** the medication is added to the prescription,
+  - **Then** the CDS banner flags a Critical Contraindication (Red), explains the hemorrhagic clinical effect, and suggests Paracetamol as an alternative.
+  - **And** the prescription cannot be finalized without an explicit `OverrideReason`.
+
+#### `REQ-CDS-02: Pediatric & Weight-Based Dosage Calculator` [Must Have]
+- **User Story:** *As a Pediatric Dentist or General Physician, I want the system to suggest optimal pediatric doses based on patient weight and age with an automatic adult safety ceiling cap.*
+- **Acceptance Criteria:**
+  - **Given** a child weighing 15 kg requiring Amoxicillin,
+  - **When** the doctor launches the Pediatric Dosage modal,
+  - **Then** the system calculates 200 mg TID and confirms it is well within the 500 mg adult single dose maximum ceiling.
 
 ---
 
