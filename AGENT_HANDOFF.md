@@ -102,6 +102,11 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
     - Critical contraindication detection (NSAIDs in Peptic Ulcers/Renal Failure, Epinephrine in Cardiac Arrhythmias, Tetracyclines in Pregnancy/Pediatrics).
     - Automated pediatric weight-based dosing calculator with adult maximum ceiling safety caps (`BR-CDS-03`).
     - Clinician override audit trail for flagged critical interactions (`BR-CDS-01`).
+22. **Smart Preventative Patient Recall & Retention Board (`BR-REC-01..04`, `REQ-REC-01..04`, Release v5.1.0)**:
+    - Standardized preventative clinical recall protocols (Periodontal 6m, Pediatric Fluoride 6m, Implant Radiographic Check 12m, Orthodontic Retainer 3m, Post-Op Surgical 48h).
+    - Multi-channel WhatsApp notification dispatch with personalized messages and direct 1-click booking link.
+    - 1-Click batch outreach campaign targeting overdue preventative check-ups.
+    - Recall conversion rate analytics (% converted into confirmed bookings and recurring revenue).
 
 ---
 
@@ -109,15 +114,18 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
 
 | Test Layer | Technology | Count | Pass Rate |
 | :--- | :--- | :---: | :---: |
-| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **308+** | 🟢 **100%** |
+| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **313+** | 🟢 **100%** |
 | **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **77** | 🟢 **100%** |
-| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **503** | 🟢 **100%** |
+| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **513** | 🟢 **100%** |
 | **Playwright E2E Browser Tests** | Playwright Chromium & Tablet iPad (25 files) | **148** | 🟢 **100%** |
-| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,036+** | 🟢 **100%** |
+| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,046+** | 🟢 **100%** |
 
 ---
 
 ## 4. Key Documentation Files in `clinic-docs`
+- `specs/features/FEATURE_v5.1.0_SPEC.md`: Clinical & Patient Engagement Specification for Smart Preventative Recall Engine.
+- `specs/features/FEATURE_v5.1.0_ADR.md`: Architecture Decision Record for Finite State Machine Recall Engine.
+- `specs/features/FEATURE_v5.0.0_SPEC.md`: Clinical & Pharmacological Specification for AI Clinical Decision Support Engine.
 - `specs/features/FEATURE_v5.0.0_SPEC.md`: Clinical & Pharmacological Specification for AI Clinical Decision Support Engine.
 - `specs/features/FEATURE_v5.0.0_ADR.md`: Architecture Decision Record for Pharmacological Graph Rule Engine.
 - `specs/features/FEATURE_v4.1.0_DICOM_PACS_SPEC.md`: Gherkin & Technical Spec for PACS DICOM CBCT Loader & HU Presets.

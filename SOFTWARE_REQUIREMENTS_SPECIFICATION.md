@@ -680,6 +680,26 @@ All API routes are served under prefix `/api/`. Request and response bodies are 
 - **Authorization:** `Roles = "admin,doctor,assistant"`
 - **Response `200 OK`:** Returns calculated dose capped at adult maximum ceiling.
 
+### 4.13 Smart Preventative Recall & Automated Patient Engagement Endpoints
+
+#### `SRS-API-REC-01: Schedule Patient Recall Protocol (BR-REC-01)`
+- **Method:** `POST`
+- **Route:** `/api/recalls`
+- **Authorization:** `Roles = "admin,doctor,assistant"`
+- **Response `201 Created`:** Computes due date from interval protocol and stores scheduled recall.
+
+#### `SRS-API-REC-02: Query Recalls Queue & Summary Metrics (REQ-REC-04)`
+- **Method:** `GET`
+- **Route:** `/api/recalls`, `/api/recalls/summary`
+- **Authorization:** `Roles = "admin,doctor,assistant"`
+- **Response `200 OK`:** Returns list of recalls and summary metrics (total due, overdue, conversion rate %).
+
+#### `SRS-API-REC-03: Multi-Channel WhatsApp Dispatch & Batch Campaign (REQ-REC-02..03)`
+- **Method:** `POST`
+- **Route:** `/api/recalls/{id}/dispatch`, `/api/recalls/batch-dispatch`
+- **Authorization:** `Roles = "admin,doctor,assistant"`
+- **Response `200 OK`:** Dispatches personalized reminder message with 1-click booking link and transitions status to `NotificationSent`.
+
 ---
 
 ## 5. Real-Time SignalR Event Specification

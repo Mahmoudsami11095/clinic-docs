@@ -360,6 +360,21 @@ The following business rules represent strict operational invariants enforced ac
 #### `BR-CDS-03: Pediatric Dosage Safety Ceiling`
 - Weight-based pediatric dosing calculations (Weight * mg/kg) can NEVER exceed the standard adult maximum single or daily dose ceiling.
 
+### 5.17 Smart Preventative Recall & Automated Patient Engagement Rules (BR-REC)
+
+#### `BR-REC-01: Standardized Clinical Recall Intervals`
+- Routine dental scaling and periodontal prophylaxis automatically defaults to a 6-month recall (`PeriodontalMaintenance`).
+- Pediatric topical fluoride applications default to 6 months for patients under 14 years.
+- Implant crown installations default to 12 months with mandatory radiographic bone check.
+- Surgical extractions default to 48 hours for post-operative suture and healing verification.
+
+#### `BR-REC-02: Automatic Transition on Appointment Booking`
+- When a patient books an appointment linked to a recall reference token (`?recall=RCL-...`), the recall status automatically transitions from `NotificationSent` to `Booked`.
+- Upon doctor completion of the consultation, the recall transitions to `Completed`.
+
+#### `BR-REC-03: Patient Autonomy & Snooze Governance`
+- Receptionists can postpone a recall by 2, 4, or 8 weeks upon patient request, recalculating the `DueDate` and suppressing notifications until the new date.
+
 ---
 
 ## 6. End-to-End Clinical Workflows
@@ -902,6 +917,25 @@ Requirements are tagged with unique traceable IDs, prioritized using MoSCoW (**M
   - **Given** a child weighing 15 kg requiring Amoxicillin,
   - **When** the doctor launches the Pediatric Dosage modal,
   - **Then** the system calculates 200 mg TID and confirms it is well within the 500 mg adult single dose maximum ceiling.
+
+---
+
+### Module 23: Smart Preventative Recall & Automated Patient Engagement Engine (REQ-REC)
+
+#### `REQ-REC-01: Standardized Preventative Recall Protocols` [Must Have]
+- **User Story:** *As a Doctor or Clinic Assistant, when concluding an encounter, I want to attach a standardized preventative recall protocol (Periodontal 6m, Pediatric Fluoride 6m, Implant Checkup 12m, Ortho 3m, Post-Op 48h), so that preventative follow-up is scheduled automatically.*
+- **Acceptance Criteria:**
+  - **Given** a patient finishes periodontal scaling,
+  - **When** the doctor selects the PeriodontalMaintenance preset,
+  - **Then** a recall record `RCL-YYYYMM-XXXX` is scheduled exactly 6 months in advance.
+
+#### `REQ-REC-02: 1-Click WhatsApp Outreach Campaign & Conversion Tracking` [Must Have]
+- **User Story:** *As a Clinic Practice Manager, I want to dispatch personalized WhatsApp messages to all patients with overdue check-ups and monitor the conversion rate into confirmed appointments.*
+- **Acceptance Criteria:**
+  - **Given** 10 patients are overdue for routine check-ups,
+  - **When** the manager launches the Batch Recall Outreach,
+  - **Then** personalized WhatsApp messages with 1-click booking links are queued, and the status updates to `NotificationSent`.
+  - **And** when patients book, the conversion rate metric updates in real time.
 
 ---
 
