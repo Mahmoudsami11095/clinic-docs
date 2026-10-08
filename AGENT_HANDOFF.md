@@ -77,6 +77,11 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
     - Group-wide financial barometer: Gross Network Billings, Net Collected, Commissions Paid, and Operating Margin %.
     - Branch benchmark leaderboard (`/admin/executive-intelligence`) ranking facilities by revenue velocity and chair turnaround times.
     - Cross-facility doctor productivity matrix and consumable burn-rate depletion predictor.
+17. **Dental & Medical Insurance Claims & EDI Pre-Authorization Suite (`BR-INS-01..04`, `REQ-INS-01..02`)**:
+    - Integrated insurance claims engine supporting regional and international TPAs (Bupa, AXA, MetLife, NextCare, Misr Healthcare).
+    - Automated patient copay calculation and insurance balance splitting (`BR-INS-01`).
+    - Financial pre-authorization threshold guardrail for high-tariff restorations and surgeries (`BR-INS-02`).
+    - Complete claim adjudication state machine (`Draft` $\rightarrow$ `Submitted` $\rightarrow$ `PreAuthorized` $\rightarrow$ `Approved` $\rightarrow$ `PartiallyApproved` $\rightarrow$ `Rejected` $\rightarrow$ `Settled`).
 
 ---
 
@@ -84,15 +89,17 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
 
 | Test Layer | Technology | Count | Pass Rate |
 | :--- | :--- | :---: | :---: |
-| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **291+** | 🟢 **100%** |
+| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **295+** | 🟢 **100%** |
 | **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **77** | 🟢 **100%** |
-| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **471** | 🟢 **100%** |
+| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **480** | 🟢 **100%** |
 | **Playwright E2E Browser Tests** | Playwright Chromium & Tablet iPad (25 files) | **148** | 🟢 **100%** |
-| **TOTAL VERIFIED SUITE** | Full Application Stack | **871+** | 🟢 **100%** |
+| **TOTAL VERIFIED SUITE** | Full Application Stack | **880+** | 🟢 **100%** |
 
 ---
 
 ## 4. Key Documentation Files in `clinic-docs`
+- `specs/features/FEATURE_v4.5.0_SPEC.md`: Clinical & Insurance Specification for Dental & Medical Claims Suite.
+- `specs/features/FEATURE_v4.5.0_ADR.md`: Architecture Decision Record for Insurance Claims & Adjudication Pipeline.
 - `specs/features/FEATURE_v4.4.0_SPEC.md`: Clinical & Executive Specification for Multi-Branch Intelligence Suite.
 - `specs/features/FEATURE_v4.4.0_ADR.md`: Architecture Decision Record for In-Memory Aggregation Pipeline.
 - `specs/features/FEATURE_v4.3.0_SPEC.md`: Clinical & Supply Chain Specification for Inter-Branch Stock Transfers.

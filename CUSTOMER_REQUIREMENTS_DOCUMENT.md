@@ -327,6 +327,24 @@ The following business rules represent strict operational invariants enforced ac
 #### `BR-LOG-05: Immutable Transport Audit Trail`
 - Requisitions in `Received` or `Cancelled` status are permanently audit-locked and cannot be modified or deleted.
 
+### 5.15 Dental & Medical Insurance Claims & EDI Pre-Authorization Rules (BR-INS)
+
+#### `BR-INS-01: Automated Copay & Claim Split Calculation`
+- For patients with verified insurance coverage, invoices and treatment plans dynamically calculate:
+  - Patient Copay Amount = Total Gross Amount * (Copay Percentage / 100)
+  - Claimed Amount = Total Gross Amount - Patient Copay Amount
+- Official patient receipts print the patient copay only, referencing the pending insurance claim number.
+
+#### `BR-INS-02: High-Value Pre-Authorization Requirement`
+- Procedures exceeding the insurance payer's `PreAuthThreshold` require status `PreAuthorized` or `Approved` before treatment can be marked completed under insurance.
+
+#### `BR-INS-03: Claim Adjudication & Settlement Immutability`
+- Only claims in `Approved` or `PartiallyApproved` status can transition to `Settled` upon entry of the TPA remittance voucher reference.
+- Settled claims are permanently locked from modification.
+
+#### `BR-INS-04: Diagnostic Evidence Traceability`
+- Dental claims must link target FDI tooth numbers (11–48) and attach diagnostic radiograph scan URLs to prevent administrative payer rejections.
+
 ---
 
 ## 6. End-to-End Clinical Workflows
@@ -830,6 +848,26 @@ Requirements are tagged with unique traceable IDs, prioritized using MoSCoW (**M
   - **Then** source inventory quantity is deducted, status transitions to `InTransit`, and an automated courier dispatch alert is sent.
   - **When** the destination branch inspects and clicks "Receive",
   - **Then** destination inventory is credited with usable quantity, damages are logged to quarantine, and the requisition is locked.
+
+---
+
+### Module 20: Dental & Medical Insurance Claims & EDI Pre-Authorization Suite (REQ-INS)
+
+#### `REQ-INS-01: Insurance Provider & Policy Management` [Must Have]
+- **User Story:** *As an Administrator, I can register insurance companies and TPAs (e.g. Bupa, AXA, MetLife, NextCare) with their pre-authorization financial ceilings and contact details.*
+- **Acceptance Criteria:**
+  - **Given** an administrator opens the Insurance configuration,
+  - **When** they add a new payer with Payer Code and PreAuthThreshold,
+  - **Then** the payer is immediately available for patient policy attachment and claim creation.
+
+#### `REQ-INS-02: Electronic Claim Submission & Pre-Authorization Workflow` [Must Have]
+- **User Story:** *As a Doctor and Billing Coordinator, I can generate insurance claims with automated copay calculations, attached tooth numbers, ICD-10 diagnosis codes, and digital X-ray evidence, and track claim adjudication through payment settlement.*
+- **Acceptance Criteria:**
+  - **Given** an insured patient undergoes treatment,
+  - **When** the cashier or doctor submits the claim,
+  - **Then** the system computes Patient Copay (20%) and Insurance Claimed Balance (80%).
+  - **And** procedures exceeding the PreAuthThreshold default to `PreAuthorized` until approved by the payer.
+  - **And** upon approval, the claim can be settled with recorded voucher references.
 
 ---
 

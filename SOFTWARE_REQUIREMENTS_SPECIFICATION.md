@@ -591,6 +591,57 @@ All API routes are served under prefix `/api/`. Request and response bodies are 
   ```
 - **Response `200 OK`:** Transitions requisition to `Received` and credits usable quantity to destination clinic inventory.
 
+### 4.10 Dental & Medical Insurance Claims & Pre-Authorization Endpoints
+
+#### `SRS-API-INS-01: Query Insurance Providers Catalog`
+- **Method:** `GET`
+- **Route:** `/api/insurance/providers`
+- **Authorization:** `Roles = "admin,doctor,assistant"`
+- **Response `200 OK`:** Returns array of active insurance companies, payer codes, and pre-authorization thresholds.
+
+#### `SRS-API-INS-02: Submit Insurance Claim & Pre-Authorization (BR-INS-01..02)`
+- **Method:** `POST`
+- **Route:** `/api/insurance/claims`
+- **Authorization:** `Roles = "admin,doctor,assistant"`
+- **Payload Schema:**
+  ```json
+  {
+    "clinicId": "c-downtown-guid",
+    "patientId": "pat-100-guid",
+    "doctorId": "doc-50-guid",
+    "insuranceProviderId": "prov-bupa-guid",
+    "policyNumber": "POL-998822",
+    "memberId": "MEM-10492",
+    "toothNumber": 16,
+    "diagnosisCode": "K02.1",
+    "procedureDescription": "Full Ceramic Zirconia Crown",
+    "totalGrossAmount": 4000.00,
+    "copayPercentage": 20.00,
+    "preAuthNotes": "Severe coronal destruction"
+  }
+  ```
+- **Response `201 Created`:** Computes patient copay (800 EGP) and claimed amount (3200 EGP). Sets status to `PreAuthorized` if gross >= threshold.
+
+#### `SRS-API-INS-03: Adjudicate Insurance Claim (BR-INS-03)`
+- **Method:** `PUT`
+- **Route:** `/api/insurance/claims/{id}/adjudicate`
+- **Authorization:** `Roles = "admin,doctor,assistant"`
+- **Payload Schema:**
+  ```json
+  {
+    "status": "Approved",
+    "approvedAmount": 3200.00,
+    "adjudicationNotes": "Full coverage approved per policy schedule"
+  }
+  ```
+- **Response `200 OK`:** Updates claim status and records approved reimbursement amount.
+
+#### `SRS-API-INS-04: Settle Remitted Insurance Claim (BR-INS-03)`
+- **Method:** `PUT`
+- **Route:** `/api/insurance/claims/{id}/settle`
+- **Authorization:** `Roles = "admin,doctor,assistant"`
+- **Response `200 OK`:** Sets status to `Settled` upon TPA remittance payment.
+
 ---
 
 ## 5. Real-Time SignalR Event Specification
