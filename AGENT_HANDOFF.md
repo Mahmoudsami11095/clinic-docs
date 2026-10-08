@@ -57,8 +57,12 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
     - Monthly settlement payout ledger with audit-locking (`Draft` $\rightarrow$ `Approved` $\rightarrow$ `Paid`).
 11. **Route-Level Lazy Loading & Bundle Budgets**:
     - Initial bundle transfer budget $\le 200\text{ KB}$ (gzipped) with `@defer` block chunking and dynamic Leaflet map import.
-12. **Angular 19 Reactive Signal Primitives**:
+12. **Angular 19/20 Reactive Signal Primitives**:
     - Modern `input()`, `output()`, `model()`, and `computed()` reactive architecture replacing legacy decorators.
+13. **Doctor SaaS, Assistant Delegation & Diagnostic Partner Dropzone (`BR-SAAS`, `BR-ASST`, `BR-QR`, `BR-LAB`)**:
+    - Doctor-centric multi-facility tenancy and assistant operational delegation with clinical SOAP governance guardrails.
+    - Zero-login public clinic booking portal (`/book/:clinicSlug`) and printable A4 QR Code Stand Kit.
+    - External diagnostic partner drop-off portal (`/partner-dropzone`) linking STL/DICOM/PDF results directly to patient EMR.
 
 ---
 
@@ -66,15 +70,16 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
 
 | Test Layer | Technology | Count | Pass Rate |
 | :--- | :--- | :---: | :---: |
-| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **275** | 🟢 **100%** |
+| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **280+** | 🟢 **100%** |
 | **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **77** | 🟢 **100%** |
-| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **443** | 🟢 **100%** |
+| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **451** | 🟢 **100%** |
 | **Playwright E2E Browser Tests** | Playwright Chromium & Tablet iPad (25 files) | **144** | 🟢 **100%** |
-| **TOTAL VERIFIED SUITE** | Full Application Stack | **835+** | 🟢 **100%** |
+| **TOTAL VERIFIED SUITE** | Full Application Stack | **843+** | 🟢 **100%** |
 
 ---
 
 ## 4. Key Documentation Files in `clinic-docs`
+- `ENTERPRISE_DOCTOR_SAAS_AND_PARTNER_ECOSYSTEM_PLAN.md`: Complete blueprint for Doctor SaaS, Assistant Hub, Public QR Booking, and Partner Dropzone.
 - `PRODUCTION_VERIFICATION_AND_AUDIT_REPORT.md` (v3.2.0): Full production verification audit across all 835+ tests and 14 clinical domains.
 - `CUSTOMER_REQUIREMENTS_DOCUMENT.md` (v3.0.0): Business rules, RACI matrix, 14 modules, 15 UAT scenarios.
 - `SOFTWARE_REQUIREMENTS_SPECIFICATION.md` (v2.0.0): IEEE 830 architecture, data schemas, REST & SignalR contracts, Signal primitives.

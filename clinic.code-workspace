@@ -1,0 +1,42 @@
+{
+  "folders": [
+    {
+      "name": "Docs & Architecture (clinic-docs)",
+      "path": "."
+    },
+    {
+      "name": "Frontend (clinic-app)",
+      "path": "./clinic-app"
+    },
+    {
+      "name": "Backend (ClinicApi)",
+      "path": "./ClinicApi"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/.git": true,
+      "**/.svn": true,
+      "**/.hg": true,
+      "**/CVS": true,
+      "**/.DS_Store": true,
+      "**/Thumbs.db": true
+    },
+    "typescript.tsdk": "clinic-app/node_modules/typescript/lib",
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[csharp]": {
+      "editor.defaultFormatter": "ms-dotnettools.csharp"
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "angular.ng-template",
+      "ms-dotnettools.csharp",
+      "ms-dotnettools.csdevkit",
+      "esbenp.prettier-vscode",
+      "bradlc.vscode-tailwindcss",
+      "ms-playwright.playwright"
+    ]
+  }
+}

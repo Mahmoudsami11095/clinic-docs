@@ -81,29 +81,32 @@ The **Enterprise Smart Clinic Management System** delivers a unified, high-perfo
 
 | User Persona | Operational Context | Core Responsibilities & System Interactions |
 | :--- | :--- | :--- |
-| **Dr. Clinic Owner (Admin Doctor)** | Executive Office / Consultation / Remote | Comprehensive clinical governance, staff access administration, doctor commission plan configuration, financial auditing, branch oversight, and subscription tier management. |
-| **Associate Doctor / Dentist** | Consultation Suite / Dental Operatory | Patient history review, visual odontogram charting, multi-stage treatment plan definition, AI voice scribe documentation, e-prescription issuance, radiograph measurement, and chair occupancy control. |
-| **Clinic Receptionist / Cashier** | Front-Desk Reception / Cash Desk | Patient intake and registration, scheduling, queue management, WhatsApp reminder dispatch, itemized invoicing, split-payment cashiering, and thermal receipt printing. |
-| **Clinic Assistant / Nurse** | Exam Room / Sterilization Suite / Stock Room | Vitals recording, operatory chair release & sterilization status updates, consumables batch intake, recipe deduction verification, and stock replenishment. |
-| **Patient (Recipient)** | Waiting Room / Mobile / Home | Receiver of itemized treatment plans, digital consent signatory, recipient of automated WhatsApp reminders, e-prescriptions, and official thermal/A4 payment receipts. |
+| **Dr. Subscriber / Clinic Owner (Admin Doctor)** | SaaS Tenant / Executive Office / Operatory | Primary SaaS license holder. Manages one or more clinics, configures clinic profiles, invites associate doctors, hires and delegates assistants, defines doctor commission plans, audits financial reports, and configures public booking rules. |
+| **Associate / Visiting Doctor** | Multi-Clinic Practitioner / Consultation Suite | Practices at one or multiple clinics. Configures clinic-specific working days and shift hours, reviews patient EMR, charts odontograms, builds treatment plans, issues e-prescriptions, performs clinical procedures, and generates diagnostic referral orders. |
+| **Clinic Assistant / Reception Nurse** | Front-Desk / Operatory / Sterilization / Stock Room | **Delegated Practice Operator:** Empowered by clinic doctors to: (1) Register and manage patient demographic profiles; (2) Reserve and manage appointment schedules for all clinic doctors; (3) Set treatment charges, collect payments (cash/card/split), and issue receipts; (4) Add, update, and track clinic equipment, tools, maintenance, and sterilization cycles; (5) Upload and attach external lab results and radiology scans directly to patient profiles. *Guardrail: Restricted from editing finalized clinical SOAP notes or viewing doctor net commission payout ledgers.* |
+| **Patient (Public / Self-Service)** | Mobile / Web / Waiting Room | Books appointments via the Clinic Public QR Code or direct link, selects preferred doctor and time slot, receives WhatsApp booking confirmation and 24h reminders, reviews prescriptions, and monitors live queue status. |
+| **External Diagnostic Partner (Lab & Radiology Center)** | External Dental Lab / Imaging Center | Receives diagnostic referral orders via secure digital tokens/QR codes. Drops off finalized prosthetic lab items, CAD/CAM models, biopsy reports, or high-resolution radiographs (PNG/JPEG/DICOM) into the clinic portal, triggering automatic linking to the patient EMR. |
 
 ### Enriched RACI Governance Matrix
 *(**R**esponsible, **A**ccountable, **C**onsulted, **I**nformed)*
 
-| Functional Domain | Clinic Owner | Associate Doctor | Receptionist | Clinic Assistant | Patient |
+| Functional Domain | Clinic Owner Doctor | Associate Doctor | Clinic Assistant | Patient | External Diagnostic Partner |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **Patient Registration & Demographics** | A | I | R | C | C |
-| **Clinical Notes & AI Voice Scribe (SOAP)** | A | R | I | I | I |
-| **Interactive Dental Charting & Odontogram** | A | R | I | C | I |
-| **Multi-Stage Treatment Plans & Cost Estimator** | A | R | C | I | R (Consent) |
-| **E-Prescriptions & Allergy Safety Interceptor** | A | R | I | I | R (Receipt) |
-| **Radiology Caliper Tools & Before/After Compare** | A | R | I | C | I |
-| **Procedure-Linked Auto-Inventory Deduction** | A | C | I | R | I |
-| **Operatory & Chair Status Board Management** | A | R | C | R | I |
-| **Itemized Invoicing & Split-Payment Cashiering** | A | I | R | I | R (Receipt) |
-| **Doctor Commission Plans & Payout Settlements** | R / A | C | I | I | I |
-| **WhatsApp Messaging Hub & Batch Dispatch** | A | I | R | I | R (Receipt) |
-| **System Security, Roles & Branch Configuration** | R / A | I | I | I | I |
+| **SaaS Clinic Setup & Multi-Doctor Roster** | R / A | C | I | I | I |
+| **Patient Registration & Intake** | A | I | R | C | I |
+| **Appointment Scheduling & Slot Allocation** | A | C | R | R (Self-Booking) | I |
+| **Public Clinic QR Code Booking Portal** | A | C | I | R | I |
+| **Clinical Encounters, SOAP Notes & AI Scribe** | A | R | I | I | I |
+| **Interactive Dental Charting & Odontogram** | A | R | C | I | I |
+| **Multi-Stage Treatment Plans & Informed Consent** | A | R | I | R (Consent) | I |
+| **E-Prescriptions & Allergy Interceptor** | A | R | I | R (Receipt) | I |
+| **Diagnostic Referral Order Generation** | A | R | C | I | R (Fulfillment) |
+| **Lab & Radiology Ingestion & Auto-Linking** | A | I | R (Manual Backup) | I | R (Direct Drop-off) |
+| **Equipment, Tools & Sterilization Cycles** | A | C | R | I | I |
+| **Consumables Inventory & Auto-Deductions** | A | C | R | I | I |
+| **Cashiering, Payments & Receipt Issuance** | A | I | R | R (Payer) | I |
+| **Doctor Commission & Profit-Sharing Settlements** | R / A | C (Review) | I (Restricted) | I | I |
+| **WhatsApp Communication & Batch Reminders** | A | I | R | R (Recipient) | I |
 
 ---
 
@@ -245,6 +248,65 @@ The following business rules represent strict operational invariants enforced ac
 - The system must provide instant activation of the Global Command Palette via `Ctrl + K` (Windows/Linux) or `Cmd + K` (macOS) from any screen or modal state.
 - Search queries must return categorized results in $<150\text{ ms}$ across Patients, Doctors, Operatory Chairs, Inventory Consumables, and System Navigation routes.
 - The command palette must enforce strict Role-Based Access Control (RBAC): receptionist sessions cannot navigate to doctor-restricted diagnostic screens or commission analytics.
+
+### 5.10 Doctor-Centric SaaS & Multi-Clinic Architecture Rules (BR-SAAS)
+
+#### `BR-SAAS-01: Multi-Clinic Ownership & Polyclinic Doctor Hosting`
+- A Doctor is the core SaaS tenant account. A Doctor can create and own one or multiple distinct clinic entities (e.g., "Downtown Clinic" and "Northside Clinic").
+- An individual clinic entity can host multiple doctors (Polyclinic / Shared Practice model). Doctors can be assigned as Clinic Owners, Partners, or Associate Practitioners.
+- Tenancy Scoping: Patient encounters, appointments, invoices, and physical inventory are strictly scoped by `ClinicId`. Doctor identities, specializations, master medical credentials, and subscription accounts remain global.
+
+#### `BR-SAAS-02: Doctor Subscription Tiers & Feature Entitlement`
+- Doctors purchase SaaS subscriptions (e.g., *Solo Doctor*, *Multi-Clinic Practitioner*, *Polyclinic Enterprise*) defining quotas for managed clinics, active assistant accounts, and monthly appointment volume.
+- If a subscription expires or enters grace period, administrative and consultation access is preserved in read-only mode, with automated prompts for renewal.
+
+### 5.11 Assistant Delegation & Operational Scope Rules (BR-ASST)
+
+#### `BR-ASST-01: Assistant Delegated Operational Authority`
+- A Doctor or Clinic Administrator can invite and bind Assistants (`UserRole.Assistant`) to one or more specific clinics via `UserClinic`.
+- Clinic Assistants possess verified operational authority to perform the following core clinic workflows:
+  1. **Patient Intake & EMR Management:** Register new patients, edit demographic information, record vital signs, and manage non-clinical contact details.
+  2. **Appointment Scheduling:** Book, reschedule, and cancel appointments for *any* authorized doctor in that clinic, with full visibility into doctor working shifts.
+  3. **Cashiering & Payment Collection:** Generate invoices, record payments (Cash, Credit Card, Mobile Wallet, or Split Payments), apply authorized clinic discounts, and print 80mm thermal receipts or A4 tax invoices.
+  4. **Equipment & Tool Management:** Register clinic equipment and tools, log calibration schedules, track repair maintenance, and record autoclave sterilization batches.
+  5. **Diagnostic File Attachment:** Upload and associate lab test results, biopsy documents, clinical photos, and radiology scans directly into patient records.
+
+#### `BR-ASST-02: Assistant Privacy & Clinical Governance Guardrail`
+- Assistants are strictly prohibited from:
+  1. Editing, amending, or deleting finalized clinical consultation notes (`SOAP`).
+  2. Prescribing medications, modifying drug dosages, or overriding allergy interceptors.
+  3. Viewing Doctor commission plans, doctor percentage splits, or net doctor financial payout ledgers.
+
+### 5.12 Public Clinic QR Code & Multi-Doctor Scheduling Rules (BR-QR)
+
+#### `BR-QR-01: Permanent Public Clinic Slug & QR Poster Link`
+- Every clinic is provisioned with a permanent, human-readable public slug (e.g., `https://[app-domain]/book/al-amal-dental-cairo`) and a unique cryptographic GUID.
+- The system provides an automated **Printable Clinic QR Kit** (PDF and high-resolution PNG) directly in the Clinic Settings. Clinics can print this poster for front-desk check-in, street banners, or digital distribution on WhatsApp, Instagram, and Google Maps.
+
+#### `BR-QR-02: Dynamic Multi-Doctor Availability & Slot Resolution`
+- Scanning the Clinic QR Code loads the public booking interface tailored to that clinic's branding and location.
+- The patient selects from the list of doctors practicing at that clinic.
+- Time slot generation dynamically evaluates:
+  1. The doctor's clinic-specific availability days and hours (`DoctorClinic.AvailabilityDays` & `AvailabilityHours`).
+  2. Exclusion of slots where the doctor already has a booked appointment at *this clinic or any other clinic* (cross-clinic double-booking prevention).
+  3. Real-time patient phone number verification via WhatsApp/SMS OTP before slot reservation confirmation.
+
+### 5.13 External Diagnostic Partner Drop-off & Auto-Linking Rules (BR-LAB)
+
+#### `BR-LAB-01: Cryptographic Diagnostic Referral Token (Requisition Order)`
+- When a doctor refers a patient for external diagnostic services (e.g., Crown/Bridge fabrication at a dental lab, biopsy at a pathology lab, or CBCT/panoramic scan at a radiology center), the system generates a `DiagnosticRequisitionOrder`.
+- Each order is assigned a tamper-evident cryptographic token and scannable QR code embedded on the printed or digital referral slip: `https://[app-domain]/partner-dropzone?order=[TOKEN]`.
+
+#### `BR-LAB-02: Tri-Factor Automated Ingestion & Patient Profile Attachment`
+- When an external lab or radiology center drops off results through the secure upload portal, the system guarantees automated association to the patient record via the **Tri-Factor Ingestion Pipeline**:
+  - **Factor 1 (Token Match - Deterministic):** Uploads via the referral QR code/link automatically bind the uploaded files directly to the patient's EMR, specific encounter, and target tooth/procedure without any manual lookup.
+  - **Factor 2 (Patient Identifier Match - Assisted):** If accessed via the general clinic drop-off link, the partner enters the Patient Phone Number or File Number; the system matches the patient, requests confirmation of initials, and attaches the file.
+  - **Factor 3 (DICOM Metadata Match - Automated):** For raw radiology scans (`.dcm`), the server-side parser extracts DICOM tags `(0010,0020) PatientID` and `(0010,0010) PatientName`, automatically indexing the scan into the patient's Radiology Viewer.
+
+#### `BR-LAB-03: Real-Time Attending Doctor Alert & Clinical Chart Notification`
+- Once diagnostic files are uploaded by an external partner, the system transitions the order status to `Results Received`.
+- The system dispatches an instantaneous SignalR WebSocket push notification and WhatsApp alert to the attending doctor: *"Diagnostic results for Patient [Name] ([Order Type]) have been received and attached to their clinical chart."*
+- The patient's EMR timeline highlights the new diagnostic artifact with a "New External Result" badge for immediate physician review.
 
 ---
 
@@ -672,6 +734,63 @@ Requirements are tagged with unique traceable IDs, prioritized using MoSCoW (**M
   - **Given** network connection drops,
   - **When** the doctor operates the application,
   - **Then** an amber "Offline Mode" banner appears, cached files remain accessible, changes are queued in `IndexedDB`, and automatic synchronization triggers upon network reconnection.
+
+---
+
+### Module 15: Doctor-Centric Multi-Clinic SaaS, Subscriptions & Assistant Delegation (REQ-SAAS / REQ-ASST)
+
+#### `REQ-SAAS-01: Doctor Multi-Clinic Tenancy & Polyclinic Doctor Hosting` [Must Have]
+- **User Story:** *As an independent Doctor / Medical Specialist, I want to create and manage multiple clinic locations, or join existing polyclinics as an associate, so that I can practice across multiple physical facilities from a single unified professional account.*
+- **Acceptance Criteria:**
+  - **Given** Doctor Dr. Ahmed logs into the platform,
+  - **When** they view their clinic switcher,
+  - **Then** they can switch between their self-created clinics and clinics where they are registered as an associate doctor, with data scoped dynamically to the active clinic context.
+
+#### `REQ-ASST-01: Assistant Delegated Front-Desk & Operational Authority` [Must Have]
+- **User Story:** *As a Doctor and Clinic Owner, I want to assign Assistants to my clinic and delegate day-to-day administrative powers (patient intake, appointment booking, payment collection, tool tracking, and lab result attachment), so that clinic operations run smoothly while my medical records remain secure.*
+- **Acceptance Criteria:**
+  - **Given** an assistant is assigned to "Al-Amal Clinic",
+  - **When** they access the application,
+  - **Then** they can: (1) Register new patients and update demographics; (2) Book appointments for any doctor in that clinic; (3) Set procedure fees, collect cash/card payments, and issue receipts; (4) Add and update equipment, tools, and sterilization logs; (5) Upload lab reports and radiographs to patient charts.
+  - **And** they are blocked from modifying finalized clinical notes or viewing doctor net commission settlement reports.
+
+---
+
+### Module 16: Public Clinic QR Code & Multi-Doctor Online Appointment Reservation (REQ-QR-BOOK)
+
+#### `REQ-QR-01: Printable Clinic QR Poster & Permanent Public URL Slug` [Must Have]
+- **User Story:** *As a Doctor, I want my clinic to have a unique QR code and permanent public link (e.g., `clinic.app/book/cairo-smile-clinic`), so that I can display it on the clinic reception counter, business cards, and social media for patients to self-book.*
+- **Acceptance Criteria:**
+  - **Given** a clinic profile is active,
+  - **When** the doctor clicks "Download Clinic QR Poster" in Clinic Settings,
+  - **Then** a branded, high-resolution PDF/PNG poster is generated with the clinic logo, name, scan prompt, and active booking QR code.
+
+#### `REQ-QR-02: Public Multi-Doctor Selection & Real-Time Slot Reservation` [Must Have]
+- **User Story:** *As a Patient scanning the clinic QR code, I want to view all doctors practicing at this clinic, see each doctor's specific working hours and available time slots, and reserve an appointment instantly.*
+- **Acceptance Criteria:**
+  - **Given** a patient scans the clinic QR code or opens the public booking link,
+  - **When** they select their preferred doctor from the clinic doctor directory,
+  - **Then** the calendar displays only dates and time slots when that doctor is scheduled at this clinic, excluding any slots already booked across any clinic.
+  - **And** upon entering their phone number and confirming via OTP, the appointment is created and confirmed with an instant WhatsApp message.
+
+---
+
+### Module 17: External Diagnostic Partner Drop-off Portal & Automated Patient Profile Ingestion (REQ-PARTNER-LAB)
+
+#### `REQ-PARTNER-01: Secure Diagnostic Requisition Order Token & QR Referral` [Must Have]
+- **User Story:** *As a Doctor referring a patient to an external dental lab or radiology imaging center, I want the system to generate a referral order with a unique scannable QR code and web link, so that the external partner can easily upload the completed results.*
+- **Acceptance Criteria:**
+  - **Given** a doctor creates an external diagnostic referral for Patient X (e.g., Zirconia Crown or CBCT scan),
+  - **When** the referral slip is printed or shared via WhatsApp,
+  - **Then** it includes a unique cryptographic token link: `https://[app-url]/partner-dropzone?order=[TOKEN]`.
+
+#### `REQ-PARTNER-02: Tri-Factor Automated Ingestion & Patient Profile Attachment` [Must Have]
+- **User Story:** *As a Doctor and Clinic Assistant, I want uploaded lab reports, photos, and radiology scans from external diagnostic centers to link automatically to the patient's electronic medical file, so that no manual file downloading or re-uploading is required.*
+- **Acceptance Criteria:**
+  - **Given** an external lab or radiology technician opens the referral link and uploads result files (PDF, JPEG, PNG, or DICOM),
+  - **When** the upload completes,
+  - **Then** the system automatically associates the files with the patient's record, encounter, and target tooth/procedure without manual intervention.
+  - **And** an instantaneous SignalR push notification and WhatsApp alert are dispatched to the attending doctor notifying them that results have arrived.
 
 ---
 

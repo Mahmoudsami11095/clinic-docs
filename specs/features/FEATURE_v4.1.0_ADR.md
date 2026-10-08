@@ -1,6 +1,7 @@
 # Architecture Decision Record (ADR): Multi-Branch & Tenancy Strategy (Release v4.1.0)
 **Document Owner**: Chief Architect & Technical Lead Agent (`chief_architect`)
-**Status**: DRAFT (Pending Review)
+**Status**: APPROVED
+**Date**: 2026-10-08
 
 ## 1. Context & Architectural Problem
 The clinic software is scaling from a single-location system to a multi-branch enterprise network. We need a way to isolate data such as Appointments, Invoices, and Inventory by branch while allowing Global Admin users to oversee all branches. Furthermore, Patient Medical Records and Doctor profiles must remain globally accessible (shared across all branches).

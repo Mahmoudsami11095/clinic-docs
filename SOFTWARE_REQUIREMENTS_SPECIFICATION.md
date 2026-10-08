@@ -427,6 +427,115 @@ All API routes are served under prefix `/api/`. Request and response bodies are 
   }
   ```
 
+### 4.6 Public Clinic QR Code & Online Booking Endpoints
+
+#### `SRS-API-QR-01: Get Public Clinic Booking Metadata`
+- **Method:** `GET`
+- **Route:** `/api/public/clinics/{slug}/booking-data`
+- **Authorization:** Anonymous (`AllowAnonymous`)
+- **Response `200 OK`:**
+  ```json
+  {
+    "clinic": {
+      "id": "c123-guid",
+      "name": "Al-Amal Dental Specialty Clinic",
+      "slug": "al-amal-dental-cairo",
+      "address": "45 Tahrir St, Cairo",
+      "phone": "+201001234567",
+      "logoUrl": "https://cdn.clinic.com/logos/c123.png"
+    },
+    "doctors": [
+      {
+        "id": "d456-guid",
+        "name": "Dr. Tamer Hosny",
+        "specialization": "Oral & Maxillofacial Surgery",
+        "avatar": "https://cdn.clinic.com/avatars/d456.png",
+        "consultationFee": 400.0,
+        "availabilityDays": ["Monday", "Wednesday", "Thursday"],
+        "availabilityHours": "14:00-21:00"
+      }
+    ]
+  }
+  ```
+
+#### `SRS-API-QR-02: Get Doctor Available Consultation Slots`
+- **Method:** `GET`
+- **Route:** `/api/public/clinics/{slug}/doctors/{doctorId}/available-slots?date={YYYY-MM-DD}`
+- **Authorization:** Anonymous (`AllowAnonymous`)
+- **Response `200 OK`:**
+  ```json
+  {
+    "date": "2026-10-15",
+    "doctorId": "d456-guid",
+    "slots": [
+      { "time": "14:00", "available": true },
+      { "time": "14:30", "available": false },
+      { "time": "15:00", "available": true }
+    ]
+  }
+  ```
+
+#### `SRS-API-QR-03: Reserve Public Appointment with OTP Verification`
+- **Method:** `POST`
+- **Route:** `/api/public/clinics/{slug}/book-appointment`
+- **Authorization:** Anonymous (`AllowAnonymous`)
+- **Payload Schema:**
+  ```json
+  {
+    "doctorId": "d456-guid",
+    "date": "2026-10-15",
+    "time": "15:00",
+    "patientName": "Kareem Adel",
+    "patientPhone": "+201099887766",
+    "reason": "Lower molar pain",
+    "otpCode": "8492"
+  }
+  ```
+
+### 4.7 External Diagnostic Partner (Lab & Radiology) Drop-off Endpoints
+
+#### `SRS-API-LAB-01: Resolve Requisition Order Token`
+- **Method:** `GET`
+- **Route:** `/api/public/diagnostics/orders/{token}`
+- **Authorization:** Anonymous (`AllowAnonymous`)
+- **Response `200 OK`:**
+  ```json
+  {
+    "orderToken": "LAB-8F29A",
+    "clinicName": "Al-Amal Dental Specialty Clinic",
+    "doctorName": "Dr. Tamer Hosny",
+    "patientInitials": "K. A. (Male, 34y)",
+    "toothNumber": 46,
+    "serviceType": "DentalLab",
+    "indications": "Zirconia Full Crown - Shade A2",
+    "status": "Pending",
+    "createdAt": "2026-10-12T10:30:00Z"
+  }
+  ```
+
+#### `SRS-API-LAB-02: Diagnostic Partner Upload with Automated Ingestion`
+- **Method:** `POST`
+- **Route:** `/api/public/diagnostics/orders/{token}/upload`
+- **Content-Type:** `multipart/form-data`
+- **Authorization:** Anonymous (`AllowAnonymous`)
+- **Response `200 OK`:**
+  ```json
+  {
+    "success": true,
+    "message": "Diagnostic results successfully linked to patient profile.",
+    "filesProcessed": 2,
+    "orderStatus": "ResultsReceived"
+  }
+  ```
+
+### 4.8 Clinic QR Code Poster Kit Endpoint
+
+#### `SRS-API-QRKIT-01: Generate Printable Clinic QR Poster Kit`
+- **Method:** `GET`
+- **Route:** `/api/clinics/{id}/qr-code-kit`
+- **Authorization:** `Roles = "admin,doctor,assistant"`
+- **Response `200 OK`:** Returns SVG/PNG QR Code image data and printable A4 poster PDF metadata.
+
 ---
 
 ## 5. Real-Time SignalR Event Specification
@@ -444,6 +553,7 @@ All API routes are served under prefix `/api/`. Request and response bodies are 
 | **`ReceiveNotification`** | `Clinic_{ClinicId}` | `{"id":"...","title":"...","message":"...","type":"info"}` | Patient check-in, appointment cancellation, or priority alert. |
 | **`QueueUpdated`** | `Doctor_{DoctorId}` | `{"doctorId":"...","waitingCount":4,"timestamp":"..."}` | Any queue status transition. |
 | **`LowStockAlert`** | `Clinic_{ClinicId}` | `{"materialId":"...","materialName":"Mepivacaine","currentStock":4,"minThreshold":5}` | Procedure auto-deduction reduces stock to or below minimum threshold (`BR-INV-02`). |
+| **`ReceiveDiagnosticResultsUploaded`** | `Doctor_{DoctorId}` | `{"orderToken":"LAB-8F29A","patientName":"Kareem Adel","partnerName":"Apex Lab","serviceType":"DentalLab"}` | External diagnostic partner uploads completed results via public dropzone (`BR-LAB-03`). |
 
 ---
 
