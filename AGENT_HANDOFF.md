@@ -122,6 +122,10 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
     - Inbound interactive webhooks for automated appointment confirmations (`Confirm`, `Cancel`).
     - Integrated Node.js Baileys Proxy that captures `messages.upsert` and proxies payloads to `.NET Webhook Controller`.
     - Human escalation protocols for unformatted text replies routing to Assistant Hub.
+26. **Multi-Branch Centralized Procurement & Supplier EDI (`BR-PROC-01..03`, Release v5.5.0)**:
+    - Dedicated `Supplier`, `PurchaseOrder`, and `PurchaseOrderItem` aggregates.
+    - Automated Three-Way Matching (PO vs. Goods Receipt vs. Invoice).
+    - Real-time stock rebalancing across branch inventories upon Goods Receipt (`ReceiveOrder`).
 
 ---
 
@@ -129,15 +133,17 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
 
 | Test Layer | Technology | Count | Pass Rate |
 | :--- | :--- | :---: | :---: |
-| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **321+** | 🟢 **100%** |
+| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **324+** | 🟢 **100%** |
 | **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **77** | 🟢 **100%** |
 | **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **519** | 🟢 **100%** |
 | **Playwright E2E Browser Tests** | Playwright Chromium & Tablet iPad (25 files) | **148** | 🟢 **100%** |
-| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,065+** | 🟢 **100%** |
+| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,068+** | 🟢 **100%** |
 
 ---
 
 ## 4. Key Documentation Files in `clinic-docs`
+- `specs/features/FEATURE_v5.5.0_SPEC.md`: Clinical Operations Specification for Centralized Procurement.
+- `specs/features/FEATURE_v5.5.0_ADR.md`: Architecture Decision Record for Supplier EDI & Three-Way Match.
 - `specs/features/FEATURE_v5.4.0_SPEC.md`: Clinical Operations Specification for WhatsApp Interactive Chatbot.
 - `specs/features/FEATURE_v5.4.0_ADR.md`: Architecture Decision Record for Node.js to .NET Webhook Integration.
 - `specs/features/FEATURE_v5.2.0_SPEC.md`: Clinical Operations Specification for Ambient AI Voice Scribe.
