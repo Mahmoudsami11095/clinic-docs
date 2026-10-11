@@ -375,6 +375,20 @@ The following business rules represent strict operational invariants enforced ac
 #### `BR-REC-03: Patient Autonomy & Snooze Governance`
 - Receptionists can postpone a recall by 2, 4, or 8 weeks upon patient request, recalculating the `DueDate` and suppressing notifications until the new date.
 
+### 5.18 Patient Financing & Installment Plans Rules (BR-PF)
+
+#### `BR-PF-01: Down Payment & Cent-Perfect Mathematical Split`
+- Financing plans require an upfront down payment ($\ge 0$, defaulting to $\ge 10\%$). The net financed balance is partitioned across the selected tenure ($N \in \{3, 6, 10, 12, 18, 24\}$ months) with cent-perfect precision, absorbing fractional rounding deltas into the final installment.
+
+#### `BR-PF-02: FIFO Installment Settlement & Receipts`
+- Unassigned payments are automatically credited to the earliest open or partially paid installment. An installment transitions to `Paid` only when `AmountPaid >= AmountDue`.
+
+#### `BR-PF-03: Dynamic Overdue Evaluation & WhatsApp Reminders`
+- An installment with `DueDate < Today` and unpaid balance automatically transitions to `Overdue`. Staff can dispatch 1-click personalized WhatsApp reminders 72 hours prior to due dates.
+
+#### `BR-PF-04: Lifecycle Auto-Completion`
+- When all installments are fully settled, the plan automatically transitions to `Completed`. If any installment is overdue by $>30$ days, the plan is marked as `AtRisk`.
+
 ---
 
 ## 6. End-to-End Clinical Workflows

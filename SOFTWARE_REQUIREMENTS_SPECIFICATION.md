@@ -700,6 +700,34 @@ All API routes are served under prefix `/api/`. Request and response bodies are 
 - **Authorization:** `Roles = "admin,doctor,assistant"`
 - **Response `200 OK`:** Dispatches personalized reminder message with 1-click booking link and transitions status to `NotificationSent`.
 
+### 4.14 Patient Financing & Installment Plans Endpoints (BR-PF)
+
+#### `SRS-API-PF-01: Create Financing Plan with Installment Schedule (BR-PF-01)`
+- **Method:** `POST`
+- **Route:** `/api/payment-plans`
+- **Authorization:** `Roles = "admin,doctor,assistant"`
+- **Payload:** `CreatePaymentPlanDto` (`clinicId`, `patientId`, `doctorId`, `totalAmount`, `downPayment`, `numberOfInstallments`, `installmentFrequency`, `startDate`)
+- **Response `201 Created`:** Cent-perfect schedule generated with unique plan number `PLAN-YYYYMM-XXXX`.
+
+#### `SRS-API-PF-02: Query Financing Plans & Portfolio KPIs (REQ-FIN-05)`
+- **Method:** `GET`
+- **Route:** `/api/payment-plans`, `/api/payment-plans/summary`, `/api/payment-plans/{id}`
+- **Authorization:** `Roles = "admin,doctor,assistant,patient"`
+- **Response `200 OK`:** Returns financing plans and summary KPI cards (total financed, total collected, arrears).
+
+#### `SRS-API-PF-03: Record Installment Payment with FIFO Settlement (BR-PF-02)`
+- **Method:** `POST`
+- **Route:** `/api/payment-plans/{id}/installments/{installmentId}/pay`
+- **Authorization:** `Roles = "admin,doctor,assistant"`
+- **Payload:** `RecordInstallmentPaymentDto` (`amount`, `paymentMethod`, `transactionReference`, `notes`)
+- **Response `200 OK`:** Credits installment, transitions to `Paid`, and marks parent plan `Completed` if all settled.
+
+#### `SRS-API-PF-04: Dispatch WhatsApp Installment Payment Reminder (REQ-FIN-03)`
+- **Method:** `POST`
+- **Route:** `/api/payment-plans/{id}/installments/{installmentId}/remind`
+- **Authorization:** `Roles = "admin,doctor,assistant"`
+- **Response `200 OK`:** Sends personalized payment reminder with payment QR link and timestamps `reminderSentAt`.
+
 ---
 
 ## 5. Real-Time SignalR Event Specification

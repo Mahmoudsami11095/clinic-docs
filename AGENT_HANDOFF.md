@@ -107,6 +107,12 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
     - Multi-channel WhatsApp notification dispatch with personalized messages and direct 1-click booking link.
     - 1-Click batch outreach campaign targeting overdue preventative check-ups.
     - Recall conversion rate analytics (% converted into confirmed bookings and recurring revenue).
+23. **Patient Financing & Flexible Installment Plans (`BR-PF-01..04`, `REQ-FIN-01..05`, Release v5.3.0)**:
+    - Scaffolding of multi-stage dental and medical installment agreements (3, 6, 10, 12, 18, 24 months, Monthly or Bi-Weekly).
+    - Cent-perfect mathematical precision algorithm absorbing rounding deltas into final installments (`BR-PF-01`).
+    - First-In-First-Out (FIFO) payment settlement allocating incoming payments to oldest overdue/open installments.
+    - Dynamic delinquency evaluation, portfolio KPI analytics (Total Financed, Total Collected, Overdue Arrears, Collection Rate %).
+    - 1-Click WhatsApp payment reminders with payment QR / portal receipt links.
 
 ---
 
@@ -114,15 +120,17 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
 
 | Test Layer | Technology | Count | Pass Rate |
 | :--- | :--- | :---: | :---: |
-| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **313+** | 🟢 **100%** |
+| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **318+** | 🟢 **100%** |
 | **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **77** | 🟢 **100%** |
-| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **513** | 🟢 **100%** |
+| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **519** | 🟢 **100%** |
 | **Playwright E2E Browser Tests** | Playwright Chromium & Tablet iPad (25 files) | **148** | 🟢 **100%** |
-| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,046+** | 🟢 **100%** |
+| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,052+** | 🟢 **100%** |
 
 ---
 
 ## 4. Key Documentation Files in `clinic-docs`
+- `specs/features/FEATURE_v5.3.0_SPEC.md`: Clinical & Financial Operations Specification for Patient Financing & Installment Plans.
+- `specs/features/FEATURE_v5.3.0_ADR.md`: Architecture Decision Record for Financing Finite State Machine and Cent-Perfect Split.
 - `MONOREPO_HARDENING_AND_OPTIMIZATION_AUDIT.md`: Enterprise architecture audit report covering initial bundle transfer reduction (-18.5%), EF Core AsNoTracking optimizations, Command Palette idle deferral, and dependency audit.
 - `specs/features/FEATURE_v5.1.0_SPEC.md`: Clinical & Patient Engagement Specification for Smart Preventative Recall Engine.
 - `specs/features/FEATURE_v5.1.0_ADR.md`: Architecture Decision Record for Finite State Machine Recall Engine.
