@@ -123,6 +123,7 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
 ---
 
 ## 4. Key Documentation Files in `clinic-docs`
+- `MONOREPO_HARDENING_AND_OPTIMIZATION_AUDIT.md`: Enterprise architecture audit report covering initial bundle transfer reduction (-18.5%), EF Core AsNoTracking optimizations, Command Palette idle deferral, and dependency audit.
 - `specs/features/FEATURE_v5.1.0_SPEC.md`: Clinical & Patient Engagement Specification for Smart Preventative Recall Engine.
 - `specs/features/FEATURE_v5.1.0_ADR.md`: Architecture Decision Record for Finite State Machine Recall Engine.
 - `specs/features/FEATURE_v5.0.0_SPEC.md`: Clinical & Pharmacological Specification for AI Clinical Decision Support Engine.
