@@ -118,6 +118,10 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
     - First-In-First-Out (FIFO) payment settlement allocating incoming payments to oldest overdue/open installments.
     - Dynamic delinquency evaluation, portfolio KPI analytics (Total Financed, Total Collected, Overdue Arrears, Collection Rate %).
     - 1-Click WhatsApp payment reminders with payment QR / portal receipt links.
+25. **WhatsApp Cloud Interactive Two-Way Chatbot (`BR-WA-01..03`, Release v5.4.0)**:
+    - Inbound interactive webhooks for automated appointment confirmations (`Confirm`, `Cancel`).
+    - Integrated Node.js Baileys Proxy that captures `messages.upsert` and proxies payloads to `.NET Webhook Controller`.
+    - Human escalation protocols for unformatted text replies routing to Assistant Hub.
 
 ---
 
@@ -125,15 +129,17 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
 
 | Test Layer | Technology | Count | Pass Rate |
 | :--- | :--- | :---: | :---: |
-| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **319+** | 🟢 **100%** |
+| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **321+** | 🟢 **100%** |
 | **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **77** | 🟢 **100%** |
 | **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **519** | 🟢 **100%** |
 | **Playwright E2E Browser Tests** | Playwright Chromium & Tablet iPad (25 files) | **148** | 🟢 **100%** |
-| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,063+** | 🟢 **100%** |
+| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,065+** | 🟢 **100%** |
 
 ---
 
 ## 4. Key Documentation Files in `clinic-docs`
+- `specs/features/FEATURE_v5.4.0_SPEC.md`: Clinical Operations Specification for WhatsApp Interactive Chatbot.
+- `specs/features/FEATURE_v5.4.0_ADR.md`: Architecture Decision Record for Node.js to .NET Webhook Integration.
 - `specs/features/FEATURE_v5.2.0_SPEC.md`: Clinical Operations Specification for Ambient AI Voice Scribe.
 - `specs/features/FEATURE_v5.2.0_ADR.md`: Architecture Decision Record for Voice Scribe Backend AI Simulation.
 - `specs/features/FEATURE_v5.3.0_SPEC.md`: Clinical & Financial Operations Specification for Patient Financing & Installment Plans.
