@@ -126,6 +126,15 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
     - Dedicated `Supplier`, `PurchaseOrder`, and `PurchaseOrderItem` aggregates.
     - Automated Three-Way Matching (PO vs. Goods Receipt vs. Invoice).
     - Real-time stock rebalancing across branch inventories upon Goods Receipt (`ReceiveOrder`).
+27. **PWA Offline-First & WebAuthn Biometrics (`BR-PWA-01..02`, Release v5.6.0)**:
+    - Enabled offline caching and request queuing via Angular Service Worker and IndexedDB.
+    - Implemented `WebAuthnController` and TouchID/FaceID passwordless chair-side authentication.
+28. **AI Predictive No-Show & Standby Queue (`BR-AI-NOSHOW-01..02`, Release v5.7.0)**:
+    - Implemented ML-based No-Show Risk scoring on scheduled appointments.
+    - Deployed `StandbyQueueManager` for automated waitlist notifications on cancellations.
+29. **Enterprise Multi-Tenant SaaS Engine (`BR-SAAS-01..03`, Release v6.0.0)**:
+    - Transitioned to isolated tenancy model via `TenantId` Global Query Filters.
+    - Implemented `TenantOnboardingComponent` and dynamic subdomain resolution workflows.
 
 ---
 
@@ -133,11 +142,11 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
 
 | Test Layer | Technology | Count | Pass Rate |
 | :--- | :--- | :---: | :---: |
-| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **324+** | 🟢 **100%** |
+| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **340+** | 🟢 **100%** |
 | **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **77** | 🟢 **100%** |
-| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **519** | 🟢 **100%** |
+| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **543** | 🟢 **100%** |
 | **Playwright E2E Browser Tests** | Playwright Chromium & Tablet iPad (25 files) | **148** | 🟢 **100%** |
-| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,068+** | 🟢 **100%** |
+| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,108+** | 🟢 **100%** |
 
 ---
 
