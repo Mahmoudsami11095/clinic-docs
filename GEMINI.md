@@ -27,6 +27,12 @@ Never assume success without empirical validation:
 - Follow Conventional Commits: `feat:`, `fix:`, `docs:`, `refactor:`, `test:`, `chore:`.
 - Sub-repositories (`clinic-app` and `ClinicApi`) maintain independent git histories. Always commit within the corresponding repository folder.
 
+### 2.3 Schema Evolution & Backward Compatibility (STD-ARCH-007)
+All database schema changes and entity updates MUST adhere to [STD-ARCH-007](./docs/architecture/SCHEMA_EVOLUTION_AND_BACKWARD_COMPATIBILITY_GUIDELINES.md):
+- **Additive-Only:** Never rename or drop existing columns/properties mapped to relational database tables. Use `[NotMapped]` property aliases for naming updates.
+- **Mandatory EF Migrations:** Every entity property change must be paired with an EF Core migration in `Clinic.Infrastructure/Migrations/`.
+- **Graceful Degradation:** Repository queries and controllers must provide defensive fallback queries to maintain 100% uptime if connected to pre-migrated databases.
+
 ---
 
 ## 3. Standard Verification Commands
