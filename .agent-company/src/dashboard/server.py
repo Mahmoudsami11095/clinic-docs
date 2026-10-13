@@ -354,7 +354,7 @@ DASHBOARD_HTML = """<!DOCTYPE html>
     function log(msg) {
       const box = document.getElementById('console-output');
       const time = new Date().toLocaleTimeString();
-      box.textContent += `\\n> [\${time}] \${msg}`;
+      box.textContent += `\\n> [\\${time}] \\${msg}`;
       box.scrollTop = box.scrollHeight;
     }
 
