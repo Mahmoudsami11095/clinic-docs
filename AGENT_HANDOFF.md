@@ -135,6 +135,11 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
 29. **Enterprise Multi-Tenant SaaS Engine (`BR-SAAS-01..03`, Release v6.0.0)**:
     - Transitioned to isolated tenancy model via `TenantId` Global Query Filters.
     - Implemented `TenantOnboardingComponent` and dynamic subdomain resolution workflows.
+30. **Interactive Tutorial & Contextual Help System (`BR-TUT-01..04`, Release v6.1.0)**:
+    - Native `TutorialService` state machine with role-based filtering (`doctor`, `assistant`, `admin`).
+    - Spotlight focus ring overlay (`InteractiveTourOverlayComponent`) with keyboard navigation (`ArrowRight`, `ArrowLeft`, `Esc`).
+    - Multi-tab `HelpCenterModalComponent` with live router-aware page SOPs, searchable clinical cheat sheets, and shortcut matrices (`Shift + ?`).
+    - 5 registered quick-actions in Global Spotlight Command Palette (`Ctrl + K`).
 
 ---
 
@@ -144,9 +149,9 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
 | :--- | :--- | :---: | :---: |
 | **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **340+** | 🟢 **100%** |
 | **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **77** | 🟢 **100%** |
-| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **543** | 🟢 **100%** |
+| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **559** | 🟢 **100%** |
 | **Playwright E2E Browser Tests** | Playwright Chromium & Tablet iPad (25 files) | **148** | 🟢 **100%** |
-| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,108+** | 🟢 **100%** |
+| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,124+** | 🟢 **100%** |
 
 ---
 
