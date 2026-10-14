@@ -15,23 +15,32 @@ When starting any new task, consult `AGENT_HANDOFF.md` for current system state,
 
 ---
 
-## 2. Engineering Standards & Workflows
+## 2. Engineering Standards & Workflows (`STD-ENG-001`)
 
-### 2.1 Verification Before Completion
-Never assume success without empirical validation:
-- Any change to frontend logic must pass unit tests via `npm run test:ci` or Playwright tests via `npm run test:e2e`.
-- Any change to backend logic must compile and pass tests via `dotnet build` and `dotnet test`.
-- Do not bypass type checking, linting, or compiler warnings.
+All agent sessions and developers MUST follow the master engineering guidelines codified in [docs/architecture/ENGINEERING_STANDARDS_AND_AGENT_GUIDELINES.md](./docs/architecture/ENGINEERING_STANDARDS_AND_AGENT_GUIDELINES.md).
 
-### 2.2 Branching & Git Conventions
-- Follow Conventional Commits: `feat:`, `fix:`, `docs:`, `refactor:`, `test:`, `chore:`.
-- Sub-repositories (`clinic-app` and `ClinicApi`) maintain independent git histories. Always commit within the corresponding repository folder.
+### 2.1 Operating Lifecycle (Research -> Plan -> Greenlight -> Execute -> Validate)
+1. **Research First**: Inspect surrounding code, models, and tests before writing code.
+2. **Implementation Plan Mandate**: Always formulate a clear implementation plan before starting implementation on new features or complex fixes, and obtain user approval.
+3. **Surgical Changes**: Restrict modifications to the exact scope; adhere strictly to workspace conventions.
+4. **Empirical Validation**: Changes are never done until verified by automated tests and builds.
 
-### 2.3 Schema Evolution & Backward Compatibility (STD-ARCH-007)
+### 2.2 Clean Architecture & Boundaries
+- **Backend (`ClinicApi`)**: Pure domain entities (zero external dependencies). Application layer must NEVER depend on ASP.NET Core web abstractions (`IFormFile`).
+- **Frontend (`clinic-app`)**: Standalone components only, Angular Signal reactivity (`signal`, `computed`, `effect`), `OnPush` change detection, zero third-party UI bloat, initial transfer budget < 200 kB.
+- **Bilingual Parity (ISO 29148)**: 100% translation parity between `en.json` and `ar.json` with RTL layout support.
+
+### 2.3 Schema Evolution & Backward Compatibility (`STD-ARCH-007`)
 All database schema changes and entity updates MUST adhere to [STD-ARCH-007](./docs/architecture/SCHEMA_EVOLUTION_AND_BACKWARD_COMPATIBILITY_GUIDELINES.md):
-- **Additive-Only:** Never rename or drop existing columns/properties mapped to relational database tables. Use `[NotMapped]` property aliases for naming updates.
-- **Mandatory EF Migrations:** Every entity property change must be paired with an EF Core migration in `Clinic.Infrastructure/Migrations/`.
+- **Additive-Only:** Never rename or drop existing columns/properties mapped to relational database tables. Use `[NotMapped]` property aliases for naming updates (e.g., `Phone` and `PhoneNumber`).
+- **Mandatory EF Migrations:** Every entity property change must be paired with an EF Core migration in `Clinic.Infrastructure/Migrations/` and an idempotent SQL script in `ClinicApi/`.
 - **Graceful Degradation:** Repository queries and controllers must provide defensive fallback queries to maintain 100% uptime if connected to pre-migrated databases.
+- **Beware the InMemory Test Lie:** EF Core's InMemory provider does not enforce SQL constraints or column existence. Never rely solely on InMemory tests for schema verification.
+
+### 2.4 Branch Protection, PRs & Cloud Deployment
+- **Protected Branches**: Direct push to `master` is rejected by GitHub.
+- **Workflow**: Create feature branch -> commit with Conventional Commits -> push with `-c credential.helper=manager-core` -> create & merge PR via `gh pr create` and `gh pr merge --admin` -> pull `master` -> update submodule pointers in `clinic-docs`.
+- **Cloud Deployment**: Merging to `master` in `ClinicApi` automatically triggers the Azure App Service deployment workflow (`master_clinic-api-123.yml`) and runs `MigrateAsync()` on startup.
 
 ---
 
