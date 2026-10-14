@@ -145,6 +145,8 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
     - Native hardware bridge services (`NativeDeviceService`, `NativeCameraService`, `NativeHapticsService`, `NativePushService`) with HTML5 web fallbacks.
     - HIPAA multitasking privacy shield blurring UI when application is backgrounded.
     - Safe-area insets (`viewport-fit=cover`), dynamic island spacing, and $\ge 48\times 48\text{ px}$ touch targets.
+    - Mobile Devices backend aggregate in `ClinicApi` (`POST /api/mobile/devices/register`, `GET /my-devices`, `POST /test-notification`) with EF Core migration and live Azure SQL deployment.
+    - Intraoral clinical camera photo capture and tactile haptics integrated into `SkeuomorphicDentalChartComponent` and automatic push permission prompt in `MainLayout`.
 
 ---
 
@@ -154,9 +156,9 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
 | :--- | :--- | :---: | :---: |
 | **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **340+** | 🟢 **100%** |
 | **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **77** | 🟢 **100%** |
-| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **571** | 🟢 **100%** |
+| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **576** | 🟢 **100%** |
 | **Playwright E2E Browser Tests** | Playwright Chromium & Tablet iPad (25 files) | **148** | 🟢 **100%** |
-| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,136+** | 🟢 **100%** |
+| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,141+** | 🟢 **100%** |
 
 ---
 
