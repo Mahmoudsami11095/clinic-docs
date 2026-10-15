@@ -6,13 +6,16 @@ on:
       feature_id:
         description: "Feature / Milestone ID to execute"
         required: true
-        default: "v3.2.0-telehealth-webrtc"
+        default: "v9.0.0-autonomous-suite"
       live_tests:
         description: "Run live 3-tier automated test harness"
         type: boolean
-        default: false
+        default: true
   issues:
     types: [labeled]
+  push:
+    paths:
+      - '.agent-company/sprint-trigger.txt'
 
 permissions:
   contents: write
@@ -21,7 +24,7 @@ permissions:
 
 jobs:
   run-autonomous-sprint:
-    if: github.event_name == 'workflow_dispatch' || github.event.label.name == 'autonomous-sprint'
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || (github.event_name == 'issues' && github.event.label.name == 'autonomous-sprint')
     runs-on: windows-latest
 
     steps:
@@ -54,6 +57,14 @@ jobs:
           if ("${{ github.event_name }}" -eq "workflow_dispatch") {
             $fId = "${{ github.event.inputs.feature_id }}"
             $live = "${{ github.event.inputs.live_tests }}"
+          } elseif ("${{ github.event_name }}" -eq "push") {
+            $triggerContent = Get-Content ".agent-company/sprint-trigger.txt" -Raw -ErrorAction SilentlyContinue
+            if ($triggerContent -match "feature_id:\s*(.+)") {
+              $fId = $matches[1].Trim()
+            } else {
+              $fId = "v9.0.0-autonomous-suite"
+            }
+            $live = "true"
           } else {
             $fId = "${{ github.event.issue.title }}".Replace(" ", "-").ToLower()
             $live = "false"
