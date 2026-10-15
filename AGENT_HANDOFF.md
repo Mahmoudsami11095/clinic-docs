@@ -152,6 +152,10 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
     - **Tier 1 (Branch-Level Quality Gates)**: Both `ClinicApi/ci.yml` and `clinic-app/ci.yml` run on all branches (`'**'`) with `/warnaserror` zero-warning compiler gate, 585 Jasmine specs, 418 backend tests, and bundle budget enforcement.
     - **Tier 2 (Main / Master Deployment Gate)**: `master_clinic-api-123.yml` includes a post-deploy synthetic smoke gate that tests health probes, authentication, and core regression endpoints on Azure before marking deployment as successful.
     - **Tier 3 (Continuous 30-Minute Live Production Monitor)**: `production-monitor.yml` runs every 30 minutes executing `scripts/synthetic_production_probe.js` across 15 production endpoints (measuring latency and response validity) + Playwright browser canary against Vercel, automatically opening an urgent GitHub Issue upon any detection of failure.
+33. **Mobile App Onboarding & Smart Banner Suite (`BR-MOB-ONBOARD-01..03`)**:
+    - **Dedicated `/download` Landing Page (`MobileDownloadComponent`)**: Publicly accessible, responsive download portal with multi-platform device detection (Android, iOS, Desktop), direct Android APK download, iOS 3-step Safari installation guide, 1-click PWA installer, and high-contrast desktop QR code scanner handoff.
+    - **Dismissible Smart App Banner (`SmartAppBannerComponent`)**: Unobtrusive 40px top banner for mobile viewports displaying app rating, version tag (`v7.0.0`), and CTA button with persistent 14-day dismissal expiry in `localStorage` to eliminate intrusive interstitial penalties.
+    - **Sidebar Integration**: Unobtrusive "📱 Mobile App" link in the sidebar footer.
 
 ---
 
@@ -161,9 +165,9 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
 | :--- | :--- | :---: | :---: |
 | **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **340+** | 🟢 **100%** |
 | **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **78** | 🟢 **100%** |
-| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **585** | 🟢 **100%** |
+| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **593** | 🟢 **100%** |
 | **Playwright E2E Browser Tests** | Playwright Chromium & Tablet iPad (25 files) | **148** | 🟢 **100%** |
-| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,151+** | 🟢 **100%** |
+| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,159+** | 🟢 **100%** |
 
 ---
 
