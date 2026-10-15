@@ -156,6 +156,21 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
     - **Dedicated `/download` Landing Page (`MobileDownloadComponent`)**: Publicly accessible, responsive download portal with multi-platform device detection (Android, iOS, Desktop), direct Android APK download, iOS 3-step Safari installation guide, 1-click PWA installer, and high-contrast desktop QR code scanner handoff.
     - **Dismissible Smart App Banner (`SmartAppBannerComponent`)**: Unobtrusive 40px top banner for mobile viewports displaying app rating, version tag (`v7.0.0`), and CTA button with persistent 14-day dismissal expiry in `localStorage` to eliminate intrusive interstitial penalties.
     - **Sidebar Integration**: Unobtrusive "📱 Mobile App" link in the sidebar footer.
+34. **Real-Time In-App Notification Center & Push Bridge (`BR-NOTIF-03..06`, Release v7.1.0)**:
+    - **Interactive Notification Center**: Full header drawer with category filter tabs (All, Unread, Clinical, Operational) and individual mark-read / dismiss actions.
+    - **Live Floating Toast Alert**: SignalR real-time event listener triggering floating top cards with automatic 5-second dismissal and haptic sensory feedback via `NativeHapticsService`.
+    - **Actionable Deep Routing**: Direct navigation to `/appointments`, `/chair-board`, `/billing`, `/inventory` on notification click.
+    - **Backend Push Bridge**: Connected `NotificationService` to `IMobilePushDispatcher` and added `DELETE /api/notifications/{id}`.
+35. **AI Dental Treatment Plan Copilot & Auto-Phasing (`BR-AITP-01..04`, Release v8.0.0)**:
+    - **AI Pathology-to-CDT Translation Engine**: `AiTreatmentCopilotService` autonomously synthesizes multi-stage treatment plans from oral diagnostic findings with standard ADA CDT-2026 codes.
+    - **4-Phase Chronological Staging**: Automated sequencing into `urgent` (infection/pain), `restorative` (endodontics/fillings), `prosthetics` (implants/crowns), and `maintenance` (recall/fluoride).
+    - **Patient Presentation Dossier**: Calculates total clinical chair-time in minutes, total visit milestones, phased financial schedule, and ADA pre-authorization claims.
+    - **1-Click Auto-Sequence**: Integrated into `TreatmentPlanModalComponent` with interactive Dossier tab.
+36. **Telehealth & WebRTC Chair-Side Video Consultations (`BR-TEL-01..04`, Release v8.1.0)**:
+    - **Encrypted WebRTC Suite**: Low-latency peer-to-peer video engine using SignalR signaling (`TelehealthHub`) and DTLS-SRTP encryption.
+    - **Picture-in-Picture & Odontogram Multitasking**: Dentists can consult remotely with patients while inspecting and updating the 3D dental chart and SOAP notes concurrently.
+    - **Zero-Install WhatsApp Direct Join**: 1-click WhatsApp invitation link generator with authenticated room tokens.
+    - **Session Lifecycle Governance**: Backend `TelehealthController` tracking session tokens, connection states, and call duration in seconds.
 
 ---
 
@@ -163,11 +178,11 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
 
 | Test Layer | Technology | Count | Pass Rate |
 | :--- | :--- | :---: | :---: |
-| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **340+** | 🟢 **100%** |
+| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **347+** | 🟢 **100%** |
 | **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **78** | 🟢 **100%** |
-| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **593** | 🟢 **100%** |
+| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **626** | 🟢 **100%** |
 | **Playwright E2E Browser Tests** | Playwright Chromium & Tablet iPad (25 files) | **148** | 🟢 **100%** |
-| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,159+** | 🟢 **100%** |
+| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,199+** | 🟢 **100%** |
 
 ---
 
