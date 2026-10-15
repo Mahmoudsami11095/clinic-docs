@@ -148,6 +148,10 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
     - **Milestone 2 — Native Barcode & QR Scanner**: `NativeScannerService` with ML Kit integration for 1-second patient appointment QR check-ins and material barcode inventory receiving.
     - **Milestone 3 — iOS Native Container**: Xcode project scaffolded with `NSCameraUsageDescription`, `NSPhotoLibraryUsageDescription`, and `remote-notification` background modes.
     - **Milestone 4 — Offline Delta-Sync Engine**: `OfflineSyncService` + `offlineSyncInterceptor` with persistent IndexedDB mutation queueing via `localForage`, optimistic 200 responses, and automatic sequential sync on network reconnection.
+32. **Enterprise 3-Tier CI/CD & Automated Validation Suite (`STD-ENG-001`, `STD-ARCH-007`)**:
+    - **Tier 1 (Branch-Level Quality Gates)**: Both `ClinicApi/ci.yml` and `clinic-app/ci.yml` run on all branches (`'**'`) with `/warnaserror` zero-warning compiler gate, 585 Jasmine specs, 418 backend tests, and bundle budget enforcement.
+    - **Tier 2 (Main / Master Deployment Gate)**: `master_clinic-api-123.yml` includes a post-deploy synthetic smoke gate that tests health probes, authentication, and core regression endpoints on Azure before marking deployment as successful.
+    - **Tier 3 (Continuous 30-Minute Live Production Monitor)**: `production-monitor.yml` runs every 30 minutes executing `scripts/synthetic_production_probe.js` across 15 production endpoints (measuring latency and response validity) + Playwright browser canary against Vercel, automatically opening an urgent GitHub Issue upon any detection of failure.
 
 ---
 
