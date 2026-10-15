@@ -171,6 +171,18 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
     - **Picture-in-Picture & Odontogram Multitasking**: Dentists can consult remotely with patients while inspecting and updating the 3D dental chart and SOAP notes concurrently.
     - **Zero-Install WhatsApp Direct Join**: 1-click WhatsApp invitation link generator with authenticated room tokens.
     - **Session Lifecycle Governance**: Backend `TelehealthController` tracking session tokens, connection states, and call duration in seconds.
+37. **AI Cephalometric Landmark Tracing & Orthodontic Analysis (`BR-ORTHO-01..02`, `REQ-ORTHO-01..03`, Release v8.2.0)**:
+    - **Client-Side WASM ONNX Engine**: Zero-server inference evaluating cephalometric radiographs and identifying Sella, Nasion, Point A, Point B, Menton, Pogonion, Gonion, and Gnathion.
+    - **Dynamic Angular Planes**: Interactive SVG/Canvas overlay computing Steiner and McNamara diagnostics (SNA, SNB, ANB, SN-GoGn).
+    - **Clinical Drag-and-Drop Override**: Attending clinician manual node manipulation with real-time recalculation of angular planes and backend diagnostic report sync (`POST /api/radiology/records/{id}/ceph-predictions`).
+38. **Automated WhatsApp Post-Op Recovery Tracker & Triage (`BR-POSTOP-01..02`, `REQ-POSTOP-01..02`, Release v8.3.0)**:
+    - **Automated Check-In Protocol**: Proactive 24h & 48h post-surgical check-in prompts via two-way interactive WhatsApp chatbot capturing Pain (1-10), Bleeding, and Swelling.
+    - **Critical Escalation Guardrail**: High-priority alert triggered upon Pain > 7, severe bleeding, or swelling, routing directly to the clinical team.
+    - **Post-Op Triage Dashboard**: Dedicated triage portal (`/admin/post-op-triage`) with 1-click clinical intervention logging (`ResolveTriage`).
+39. **Dental Lab 3D CAD/CAM Work-Order Logistics & Board (`BR-LAB-01..02`, `REQ-LAB-01..02`, Release v8.4.0)**:
+    - **End-to-End Prosthodontic Lifecycle**: Multi-state tracking (`Draft` $\rightarrow$ `Dispatched` $\rightarrow$ `ReceivedByLab` $\rightarrow$ `Milling` $\rightarrow$ `QualityControl` $\rightarrow$ `Shipped` $\rightarrow$ `ReceivedByClinic`).
+    - **Appointment Blocking Rule (`BR-LAB-01`)**: Clinical governance engine blocks booking prosthetic fitting appointments until work-order is physically inspected and marked `ReceivedByClinic`.
+    - **Cryptographic Partner Portal**: External lab technician dropzone for STL/PLY scans with HIPAA-compliant patient identity masking.
 
 ---
 
@@ -178,11 +190,11 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
 
 | Test Layer | Technology | Count | Pass Rate |
 | :--- | :--- | :---: | :---: |
-| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **347+** | 🟢 **100%** |
-| **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **78** | 🟢 **100%** |
-| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **626** | 🟢 **100%** |
+| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **345** | 🟢 **100%** |
+| **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **100** | 🟢 **100%** |
+| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **654** | 🟢 **100%** |
 | **Playwright E2E Browser Tests** | Playwright Chromium & Tablet iPad (25 files) | **148** | 🟢 **100%** |
-| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,199+** | 🟢 **100%** |
+| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,247+** | 🟢 **100%** |
 
 ---
 
