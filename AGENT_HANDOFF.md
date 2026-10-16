@@ -221,7 +221,9 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
     - **Milestone 3 — System Tray Radar (`BR-DESK-02`)**: Background notification area tray showing live available operatory chair counts and patient waiting queue numbers.
     - **Milestone 4 — Global Hands-Free System Hotkeys (`BR-DESK-05`)**: `Ctrl+Alt+K` Spotlight invocation and `Ctrl+Alt+S` Voice Scribe toggle from any application.
     - **Milestone 5 — Unified Multi-Platform Application Hub (`/download`)**: Interactive multi-tab download center detecting workstation OS with 1-click Windows Installer/Portable, macOS DMG, and Linux AppImage packages.
-    - **Automated Desktop CI/CD Matrix**: GitHub Actions workflow (`build-desktop-app.yml`) building Windows x64, macOS Universal, and Linux AppImage artifacts on push.
+    - **Milestone 6 — Native Atomic Offline Snapshot Persistence (`BR-DESK-06`)**: Native disk-level atomic JSON snapshot storage channel (`desktopAPI.storage`) in `desktop/main.ts` and `preload.ts` bypassing 5MB browser storage quotas, dual-written by `OfflineService.saveSnapshot` with `getSnapshotAsync` prioritization.
+    - **Automated Desktop CI/CD Matrix (100% Green Across OSes)**: GitHub Actions workflow (`build-desktop-app.yml`) building Windows x64 NSIS/Portable, macOS Universal DMG/ZIP, and Linux x64 AppImage/DEB artifacts on push and PR.
+    - **Official GitHub Release**: Tagged and published `v8.0.0` with full release notes and attached installers.
 
 ---
 
@@ -231,9 +233,9 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
 | :--- | :--- | :---: | :---: |
 | **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **349** | 🟢 **100%** |
 | **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **121** | 🟢 **100%** |
-| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **722** | 🟢 **100%** |
+| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **737** | 🟢 **100%** |
 | **Playwright E2E Browser Tests** | Playwright Chromium & Tablet iPad (27 files) | **162** | 🟢 **100%** |
-| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,354+** | 🟢 **100%** |
+| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,369+** | 🟢 **100%** |
 
 ---
 
