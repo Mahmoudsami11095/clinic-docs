@@ -1,8 +1,8 @@
 # 🔄 Agent Handoff — Clinic Project Master Context
 
 > **Last Updated**: 2026-10-16  
-> **Version**: 9.0.0 (Interactive 3D Intraoral Mesh Viewer Certified)  
-> **Status**: All 40 Master Enhancements Implemented, Tested, Merged, and Certified  
+> **Version**: 9.1.0 (3D Mesh Surface Measurement & Prep Margin Caliper Certified)  
+> **Status**: Milestone 1 (v9.1.0) Certified & Merged; Milestone 2 (v9.2.0 3D Undercut & Heatmap) In Progress  
 > **Instructions for Future Agent**: When starting a new session on any workstation, read this file to immediately resume with complete architectural and operational context.
 
 ---
@@ -197,14 +197,16 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
 | Test Layer | Technology | Count | Pass Rate |
 | :--- | :--- | :---: | :---: |
 | **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **345** | 🟢 **100%** |
-| **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **100** | 🟢 **100%** |
-| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **666** | 🟢 **100%** |
+| **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **108** | 🟢 **100%** |
+| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **676** | 🟢 **100%** |
 | **Playwright E2E Browser Tests** | Playwright Chromium & Tablet iPad (25 files) | **148** | 🟢 **100%** |
-| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,259+** | 🟢 **100%** |
+| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,277+** | 🟢 **100%** |
 
 ---
 
 ## 4. Key Documentation Files in `clinic-docs`
+- `specs/features/FEATURE_v9.1.0_SPEC.md`: Clinical Operations Specification for 3D Mesh Surface Measurement & Prep Margin Caliper.
+- `specs/features/FEATURE_v9.1.0_ADR.md`: Architecture Decision Record for 3D Caliper Raycasting and Euclidean/Angular Calculations.
 - `specs/features/FEATURE_v9.0.0_SPEC.md`: Clinical Operations Specification for 3D Intraoral STL/PLY Viewer.
 - `specs/features/FEATURE_v9.0.0_ADR.md`: Architecture Decision Record for Three.js WebGL Rendering & Material Shaders.
 - `specs/features/FEATURE_v5.5.0_SPEC.md`: Clinical Operations Specification for Centralized Procurement.
