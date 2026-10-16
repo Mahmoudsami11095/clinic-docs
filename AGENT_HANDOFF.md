@@ -1,8 +1,8 @@
 # 🔄 Agent Handoff — Clinic Project Master Context
 
 > **Last Updated**: 2026-10-16  
-> **Version**: 10.0.0 (Milestone 3 Dental CAM Toolpath Engine & Direct 5-Axis G-Code Generator Certified & Merged)  
-> **Status**: Milestones 1 (v9.3.0 3D Virtual Articulator), 2 (v9.4.0 AI Gingival Finish Line & Margin Auto-Tracing), and 3 (v10.0.0 Dental CAM Toolpath Engine) 100% Complete & Merged across Backend (.NET 9), Frontend (Angular 20 Signals), and Enterprise Documentation.  
+> **Version**: 10.1.0 (Milestone 4 3D Implant Surgical Guide & Stent Generator Certified & Merged)  
+> **Status**: Milestones 1 (v9.3.0 3D Virtual Articulator), 2 (v9.4.0 AI Gingival Finish Line & Margin Auto-Tracing), 3 (v10.0.0 Dental CAM Toolpath Engine), and 4 (v10.1.0 3D Implant Surgical Guide & Stent Generator) 100% Complete & Merged across Backend (.NET 9), Frontend (Angular 20 Signals), and Enterprise Documentation.  
 > **Instructions for Future Agent**: When starting a new session on any workstation, read this file to immediately resume with complete architectural and operational context.
 
 
@@ -207,6 +207,12 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
     - **Interactive Three.js CAM Visualizer**: Rendered milling blank cylindrical disk boundary, multi-layer color-coded toolpaths (Cyan roughing, Amber semi-finishing, Emerald margin detail), and real-time 5-axis bur orientation cone.
     - **Direct Post-Processor & G-Code Generator**: Clean ISO 6983 standard program output with dwell intervals (`G04 P2.0`), material-specific vacuum extraction (`M10/M11` for dry Zirconia) or flood coolant (`M08/M09` for wet PMMA/Titanium), and direct `.NC` file download.
     - **Backend Validation & API**: Clean Architecture CAM calculation endpoints (`GET / POST /api/labworkorders/{id}/cam/gcode`) and validation rules rejecting unsafe feed rates (`BR-CAM-02`).
+44. **3D Implant Surgical Guide & Stent Generator (`BR-SG-01..04`, `REQ-SG-01..04`, Release v10.1.0)**:
+    - **Interactive Three.js Master Guide Visualizer**: Metallic gold titanium sleeve (`THREE.MeshStandardMaterial`), internal drill bore hole tube, customizable angulation (bucco-lingual $[-15^\circ, +15^\circ]$ and mesio-distal $[-10^\circ, +10^\circ]$), drill shoulder offset ($7.0-14.0\text{ mm}$), and translucent biocompatible resin envelope (`THREE.MeshPhysicalMaterial`, 0.35 opacity, 2.5mm minimum wall thickness).
+    - **Safety Governance & Critical Structure Buffer (`BR-SG-01`)**: Real-time evaluation of anatomical safety buffer distance against mandibular nerve / adjacent root apex. If clearance $< 2.0\text{ mm}$, flags 🔴 Crimson warning and disables automated approval; otherwise renders 🟢 Emerald safety sphere.
+    - **Multi-System Master Sleeve Presets (`BR-SG-04`)**: NobelActive (⌀5.0mm outer, ⌀4.2mm inner, 9.0mm offset), Straumann BLX (⌀4.8mm outer, ⌀4.0mm inner, 10.0mm offset), Zimmer TSV (⌀5.2mm outer, ⌀4.4mm inner, 9.0mm offset).
+    - **Seating & Irrigation Inspection Window (`BR-SG-03`)**: Wireframe inspection window box verifying complete seating on dentition/mucosa and allowing saline coolant drill irrigation.
+    - **Clinical Dossier Export & Backend API**: Clean Architecture surgical guide endpoints (`GET / POST /api/labworkorders/{id}/surgical-guide`), JSON manufacturing dossier export, and full audit logging.
 
 ---
 
@@ -215,14 +221,16 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
 | Test Layer | Technology | Count | Pass Rate |
 | :--- | :--- | :---: | :---: |
 | **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **349** | 🟢 **100%** |
-| **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **117** | 🟢 **100%** |
-| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **710** | 🟢 **100%** |
-| **Playwright E2E Browser Tests** | Playwright Chromium & Tablet iPad (27 files) | **161** | 🟢 **100%** |
-| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,337+** | 🟢 **100%** |
+| **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **121** | 🟢 **100%** |
+| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **722** | 🟢 **100%** |
+| **Playwright E2E Browser Tests** | Playwright Chromium & Tablet iPad (27 files) | **162** | 🟢 **100%** |
+| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,354+** | 🟢 **100%** |
 
 ---
 
 ## 4. Key Documentation Files in `clinic-docs`
+- `specs/features/FEATURE_v10.1.0_SPEC.md`: Clinical Operations Specification for 3D Implant Surgical Guide & Stent Generator.
+- `specs/features/FEATURE_v10.1.0_ADR.md`: Architecture Decision Record for Three.js Sleeve Geometries, Biocompatible Resin Stent & Critical Anatomical Buffer.
 - `specs/features/FEATURE_v10.0.0_SPEC.md`: Clinical Operations Specification for Dental CAM Toolpath Engine & Direct 5-Axis G-Code Generator.
 - `specs/features/FEATURE_v10.0.0_ADR.md`: Architecture Decision Record for 5-Axis Toolpath Slicing, ISO 6983 G-Code Generation, and Sintered Shrinkage Scaling.
 - `specs/features/FEATURE_v9.4.0_SPEC.md`: Clinical Operations Specification for AI Gingival Finish Line & Margin Auto-Tracing.
