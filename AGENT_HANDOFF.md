@@ -1,14 +1,13 @@
 # 🔄 Agent Handoff — Clinic Project Master Context
 
 > **Last Updated**: 2026-10-16  
-> **Version**: 11.0.0 (Release v11.0.0 Dual-Modality CBCT-DICOM & STL 3D Multi-Modal Fusion Engine Certified & Merged)  
-> **Status**: All 4 Master Sequential Frontiers 100% Complete & Merged across Backend (.NET 9), Frontend (Angular 20 Signals), Desktop Electron, and Enterprise Documentation:  
-> 1. **Frontier 1 (Release v10.2.0)**: AI Dental Crown Auto-Design & Morphological Fit Engine (`BR-CROWN-01..04`).  
-> 2. **Frontier 2**: Desktop Silent Background Auto-Updater (`BR-DESK-07`).  
-> 3. **Frontier 3**: Desktop Playwright E2E Electron Automation Suite (`test:desktop`).  
-> 4. **Frontier 4 (Release v11.0.0)**: Dual-Modality CBCT-DICOM & Intraoral STL 3D Multi-Modal Fusion Engine (`BR-FUSION-01..04`).  
+> **Version**: 11.2.0 (Release v11.2.0 AI Guided Bone Regeneration Titanium Mesh Generator Certified & Merged)  
+> **Status**: All 4 Master Multi-Platform & Clinical Frontiers 100% Complete & Merged across Backend (.NET 9), Frontend (Angular 20 Signals), Desktop Electron, and Enterprise Documentation:  
+> 1. **Frontier 1**: Unified Multi-Platform Release Pipeline (`.github/workflows/release.yml`) automating simultaneous Windows, macOS, Linux, Android, and Web production artifacts.  
+> 2. **Frontier 2 (Release v11.1.0)**: AI Clear Aligner Orthodontic Staging Engine (`BR-ALIGN-01..04`).  
+> 3. **Frontier 3 (Release v11.2.0)**: AI Guided Bone Regeneration (GBR) Titanium Mesh Generator (`BR-GBR-01..04`).  
+> 4. **Frontier 4**: Live Production Cloud Verification & Playwright E2E Canary (100% Pass across Azure App Service, Vercel Global Edge, and Playwright Chromium/iPad).  
 > **Instructions for Future Agent**: When starting a new session on any workstation, read this file to immediately resume with complete architectural and operational context.
-
 
 ---
 
@@ -17,7 +16,7 @@
 ### 1.1 Repositories & Branches
 | Repository | GitHub URL | Branch | Framework & Technology |
 | :--- | :--- | :---: | :--- |
-| **`clinic-app`** (Frontend) | `github.com/Mahmoudsami11095/clinic-app` | `master` | Angular 19/20 Standalone, Reactive Signals (`input()`, `output()`, `model()`), TailwindCSS, PrimeNG |
+| **`clinic-app`** (Frontend) | `github.com/Mahmoudsami11095/clinic-app` | `master` | Angular 20 Standalone, Reactive Signals (`input()`, `output()`, `model()`), TailwindCSS, PrimeNG |
 | **`ClinicApi`** (Backend) | `github.com/Mahmoudsami11095/ClinicApi` | `master` | .NET 9.0 Clean Architecture (`API`, `Application`, `Domain`, `Infrastructure`), EF Core, Azure SQL, SignalR |
 | **`clinic-docs`** (Documentation) | `github.com/Mahmoudsami11095/clinic-docs` | `main` | Markdown Specifications (CRD v3.0.0, SRS v2.0.0, SOP v2.0.0, UAT v3.0.0) |
 
@@ -228,6 +227,27 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
     - **Milestone 6 — Native Atomic Offline Snapshot Persistence (`BR-DESK-06`)**: Native disk-level atomic JSON snapshot storage channel (`desktopAPI.storage`) in `desktop/main.ts` and `preload.ts` bypassing 5MB browser storage quotas, dual-written by `OfflineService.saveSnapshot` with `getSnapshotAsync` prioritization.
     - **Automated Desktop CI/CD Matrix (100% Green Across OSes)**: GitHub Actions workflow (`build-desktop-app.yml`) building Windows x64 NSIS/Portable, macOS Universal DMG/ZIP, and Linux x64 AppImage/DEB artifacts on push and PR.
     - **Official GitHub Release**: Tagged and published `v8.0.0` with full release notes and attached installers.
+46. **AI Dental Crown Auto-Design & Morphological Fit Engine (`BR-CROWN-01..04`, Release v10.2.0)**:
+    - Interactive 3D biogeneric dental crown restoration with real-time parametric scaling (mesio-distal, bucco-lingual, occlusal height $\pm 2.0\text{ mm}$), cuspal tilt, and automated insertion trajectory verification.
+    - Occlusal contact and interproximal pressure verification ensuring strict clinical compliance ($\ge 0.6\text{ mm}$ minimum zirconia wall thickness `BR-CROWN-01`).
+    - Standardized STL crown restoration mesh generation with clinical metadata.
+47. **Dual-Modality CBCT-DICOM & Intraoral STL 3D Multi-Modal Fusion Engine (`BR-FUSION-01..04`, Release v11.0.0)**:
+    - 3-point fiducial registration and Iterative Closest Point (ICP) alignment marrying volumetric bone anatomy with high-definition surface dentition.
+    - 3D interactive multi-modal overlay visualizer with independent opacity controls, false-color bone density overlays, and cross-sectional slicing plane.
+    - Implant alveolar ridge depth and root proximity clearance verification ($\ge 2.0\text{ mm}$ mandibular canal / mental foramen safety buffer).
+48. **AI Clear Aligner Orthodontic Staging Engine (`BR-ALIGN-01..04`, Release v11.1.0)**:
+    - Automated malocclusion analysis and tooth movement breakdown with biological limits ($\le 0.25\text{ mm}$ translation, $\le 2^\circ$ rotation per aligner tray).
+    - Interactive 3D orthodontic staging scrubber with animated transition across staging steps (Step 1 to N).
+    - Composite attachment placement markers and Interproximal Reduction (IPR) schedule calculation.
+    - Physical polyurethane thermoformed aligner sheet shader with laser-etched stage numbers.
+49. **AI Guided Bone Regeneration (GBR) Titanium Mesh Generator (`BR-GBR-01..04`, Release v11.2.0)**:
+    - Defect volume analysis with automated $+15\%$ biological particulate graft overfill calculation (`BR-GBR-01`).
+    - 3D micro-perforated titanium mesh shell (0.10, 0.15, 0.20 mm foil thickness, 40-60% porosity lattice) (`BR-GBR-02`).
+    - Multi-screw fixation planning with safety corridor checks ($\ge 1.5\text{ mm}$ root apex, $\ge 2.0\text{ mm}$ IAN canal) (`BR-GBR-03`).
+    - Pre-bent cutting template unfolding & STL manufacturing export metadata (`BR-GBR-04`).
+50. **Unified Multi-Platform Release Pipeline (`.github/workflows/release.yml`)**:
+    - Centralized multi-platform release workflow running across Windows, macOS, Linux, Android, and Web on semantic release tag push (`v*.*.*`).
+    - Simultaneous assembly and packaging of NSIS/Portable exe, Universal macOS DMG, Linux AppImage/DEB, Android APK, and PWA dist bundle attached directly to GitHub Releases.
 
 ---
 
@@ -236,15 +256,23 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
 | Test Layer | Technology | Count | Pass Rate |
 | :--- | :--- | :---: | :---: |
 | **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **345** | 🟢 **100%** |
-| **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **131** | 🟢 **100%** |
-| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **762** | 🟢 **100%** |
+| **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **137** | 🟢 **100%** |
+| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **779** | 🟢 **100%** |
 | **Desktop Playwright E2E Tests** | Playwright Electron Automation (`test:desktop`) | **10** | 🟢 **100%** |
-| **Web Playwright E2E Tests** | Playwright Chromium & Tablet iPad (27 files) | **162** | 🟢 **100%** |
-| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,410+** | 🟢 **100%** |
+| **Web Playwright E2E Tests** | Playwright Chromium & Tablet iPad (28 files) | **174** | 🟢 **100%** |
+| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,445+** | 🟢 **100%** |
 
 ---
 
 ## 4. Key Documentation Files in `clinic-docs`
+- `specs/features/FEATURE_v11.2.0_SPEC.md`: Clinical Operations Specification for AI Guided Bone Regeneration Titanium Mesh Generator.
+- `specs/features/FEATURE_v11.2.0_ADR.md`: Architecture Decision Record for 3D GBR Scaffolding, Micro-Porosity Lattice & Fixation Corridors.
+- `specs/features/FEATURE_v11.1.0_SPEC.md`: Clinical Operations Specification for AI Clear Aligner Orthodontic Staging Engine.
+- `specs/features/FEATURE_v11.1.0_ADR.md`: Architecture Decision Record for 3D Aligner Kinematics, Polyurethane Shading & IPR Protocol.
+- `specs/features/FEATURE_v11.0.0_SPEC.md`: Clinical Operations Specification for Dual-Modality CBCT-DICOM & STL Multi-Modal Fusion Engine.
+- `specs/features/FEATURE_v11.0.0_ADR.md`: Architecture Decision Record for ICP Co-Registration & 3D Multi-Modal Rendering.
+- `specs/features/FEATURE_v10.2.0_SPEC.md`: Clinical Operations Specification for AI Dental Crown Auto-Design & Morphological Fit Engine.
+- `specs/features/FEATURE_v10.2.0_ADR.md`: Architecture Decision Record for 3D Crown Restoration Geometry & Parametric Occlusion.
 - `specs/features/FEATURE_v10.1.0_SPEC.md`: Clinical Operations Specification for 3D Implant Surgical Guide & Stent Generator.
 - `specs/features/FEATURE_v10.1.0_ADR.md`: Architecture Decision Record for Three.js Sleeve Geometries, Biocompatible Resin Stent & Critical Anatomical Buffer.
 - `specs/features/FEATURE_v10.0.0_SPEC.md`: Clinical Operations Specification for Dental CAM Toolpath Engine & Direct 5-Axis G-Code Generator.
