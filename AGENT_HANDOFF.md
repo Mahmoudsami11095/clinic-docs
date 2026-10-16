@@ -1,9 +1,10 @@
 # 🔄 Agent Handoff — Clinic Project Master Context
 
 > **Last Updated**: 2026-10-16  
-> **Version**: 9.2.0 (Milestones 1, 2, & 3 Certified & Merged)  
-> **Status**: Milestones 1 (v9.1.0 Caliper), 2 (v9.2.0 Heatmap), & 3 (Live Playwright E2E Suite) 100% Complete & Merged  
+> **Version**: 9.3.0 (Milestone 1 Virtual Articulator Certified & Merged)  
+> **Status**: Milestones 1 (v9.1.0 Caliper), 2 (v9.2.0 Heatmap), 3 (Live Playwright E2E Suite), & v9.3.0 (3D Virtual Articulator & Dynamic Kinematics) 100% Complete & Merged  
 > **Instructions for Future Agent**: When starting a new session on any workstation, read this file to immediately resume with complete architectural and operational context.
+
 
 ---
 
@@ -189,6 +190,11 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
     - Model telemetry stats drawer: Polygon count, vertex count, bounding dimensions (mm), scan file size, and Tooth FDI designation.
     - Backend security magic-byte header validation rejecting executable binaries with HTTP 400 (`BR-3D-01`).
     - Integrated into `LabWorkOrdersBoardComponent` with 1-click modal inspection and diagnostic `PartnerDropzoneComponent` instant preview on drag-and-drop.
+41. **3D Virtual Articulator & Dynamic Occlusal Collision Simulation (`BR-ART-01..02`, `REQ-ART-01..04`, Release v9.3.0)**:
+    - **Kinematic Condylar Simulation**: Adjustable Horizontal Condylar Inclination (HCI $20^\circ-60^\circ$), Bennett Angle ($0^\circ-30^\circ$), and Incisal Pin Opening ($0.0-5.0\text{ mm}$).
+    - **Mandibular Excursions**: Centric, Protrusive anterior translation, Right Lateral, and Left Lateral working/non-working excursions with continuous loop playback.
+    - **Dynamic Contact & Interference Spheres**: Real-time occlusal clearance evaluation mapping 🔴 Crimson high-spot premature contacts, 🟡 Amber physiological contacts, and 🟢 Emerald clearance markers.
+    - **Persistence & Telemetry**: Full simulation state persisted via `POST /api/labworkorders/{id}/articulator` with audit log and warning flags.
 
 ---
 
@@ -197,20 +203,23 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
 | Test Layer | Technology | Count | Pass Rate |
 | :--- | :--- | :---: | :---: |
 | **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **345** | 🟢 **100%** |
-| **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **111** | 🟢 **100%** |
-| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **683** | 🟢 **100%** |
-| **Playwright E2E Browser Tests** | Playwright Chromium & Tablet iPad (26 files) | **156** | 🟢 **100%** |
-| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,295+** | 🟢 **100%** |
+| **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **114** | 🟢 **100%** |
+| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **694** | 🟢 **100%** |
+| **Playwright E2E Browser Tests** | Playwright Chromium & Tablet iPad (26 files) | **157** | 🟢 **100%** |
+| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,310+** | 🟢 **100%** |
 
 ---
 
 ## 4. Key Documentation Files in `clinic-docs`
+- `specs/features/FEATURE_v9.3.0_SPEC.md`: Clinical Operations Specification for 3D Virtual Articulator & Dynamic Occlusal Collision Simulation.
+- `specs/features/FEATURE_v9.3.0_ADR.md`: Architecture Decision Record for Three.js Virtual Articulator Condylar Kinematics & Collision Contact Spheres.
 - `specs/features/FEATURE_v9.2.0_SPEC.md`: Clinical Operations Specification for 3D Color-Coded Undercut & Occlusal Clearance Heatmap.
 - `specs/features/FEATURE_v9.2.0_ADR.md`: Architecture Decision Record for Three.js Vertex-Color Heatmap Engine & POI Vector Parameterization.
 - `specs/features/FEATURE_v9.1.0_SPEC.md`: Clinical Operations Specification for 3D Mesh Surface Measurement & Prep Margin Caliper.
 - `specs/features/FEATURE_v9.1.0_ADR.md`: Architecture Decision Record for 3D Caliper Raycasting and Euclidean/Angular Calculations.
 - `specs/features/FEATURE_v9.0.0_SPEC.md`: Clinical Operations Specification for 3D Intraoral STL/PLY Viewer.
 - `specs/features/FEATURE_v9.0.0_ADR.md`: Architecture Decision Record for Three.js WebGL Rendering & Material Shaders.
+
 - `specs/features/FEATURE_v5.5.0_SPEC.md`: Clinical Operations Specification for Centralized Procurement.
 - `specs/features/FEATURE_v5.5.0_ADR.md`: Architecture Decision Record for Supplier EDI & Three-Way Match.
 - `specs/features/FEATURE_v5.4.0_SPEC.md`: Clinical Operations Specification for WhatsApp Interactive Chatbot.
