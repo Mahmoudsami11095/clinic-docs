@@ -10,7 +10,8 @@
 | **Backend Production API** | [https://clinic-api-123-a0ghf9aeb5ccawha.swedencentral-01.azurewebsites.net/api](https://clinic-api-123-a0ghf9aeb5ccawha.swedencentral-01.azurewebsites.net/api) |
 | **Android APK (Automated CI)** | [GitHub Actions Run 38545275269](https://github.com/Mahmoudsami11095/clinic-app/actions/runs/38545275269) (SmartClinic-Android-Debug-APK) |
 | **iOS App (Automated CI)** | [GitHub Actions Run 38676168498](https://github.com/Mahmoudsami11095/clinic-app/actions/runs/38676168498) (Simulator .zip & Unsigned .ipa) |
-| **Active Release** | **v7.0.0 Enterprise Edition** (Cross-Platform Mobile Suite, Push Engine, Barcode/QR Scanner, Offline Sync) |
+| **Desktop Suite (Windows/Mac/Linux)** | [GitHub Actions CI/CD](https://github.com/Mahmoudsami11095/clinic-app/actions) (NSIS Setup .exe, Portable .exe, macOS DMG, Linux AppImage) |
+| **Active Release** | **v8.0.0 Enterprise Edition** (Cross-Platform Desktop & Mobile Application Suite, POS Thermal Printing, HIPAA Workstation Veil) |
 
 ---
 
@@ -51,6 +52,24 @@ The system has completed full implementation, automated test verification, and l
 │     Sharing Analytics & Payouts  │     Bundle Budgets (<200 kB)    │     Signal Primitives Modern│
 └──────────────────────────────────┴─────────────────────────────────┴─────────────────────────────┘
 ```
+
+---
+
+## 💻 Release v8.0.0: Enterprise Desktop Application Suite (Windows, macOS, Linux)
+
+Release v8.0.0 delivers the native enterprise desktop application suite for dental operatories, hospital reception desks, and diagnostic billing counters using **Electron 34+ LTS** and the **Angular 20 Standalone Reactive Signals Core**:
+
+1. **Native Hardware & Workstation Integration:**
+   - **Direct POS Silent Thermal Printing (`BR-DESK-03`):** High-speed 80mm ESC/POS thermal receipt printing and A4 medical prescriptions without browser print preview dialog delays.
+   - **HIPAA Workstation Privacy Veil (`BR-DESK-01`):** Automatic viewport obfuscation shield activating when window blurs, minimizes, or computer locks.
+   - **System Tray & Clinic Radar (`BR-DESK-02`):** Persistent taskbar notification icon displaying live available operatory chair counts and patient queue velocity.
+   - **Global System Hotkeys (`BR-DESK-05`):** `Ctrl+Alt+K` universal spotlight invocation and `Ctrl+Alt+S` ambient voice scribe toggle.
+   - **Frameless Ergonomic Chrome (`BR-DESK-02`):** Custom styled draggable titlebar with minimize, maximize/restore, and close buttons with Cairo Arabic RTL support.
+2. **Cross-Platform Installers & Packaging:**
+   - **Windows 10 / 11:** NSIS setup installer (`SmartClinic-Setup-8.0.0-x64.exe`) and standalone portable executable.
+   - **macOS:** Universal disk image (`SmartClinic-8.0.0-mac-universal.dmg`) supporting Apple Silicon M1-M4 and Intel.
+   - **Linux:** Standalone `SmartClinic-8.0.0-x64.AppImage` and Debian package (`.deb`).
+   - **Automated CI/CD:** GitHub Actions 3-way matrix pipeline (`build-desktop-app.yml`).
 
 ---
 

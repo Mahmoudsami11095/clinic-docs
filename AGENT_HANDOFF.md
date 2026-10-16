@@ -213,6 +213,15 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
     - **Multi-System Master Sleeve Presets (`BR-SG-04`)**: NobelActive (⌀5.0mm outer, ⌀4.2mm inner, 9.0mm offset), Straumann BLX (⌀4.8mm outer, ⌀4.0mm inner, 10.0mm offset), Zimmer TSV (⌀5.2mm outer, ⌀4.4mm inner, 9.0mm offset).
     - **Seating & Irrigation Inspection Window (`BR-SG-03`)**: Wireframe inspection window box verifying complete seating on dentition/mucosa and allowing saline coolant drill irrigation.
     - **Clinical Dossier Export & Backend API**: Clean Architecture surgical guide endpoints (`GET / POST /api/labworkorders/{id}/surgical-guide`), JSON manufacturing dossier export, and full audit logging.
+45. **Enterprise Cross-Platform Desktop Application Suite (`BR-DESK-01..06`, Release v8.0.0)**:
+    - **Electron 34+ LTS Hardened Runtime**: Sandboxed TypeScript container (`clinic-app/desktop/main.ts`, `preload.ts`, `tsconfig.json`) adhering to OWASP Desktop Top 10 and HIPAA Security Rule § 164.312 with `contextIsolation: true`, `nodeIntegration: false`, and single instance locking.
+    - **Frameless Ergonomic Window Chrome**: Draggable custom titlebar component (`DesktopTitlebarComponent`) with window minimize, maximize/restore, close, live status indicator, and Cairo RTL typography.
+    - **Milestone 1 — Direct POS Thermal Receipt Printing (`BR-DESK-03`)**: Silent ESC/POS 80mm thermal receipt printing and system printer enumeration eliminating OS print preview bottlenecks.
+    - **Milestone 2 — HIPAA Workstation Privacy Veil (`BR-DESK-01`)**: Automatic screen obfuscation veil triggering when window loses focus (`blur`), minimizes, or the OS locks, with 1-click verified unlock.
+    - **Milestone 3 — System Tray Radar (`BR-DESK-02`)**: Background notification area tray showing live available operatory chair counts and patient waiting queue numbers.
+    - **Milestone 4 — Global Hands-Free System Hotkeys (`BR-DESK-05`)**: `Ctrl+Alt+K` Spotlight invocation and `Ctrl+Alt+S` Voice Scribe toggle from any application.
+    - **Milestone 5 — Unified Multi-Platform Application Hub (`/download`)**: Interactive multi-tab download center detecting workstation OS with 1-click Windows Installer/Portable, macOS DMG, and Linux AppImage packages.
+    - **Automated Desktop CI/CD Matrix**: GitHub Actions workflow (`build-desktop-app.yml`) building Windows x64, macOS Universal, and Linux AppImage artifacts on push.
 
 ---
 

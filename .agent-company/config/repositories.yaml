@@ -30,6 +30,10 @@ repositories:
       test_e2e: "npx playwright test"
       test_e2e_headed: "npx playwright test --headed"
       serve: "npm run start"
+      desktop_compile: "npm run desktop:compile"
+      desktop_generate: "npm run desktop:generate"
+      desktop_serve: "npm run desktop:serve"
+      desktop_generate_script: "powershell -NoProfile -ExecutionPolicy Bypass -File ./generate_desktop_app.ps1"
     budgets:
       initial_bundle_kb: 200
       max_component_kb: 30
