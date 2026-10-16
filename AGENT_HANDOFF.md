@@ -1,8 +1,8 @@
 # 🔄 Agent Handoff — Clinic Project Master Context
 
 > **Last Updated**: 2026-10-16  
-> **Version**: 9.3.0 (Milestone 1 Virtual Articulator Certified & Merged)  
-> **Status**: Milestones 1 (v9.1.0 Caliper), 2 (v9.2.0 Heatmap), 3 (Live Playwright E2E Suite), & v9.3.0 (3D Virtual Articulator & Dynamic Kinematics) 100% Complete & Merged  
+> **Version**: 9.4.0 (Milestone 2 AI Finish Line & Margin Auto-Tracing Certified & Merged)  
+> **Status**: Milestones 1 (v9.3.0 3D Virtual Articulator) & 2 (v9.4.0 AI Gingival Finish Line & Margin Auto-Tracing) 100% Complete & Merged; Milestone 3 (v10.0.0 Dental CAM Toolpath Engine) In Queue  
 > **Instructions for Future Agent**: When starting a new session on any workstation, read this file to immediately resume with complete architectural and operational context.
 
 
@@ -195,6 +195,12 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
     - **Mandibular Excursions**: Centric, Protrusive anterior translation, Right Lateral, and Left Lateral working/non-working excursions with continuous loop playback.
     - **Dynamic Contact & Interference Spheres**: Real-time occlusal clearance evaluation mapping 🔴 Crimson high-spot premature contacts, 🟡 Amber physiological contacts, and 🟢 Emerald clearance markers.
     - **Persistence & Telemetry**: Full simulation state persisted via `POST /api/labworkorders/{id}/articulator` with audit log and warning flags.
+42. **AI Gingival Finish Line & Margin Auto-Tracing (`BR-MAR-01..02`, `REQ-MAR-01..04`, Release v9.4.0)**:
+    - **Automated Curvature Edge Tracing**: Continuous 3D Catmull-Rom cubic spline interpolation generating 24 radial control points along the cervical third of the tooth preparation.
+    - **Material-Specific Marginal Widths**: Dynamic switching between Chamfer ($0.65\text{ mm}$, minimum $0.50\text{ mm}$ for Zirconia) and Shoulder ($0.90\text{ mm}$, minimum $0.80\text{ mm}$ for IPS e.max), warning against marginal chipping.
+    - **Three.js Glowing Spline Tube & Control Nodes**: Visualized with `THREE.TubeGeometry` using golden emissive shader and white control spheres.
+    - **Tension Smoothing Steppers**: Stepper adjustment (0.1 to 1.0) with real-time recalculation of curve perimeter and 3D Euclidean coordinates.
+    - **Clinical Governance & Persistence**: Backend validation endpoints (`GET / POST /api/labworkorders/{id}/margin-line`) enforcing loop closure (`BR-MAR-01`) and material thickness tolerance (`BR-MAR-02`).
 
 ---
 
@@ -203,14 +209,16 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
 | Test Layer | Technology | Count | Pass Rate |
 | :--- | :--- | :---: | :---: |
 | **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **345** | 🟢 **100%** |
-| **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **114** | 🟢 **100%** |
-| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **694** | 🟢 **100%** |
-| **Playwright E2E Browser Tests** | Playwright Chromium & Tablet iPad (26 files) | **157** | 🟢 **100%** |
-| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,310+** | 🟢 **100%** |
+| **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **117** | 🟢 **100%** |
+| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **702** | 🟢 **100%** |
+| **Playwright E2E Browser Tests** | Playwright Chromium & Tablet iPad (26 files) | **159** | 🟢 **100%** |
+| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,323+** | 🟢 **100%** |
 
 ---
 
 ## 4. Key Documentation Files in `clinic-docs`
+- `specs/features/FEATURE_v9.4.0_SPEC.md`: Clinical Operations Specification for AI Gingival Finish Line & Margin Auto-Tracing.
+- `specs/features/FEATURE_v9.4.0_ADR.md`: Architecture Decision Record for Three.js Catmull-Rom Spline Tube Geometry & Cervical Edge Margin Detection.
 - `specs/features/FEATURE_v9.3.0_SPEC.md`: Clinical Operations Specification for 3D Virtual Articulator & Dynamic Occlusal Collision Simulation.
 - `specs/features/FEATURE_v9.3.0_ADR.md`: Architecture Decision Record for Three.js Virtual Articulator Condylar Kinematics & Collision Contact Spheres.
 - `specs/features/FEATURE_v9.2.0_SPEC.md`: Clinical Operations Specification for 3D Color-Coded Undercut & Occlusal Clearance Heatmap.
