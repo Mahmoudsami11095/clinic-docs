@@ -1,8 +1,8 @@
 # 🔄 Agent Handoff — Clinic Project Master Context
 
 > **Last Updated**: 2026-10-16  
-> **Version**: 9.4.0 (Milestone 2 AI Finish Line & Margin Auto-Tracing Certified & Merged)  
-> **Status**: Milestones 1 (v9.3.0 3D Virtual Articulator) & 2 (v9.4.0 AI Gingival Finish Line & Margin Auto-Tracing) 100% Complete & Merged; Milestone 3 (v10.0.0 Dental CAM Toolpath Engine) In Queue  
+> **Version**: 10.0.0 (Milestone 3 Dental CAM Toolpath Engine & Direct 5-Axis G-Code Generator Certified & Merged)  
+> **Status**: Milestones 1 (v9.3.0 3D Virtual Articulator), 2 (v9.4.0 AI Gingival Finish Line & Margin Auto-Tracing), and 3 (v10.0.0 Dental CAM Toolpath Engine) 100% Complete & Merged across Backend (.NET 9), Frontend (Angular 20 Signals), and Enterprise Documentation.  
 > **Instructions for Future Agent**: When starting a new session on any workstation, read this file to immediately resume with complete architectural and operational context.
 
 
@@ -201,6 +201,12 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
     - **Three.js Glowing Spline Tube & Control Nodes**: Visualized with `THREE.TubeGeometry` using golden emissive shader and white control spheres.
     - **Tension Smoothing Steppers**: Stepper adjustment (0.1 to 1.0) with real-time recalculation of curve perimeter and 3D Euclidean coordinates.
     - **Clinical Governance & Persistence**: Backend validation endpoints (`GET / POST /api/labworkorders/{id}/margin-line`) enforcing loop closure (`BR-MAR-01`) and material thickness tolerance (`BR-MAR-02`).
+43. **Dental CAM Toolpath Engine & Direct 5-Axis G-Code Generator for Zirconia / PMMA Mills (`BR-CAM-01..02`, `REQ-CAM-01..04`, Release v10.0.0)**:
+    - **Multi-Blank Material Selection**: Monolithic Multi-Layer Zirconia (5Y-PSZ with 1.2450 sintered shrinkage factor compensation), PMMA Provisional (18,000 RPM, 1500 mm/min), and Titanium Grade 5 (12,000 RPM, 600 mm/min clamped feed rate).
+    - **Three-Stage Toolpath Planning**: Roughing stage (2.5mm flat bur for bulk blank depletion), Semi-Finishing stage (1.5mm ball nose bur for anatomical contouring), and Margin Detail stage (0.6mm micro ball bur enforcing a strict $\ge 0.15\text{ mm}$ margin safety buffer `BR-CAM-01`).
+    - **Interactive Three.js CAM Visualizer**: Rendered milling blank cylindrical disk boundary, multi-layer color-coded toolpaths (Cyan roughing, Amber semi-finishing, Emerald margin detail), and real-time 5-axis bur orientation cone.
+    - **Direct Post-Processor & G-Code Generator**: Clean ISO 6983 standard program output with dwell intervals (`G04 P2.0`), material-specific vacuum extraction (`M10/M11` for dry Zirconia) or flood coolant (`M08/M09` for wet PMMA/Titanium), and direct `.NC` file download.
+    - **Backend Validation & API**: Clean Architecture CAM calculation endpoints (`GET / POST /api/labworkorders/{id}/cam/gcode`) and validation rules rejecting unsafe feed rates (`BR-CAM-02`).
 
 ---
 
@@ -208,15 +214,17 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
 
 | Test Layer | Technology | Count | Pass Rate |
 | :--- | :--- | :---: | :---: |
-| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **345** | 🟢 **100%** |
+| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **349** | 🟢 **100%** |
 | **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **117** | 🟢 **100%** |
-| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **702** | 🟢 **100%** |
-| **Playwright E2E Browser Tests** | Playwright Chromium & Tablet iPad (26 files) | **159** | 🟢 **100%** |
-| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,323+** | 🟢 **100%** |
+| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **710** | 🟢 **100%** |
+| **Playwright E2E Browser Tests** | Playwright Chromium & Tablet iPad (27 files) | **161** | 🟢 **100%** |
+| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,337+** | 🟢 **100%** |
 
 ---
 
 ## 4. Key Documentation Files in `clinic-docs`
+- `specs/features/FEATURE_v10.0.0_SPEC.md`: Clinical Operations Specification for Dental CAM Toolpath Engine & Direct 5-Axis G-Code Generator.
+- `specs/features/FEATURE_v10.0.0_ADR.md`: Architecture Decision Record for 5-Axis Toolpath Slicing, ISO 6983 G-Code Generation, and Sintered Shrinkage Scaling.
 - `specs/features/FEATURE_v9.4.0_SPEC.md`: Clinical Operations Specification for AI Gingival Finish Line & Margin Auto-Tracing.
 - `specs/features/FEATURE_v9.4.0_ADR.md`: Architecture Decision Record for Three.js Catmull-Rom Spline Tube Geometry & Cervical Edge Margin Detection.
 - `specs/features/FEATURE_v9.3.0_SPEC.md`: Clinical Operations Specification for 3D Virtual Articulator & Dynamic Occlusal Collision Simulation.
