@@ -1,20 +1,11 @@
 # 🔄 Agent Handoff — Clinic Project Master Context
 
 > **Last Updated**: 2026-10-17  
-> **Version**: 12.0.0 (Release v12.0.0 Multi-Clinic Tele-Dentistry & Live Remote Video Consultation Suite Certified & Merged)  
-> **Status**: All Master Multi-Platform & Clinical Frontiers 100% Complete & Merged across Backend (.NET 9), Frontend (Angular 20 Signals), Desktop Electron, and Enterprise Documentation:  
-> 1. **Release v11.1.0**: AI Clear Aligner Orthodontic Staging Engine (`BR-ALIGN-01..04`).  
-> 2. **Release v11.2.0**: AI Guided Bone Regeneration (GBR) Titanium Mesh Generator (`BR-GBR-01..04`).  
-> 3. **Release v11.3.0**: AI 3D Removable Partial Denture (RPD) Framework & Clasp Surveyor Engine (`BR-RPD-01..04`).  
-> 4. **Release v11.4.0**: AI 2D/3D Digital Smile Design (DSD) & Golden Proportion Aesthetic Simulation (`BR-DSD-01..04`).  
-> 5. **Release v11.5.0**: Real-Time IoT Operatory Telemetry & Autoclave Sterilization Guardian (`BR-IOT-01..04`).  
-> 6. **Release v11.6.0**: AI Cephalometric Tracing & Orthognathic Landmark Analysis (`BR-CEPH-01..04`).  
-> 7. **Release v11.7.0**: Chairside Intraoral Scanner WebUSB/WebHID Driver Integration (`BR-IOS-01..04`).  
-> 8. **Release v11.8.0**: AI Automated Endodontic Working Length & Root Canal Curvature Locator (`BR-ENDO-01..04`).  
-> 9. **Release v11.9.0**: AI Custom Dental Implant Abutment & Emergence Profile Generator (`BR-ABUT-01..04`).  
-> 10. **Release v12.0.0**: Multi-Clinic Tele-Dentistry & Live Remote Video Consultation Suite (`BR-TELE-01..04`).  
-> 11. **Unified Multi-Platform Release Pipeline (`release.yml`)**: Multi-OS automated build, package, and release suite (v11.5.0 tag published).  
-> 12. **iOS Automated Build & Simulator Smoke Gate (`build-ios-app.yml`)**: `macos-14` runner certified, simulator runtime boot & smoke verified, `.ipa` and TestFlight staging templates generated.  
+> **Version**: 12.2.0 (Release v12.2.0 AI Periodontal Charting & AAP/EFP 2018 Staging Engine Certified & Merged)  
+> **Status**: All Master Multi-Platform & Clinical Frontiers 100% Complete & Merged across Backend (.NET 9), Frontend (Angular 20 Signals), Desktop Electron, Mobile Android/iOS, and Enterprise Documentation:  
+> 1. **Release v12.0.0**: Multi-Platform Release (Windows Installer, macOS DMG, Linux AppImage, Android APK & iOS Simulator Smoke).  
+> 2. **Release v12.1.0**: Real-Time AI Dynamic Implant Surgical Navigation & Drill Depth Guidance Suite (`BR-NAV-01..04`).  
+> 3. **Release v12.2.0**: AI Automated Periodontal Charting & Voice-Guided Pocket Depth Assessment Suite (`BR-PERIO-01..04`).  
 > **Instructions for Future Agent**: When starting a new session on any workstation, read this file to immediately resume with complete architectural and operational context.
 
 ---
