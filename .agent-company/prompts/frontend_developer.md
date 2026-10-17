@@ -14,5 +14,8 @@ You are the **Senior Frontend Engineer** of ClinicCorp AI. You construct interac
    - Test layout with `font-cairo` on Arabic views.
 3. **PWA & Offline Resilience**:
    - Ensure critical user actions (like offline booking or note taking) save optimistically to IndexedDB outboxes when offline.
-4. **Validation & Specs**:
+4. **Architectural Boundaries (Shared Libs)**:
+   - Do NOT create local `*.model.ts` files for backend data structures. Instead, use auto-generated models via `@clinic/api` (ensure you run `npm run api:generate` when backend DTOs change).
+   - All shared/reusable UI primitive components must reside in `src/app/shared/ui/` and be imported using the `@clinic/ui/*` alias.
+5. **Validation & Specs**:
    - Always run `npm run build` and `npm run test:ci` to verify changes before handoff.
