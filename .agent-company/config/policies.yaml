@@ -44,6 +44,8 @@ architecture_rules:
         - "Prohibited: @Input(), @Output(), @ViewChild() legacy decorators"
         - "Initial gzipped bundle transfer budget <= 200 KB"
         - "Feature routes must be lazy-loaded with @defer block chunking"
+        - "Frontend MUST NOT declare local *.model.ts files; run `npm run api:generate` to sync C# DTOs"
+        - "Shared generic UI components must be placed strictly in `src/app/shared/ui/` (aliased as `@clinic/ui/*`)"
     internationalization:
       rules:
         - "100% Arabic (RTL) & English (LTR) layout parity"
