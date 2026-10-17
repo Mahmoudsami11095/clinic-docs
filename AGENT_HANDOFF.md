@@ -1,7 +1,7 @@
 # 🔄 Agent Handoff — Clinic Project Master Context
 
 > **Last Updated**: 2026-10-17  
-> **Version**: 11.7.0 (Release v11.7.0 Chairside Intraoral Scanner WebUSB/WebHID Driver Integration Certified & Merged)  
+> **Version**: 11.8.0 (Release v11.8.0 AI Automated Endodontic Working Length & Root Canal Curvature Locator Certified & Merged)  
 > **Status**: All Master Multi-Platform & Clinical Frontiers 100% Complete & Merged across Backend (.NET 9), Frontend (Angular 20 Signals), Desktop Electron, and Enterprise Documentation:  
 > 1. **Release v11.1.0**: AI Clear Aligner Orthodontic Staging Engine (`BR-ALIGN-01..04`).  
 > 2. **Release v11.2.0**: AI Guided Bone Regeneration (GBR) Titanium Mesh Generator (`BR-GBR-01..04`).  
@@ -10,8 +10,9 @@
 > 5. **Release v11.5.0**: Real-Time IoT Operatory Telemetry & Autoclave Sterilization Guardian (`BR-IOT-01..04`).  
 > 6. **Release v11.6.0**: AI Cephalometric Tracing & Orthognathic Landmark Analysis (`BR-CEPH-01..04`).  
 > 7. **Release v11.7.0**: Chairside Intraoral Scanner WebUSB/WebHID Driver Integration (`BR-IOS-01..04`).  
-> 8. **Unified Multi-Platform Release Pipeline (`release.yml`)**: Multi-OS automated build, package, and release suite (v11.5.0 tag published).  
-> 9. **iOS Automated Build & Simulator Smoke Gate (`build-ios-app.yml`)**: `macos-14` runner certified, simulator runtime boot & smoke verified, `.ipa` and TestFlight staging templates generated.  
+> 8. **Release v11.8.0**: AI Automated Endodontic Working Length & Root Canal Curvature Locator (`BR-ENDO-01..04`).  
+> 9. **Unified Multi-Platform Release Pipeline (`release.yml`)**: Multi-OS automated build, package, and release suite (v11.5.0 tag published).  
+> 10. **iOS Automated Build & Simulator Smoke Gate (`build-ios-app.yml`)**: `macos-14` runner certified, simulator runtime boot & smoke verified, `.ipa` and TestFlight staging templates generated.  
 > **Instructions for Future Agent**: When starting a new session on any workstation, read this file to immediately resume with complete architectural and operational context.
 
 ---
@@ -278,6 +279,11 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
     - **High-Throughput Streaming Point Cloud Ingestion (`BR-IOS-02`)**: Low-latency 25-30 fps streaming channel over Electron IPC (`desktop:scanner-stream`) delivering raw 3D coordinate frames ($\Delta t < 30\text{ ms}$) with frame-drop prevention.
     - **Real-Time Surface Mesh & Density Heatmap (`BR-IOS-03`)**: Dynamic Three.js surface reconstruction in `IntraoralMeshViewerComponent` with live scan completeness gauges ($0-100\%$, Maxillary, Mandibular, Buccal Bite) and false-color density indicators (Amber sparse $< 15$, Emerald clinically dense $\ge 25\text{ pts/mm}^2$).
     - **Zero-Intermediate EMR & Lab Work Order Ingestion (`BR-IOS-04`)**: 1-click export packaging multi-arch optical impressions, cryptographic SHA-256 digital seals (`urn:scan:sha256:...`), and scanner calibration metadata directly into `POST /api/labworkorders/{id}/direct-scan`.
+56. **AI Automated Endodontic Working Length & Root Canal Curvature Locator (`BR-ENDO-01..04`, Release v11.8.0)**:
+    - **Schneider Angle Curvature Locator (`BR-ENDO-01`)**: Tri-point vector curvature estimation ($\alpha = 180^\circ - \theta$) with continuous radius calculation ($r = \frac{c}{2 \sin(\alpha/2)}$) classifying canals into Mild ($< 20^\circ$), Moderate ($20^\circ - 35^\circ$), and Severe ($> 35^\circ$) with cyclic fatigue risk warnings.
+    - **Algorithmic Working Length Determination (`BR-ENDO-02`)**: Apical constriction safety offsets ($0.5\text{ mm}$ for vital pulp, $1.0\text{ mm}$ for necrotic pulp / periapical lesions) with visual apical safety buffer circles.
+    - **Web Audio API Chairside Acoustic Synthesizer (`BR-ENDO-03`)**: Real-time auditory feedback mapping distance-to-foramen to pitch-frequency tone bursts ($440\text{ Hz}$ at $1.5\text{ mm}$, $880\text{ Hz}$ at $0.5\text{ mm}$, continuous $1200\text{ Hz}$ warning at apex $\le 0.0\text{ mm}$).
+    - **NiTi Rotary Protocol Engine (`BR-ENDO-04`)**: Adaptive recipe sequencing (ProTaper Ultimate, WaveOne Gold reciprocating, TruNatomy) with torque/speed safety limits and single-patient-use alerts for extreme curvatures.
 
 ---
 
@@ -285,16 +291,18 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
 
 | Test Layer | Technology | Count | Pass Rate |
 | :--- | :--- | :---: | :---: |
-| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **345** | 🟢 **100%** |
+| **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **351** | 🟢 **100%** |
 | **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **153** | 🟢 **100%** |
-| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **818** | 🟢 **100%** |
+| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **831** | 🟢 **100%** |
 | **Desktop Playwright E2E Tests** | Playwright Electron Automation (`test:desktop`) | **10** | 🟢 **100%** |
 | **Web Playwright E2E Tests** | Playwright Chromium & Tablet iPad (28 files) | **174** | 🟢 **100%** |
-| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,500+** | 🟢 **100%** |
+| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,519+** | 🟢 **100%** |
 
 ---
 
 ## 4. Key Documentation Files in `clinic-docs`
+- `specs/features/FEATURE_v11.8.0_SPEC.md`: Clinical Operations Specification for AI Automated Endodontic Working Length & Root Canal Curvature Locator.
+- `specs/features/FEATURE_v11.8.0_ADR.md`: Architecture Decision Record for Schneider Vectorization, EAL Acoustic Web Audio Synthesizer & NiTi Sequences.
 - `specs/features/FEATURE_v11.7.0_SPEC.md`: Clinical Operations Specification for Chairside Intraoral Scanner WebUSB/WebHID Driver Integration.
 - `specs/features/FEATURE_v11.7.0_ADR.md`: Architecture Decision Record for Electron HAL Bridge, IPC Streaming Buffers & Zero-Intermediate Ingestion.
 - `specs/features/FEATURE_v11.6.0_SPEC.md`: Clinical Operations Specification for AI Cephalometric Tracing & Orthognathic Landmark Analysis.
