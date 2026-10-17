@@ -11,6 +11,7 @@
 > 6. **Release v11.6.0**: AI Cephalometric Tracing & Orthognathic Landmark Analysis (`BR-CEPH-01..04`).  
 > 7. **Release v11.7.0**: Chairside Intraoral Scanner WebUSB/WebHID Driver Integration (`BR-IOS-01..04`).  
 > 8. **Unified Multi-Platform Release Pipeline (`release.yml`)**: Multi-OS automated build, package, and release suite (v11.5.0 tag published).  
+> 9. **iOS Automated Build & Simulator Smoke Gate (`build-ios-app.yml`)**: `macos-14` runner certified, simulator runtime boot & smoke verified, `.ipa` and TestFlight staging templates generated.  
 > **Instructions for Future Agent**: When starting a new session on any workstation, read this file to immediately resume with complete architectural and operational context.
 
 ---
