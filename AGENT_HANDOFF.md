@@ -1,7 +1,7 @@
 # 🔄 Agent Handoff — Clinic Project Master Context
 
 > **Last Updated**: 2026-10-17  
-> **Version**: 11.6.0 (Release v11.6.0 AI Cephalometric Tracing & Orthognathic Landmark Analysis Certified & Merged)  
+> **Version**: 11.7.0 (Release v11.7.0 Chairside Intraoral Scanner WebUSB/WebHID Driver Integration Certified & Merged)  
 > **Status**: All Master Multi-Platform & Clinical Frontiers 100% Complete & Merged across Backend (.NET 9), Frontend (Angular 20 Signals), Desktop Electron, and Enterprise Documentation:  
 > 1. **Release v11.1.0**: AI Clear Aligner Orthodontic Staging Engine (`BR-ALIGN-01..04`).  
 > 2. **Release v11.2.0**: AI Guided Bone Regeneration (GBR) Titanium Mesh Generator (`BR-GBR-01..04`).  
@@ -9,7 +9,8 @@
 > 4. **Release v11.4.0**: AI 2D/3D Digital Smile Design (DSD) & Golden Proportion Aesthetic Simulation (`BR-DSD-01..04`).  
 > 5. **Release v11.5.0**: Real-Time IoT Operatory Telemetry & Autoclave Sterilization Guardian (`BR-IOT-01..04`).  
 > 6. **Release v11.6.0**: AI Cephalometric Tracing & Orthognathic Landmark Analysis (`BR-CEPH-01..04`).  
-> 7. **Unified Multi-Platform Release Pipeline (`release.yml`)**: Multi-OS automated build, package, and release suite (v11.5.0 tag published).  
+> 7. **Release v11.7.0**: Chairside Intraoral Scanner WebUSB/WebHID Driver Integration (`BR-IOS-01..04`).  
+> 8. **Unified Multi-Platform Release Pipeline (`release.yml`)**: Multi-OS automated build, package, and release suite (v11.5.0 tag published).  
 > **Instructions for Future Agent**: When starting a new session on any workstation, read this file to immediately resume with complete architectural and operational context.
 
 ---
@@ -271,7 +272,11 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
     - **Comprehensive Cephalometric Analysis (`BR-CEPH-02`)**: Steiner analysis (SNA $82^\circ$, SNB $80^\circ$, ANB $2^\circ$, SN-GoGn $32^\circ$), Tweed analysis (FMA $25^\circ$), and Wits appraisal ($AO-BO$) determining Class I/II/III skeletal relationships.
     - **Soft Tissue Esthetic Profile & Ricketts E-Line (`BR-CEPH-03`)**: Dynamic evaluation of upper lip ($-4.0\text{ mm}$) and lower lip ($-2.0\text{ mm}$) to Rickett's Esthetic line connecting Pronasale ($Prn$) to Soft Pogonion ($Pog'$).
     - **Surgical VTO Simulation Engine (`BR-CEPH-04`)**: Interactive visual treatment objective predicting soft tissue profile changes based on orthognathic Le Fort I maxillary repositioning ($60\%$ upper lip coupling), BSSO mandibular setback/advancement ($75\%$ lower lip coupling), and genioplasty ($95\%$ soft chin coupling).
-
+55. **Chairside Intraoral Scanner WebUSB/WebHID Driver Integration (`BR-IOS-01..04`, Release v11.7.0)**:
+    - **Hardware Auto-Detection & Driver Handshake (`BR-IOS-01`)**: Direct USB Vendor/Product ID detection and WebUSB/WebHID enumeration for Medit (VID `0x3325`), 3Shape TRIOS (VID `0x1B3B`), Carestream Dental (VID `0x19B3`), and Shining 3D (VID `0x24C6`) with Mucosal thermal safety monitoring ($\le 44.5^\circ\text{C}$).
+    - **High-Throughput Streaming Point Cloud Ingestion (`BR-IOS-02`)**: Low-latency 25-30 fps streaming channel over Electron IPC (`desktop:scanner-stream`) delivering raw 3D coordinate frames ($\Delta t < 30\text{ ms}$) with frame-drop prevention.
+    - **Real-Time Surface Mesh & Density Heatmap (`BR-IOS-03`)**: Dynamic Three.js surface reconstruction in `IntraoralMeshViewerComponent` with live scan completeness gauges ($0-100\%$, Maxillary, Mandibular, Buccal Bite) and false-color density indicators (Amber sparse $< 15$, Emerald clinically dense $\ge 25\text{ pts/mm}^2$).
+    - **Zero-Intermediate EMR & Lab Work Order Ingestion (`BR-IOS-04`)**: 1-click export packaging multi-arch optical impressions, cryptographic SHA-256 digital seals (`urn:scan:sha256:...`), and scanner calibration metadata directly into `POST /api/labworkorders/{id}/direct-scan`.
 
 ---
 
@@ -280,15 +285,17 @@ All 12 enhancements have been completely implemented, verified with 3-tier tests
 | Test Layer | Technology | Count | Pass Rate |
 | :--- | :--- | :---: | :---: |
 | **Backend Unit Tests** | xUnit 2.9, Moq 4.21 (`net9.0`) | **345** | 🟢 **100%** |
-| **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **150** | 🟢 **100%** |
-| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **808** | 🟢 **100%** |
+| **Backend Integration Tests** | `WebApplicationFactory`, EF Core InMemory | **153** | 🟢 **100%** |
+| **Frontend Unit & Specs** | Karma, Jasmine, Angular Testing | **818** | 🟢 **100%** |
 | **Desktop Playwright E2E Tests** | Playwright Electron Automation (`test:desktop`) | **10** | 🟢 **100%** |
 | **Web Playwright E2E Tests** | Playwright Chromium & Tablet iPad (28 files) | **174** | 🟢 **100%** |
-| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,487+** | 🟢 **100%** |
+| **TOTAL VERIFIED SUITE** | Full Application Stack | **1,500+** | 🟢 **100%** |
 
 ---
 
 ## 4. Key Documentation Files in `clinic-docs`
+- `specs/features/FEATURE_v11.7.0_SPEC.md`: Clinical Operations Specification for Chairside Intraoral Scanner WebUSB/WebHID Driver Integration.
+- `specs/features/FEATURE_v11.7.0_ADR.md`: Architecture Decision Record for Electron HAL Bridge, IPC Streaming Buffers & Zero-Intermediate Ingestion.
 - `specs/features/FEATURE_v11.6.0_SPEC.md`: Clinical Operations Specification for AI Cephalometric Tracing & Orthognathic Landmark Analysis.
 - `specs/features/FEATURE_v11.6.0_ADR.md`: Architecture Decision Record for Cephalometric Landmark Vectorization, Steiner/Tweed Diagnostics & Surgical VTO.
 - `specs/features/FEATURE_v11.5.0_SPEC.md`: Clinical Operations Specification for Real-Time IoT Operatory Telemetry & Autoclave Sterilization Guardian.
